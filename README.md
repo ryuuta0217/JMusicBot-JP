@@ -1,12 +1,11 @@
 <img align="right" src="https://i.imgur.com/zrE80HY.png" height="200" width="200">
 
 [![Downloads](https://img.shields.io/github/downloads/Cosgy-Dev/MusicBot-JP-java/total.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest)
-[![Stars](https://img.shields.io/github/stars/jagrosh/MusicBot.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/stargazers)
-[![Release](https://img.shields.io/github/release/jagrosh/MusicBot.svg)](https://github.com/jagrosh/MusicBot/releases/latest)
-[![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/blob/master/LICENSE)<br>
+[![Stars](https://img.shields.io/github/stars/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/stargazers)
+[![Release](https://img.shields.io/github/release/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest)
+[![License](https://img.shields.io/github/license/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/blob/master/LICENSE)<br>
 [![CircleCI](https://img.shields.io/circleci/project/github/Cosgy-Dev/MusicBot-JP-java/master.svg)](https://circleci.com/gh/Cosgy-Dev/MusicBot)
-[![Travis-CI](https://travis-ci.com/jagrosh/MusicBot.svg?branch=master)](https://travis-ci.com/Cosgy-Dev/MusicBot)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/gdu6nyte5psj6xfk/branch/master?svg=true)](https://ci.appveyor.com/project/Cosgy-Dev/musicbot/branch/master)
+[![Travis-CI](https://travis-ci.com/Cosgy-Dev/MusicBot-JP-java.svg?branch=master)](https://travis-ci.com/Cosgy-Dev/MusicBot)
 
 # JMusicBotJP
 Discordミュージックボットは、シンプルでかつ操作性の良いUIを使用しています。セットアップも起動も簡単です。
