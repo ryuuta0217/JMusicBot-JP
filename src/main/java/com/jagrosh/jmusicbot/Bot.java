@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh <john.a.grosh@gmail.com>.
+ * Copyright 2018 Cosgy Dev (info@cosgy.jp).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import net.dv8tion.jda.core.entities.Guild;
 
 /**
  *
- * @author John Grosh <john.a.grosh@gmail.com>
+ * @author Cosgy Dev (info@cosgy.jp)
  */
 public class Bot
 {
