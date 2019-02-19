@@ -1,18 +1,17 @@
 <img align="right" src="https://i.imgur.com/zrE80HY.png" height="200" width="200">
 
-[![Downloads](https://img.shields.io/github/downloads/jagrosh/MusicBot/total.svg)](https://github.com/jagrosh/MusicBot/releases/latest)
-[![Stars](https://img.shields.io/github/stars/jagrosh/MusicBot.svg)](https://github.com/jagrosh/MusicBot/stargazers)
+[![Downloads](https://img.shields.io/github/downloads/Cosgy-Dev/MusicBot-JP-java/total.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest)
+[![Stars](https://img.shields.io/github/stars/jagrosh/MusicBot.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/stargazers)
 [![Release](https://img.shields.io/github/release/jagrosh/MusicBot.svg)](https://github.com/jagrosh/MusicBot/releases/latest)
-[![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/Cosgy-Dev/MusicBot/blob/master/LICENSE)
-[![Discord](https://discordapp.com/api/guilds/147698382092238848/widget.png)](https://discord.gg/0p9LSGoRLu6Pet0k)<br>
-[![CircleCI](https://img.shields.io/circleci/project/github/Cosgy-Dev/MusicBot/master.svg)](https://circleci.com/gh/Cosgy-Dev/MusicBot)
+[![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/blob/master/LICENSE)<br>
+[![CircleCI](https://img.shields.io/circleci/project/github/Cosgy-Dev/MusicBot-JP-java/master.svg)](https://circleci.com/gh/Cosgy-Dev/MusicBot)
 [![Travis-CI](https://travis-ci.com/jagrosh/MusicBot.svg?branch=master)](https://travis-ci.com/Cosgy-Dev/MusicBot)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/gdu6nyte5psj6xfk/branch/master?svg=true)](https://ci.appveyor.com/project/Cosgy-Dev/musicbot/branch/master)
 
 # JMusicBotJP
 Discordミュージックボットは、シンプルでかつ操作性の良いUIを使用しています。セットアップも起動も簡単です。
 
-[![Setup](http://i.imgur.com/VvXYp5j.png)](https://github.com/jagrosh/MusicBot/wiki/Setup)
+[![Setup](http://i.imgur.com/VvXYp5j.png)](https://github.com/Cosgy-Dev/MusicBot-JP-java/wiki/Setup)
 
 # 機能性
 * 操作が簡単(Javaがインストールされているか確認してください)
