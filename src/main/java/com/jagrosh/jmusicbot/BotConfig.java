@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 John Grosh (jagrosh)
+ * Copyright 2018 Cosgy Dev (info@cosgy.jp)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,14 +29,6 @@ import java.util.List;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 
-/**
- * @author Your Name
- * Changes from original source:
- *  - Changed "searching" to "finding"
- * 
- * 
- * @author John Grosh (jagrosh)
- */
 public class BotConfig
 {
     private final Prompt prompt;
