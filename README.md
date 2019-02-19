@@ -9,32 +9,29 @@
 [![Travis-CI](https://travis-ci.com/jagrosh/MusicBot.svg?branch=master)](https://travis-ci.com/jagrosh/MusicBot)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/gdu6nyte5psj6xfk/branch/master?svg=true)](https://ci.appveyor.com/project/jagrosh/musicbot/branch/master)
 
-# JMusicBot
-A Discord music bot with a clean interface, and that is easy to set up and run yourself
+# JMusicBotJP
+Discordミュージックボットは、シンプルでかつ操作性の良いUIを使用しています。セットアップも起動も簡単です。
 
 [![Setup](http://i.imgur.com/VvXYp5j.png)](https://github.com/jagrosh/MusicBot/wiki/Setup)
 
-# Features
-* Easy to run (just make sure Java is installed, and run!)
-* Fast loading of songs
-* No external keys needed (besides a Discord Bot token)
-* Smooth playback
-* Server-specific setup for the "DJ" role that can moderate the music
-* Clean and beautiful menus
-* Channel-topic playback bar
-* Supports many sites, including Youtube, Soundcloud, and more
-* Supports many online radio/streams
-* Supports local files
-* Playlist support (both web/youtube, and local)
+# 機能性
+* 操作が簡単(Javaがインストールされているか確認してください)
+* 曲を高速にロード
+* 独自の外部キーなどは要りません。(Discordのトークンを除く)
+* ラグのすくないスムーズな再生
+* DJという独自の役割
+* シンプルで使いやすいUI
+* チャンネルトピック再生バー
+* YouTubeや、Soundcloudなどを含む多くのサイトをサポートしています。
+* オンラインのラジオや、ライブストリームをサポート
+* 個人的なファイルのサポート
+* 再生リストのサポート(web/youtube/local)
 
-# Setup
-Please see the [Setup Page](https://github.com/jagrosh/MusicBot/wiki/Setup) in the wiki to run this bot yourself!
+# セットアップ
+このボットを自分で起動するにはWikiの [設定ページ](https://github.com/jagrosh/MusicBot/wiki/Setup) を参照してください
 
-# Questions/Suggestions/Bug Reports
-**Please read the [Suggested/Planned Features List](https://github.com/jagrosh/MusicBot/projects/1) before suggesting a feature**. If you'd like to suggest changes to how the bot functions, recommend more customization options, or report bugs, feel free to either open an [Issue](https://github.com/jagrosh/MusicBot/issues) on this repository, or join [my Discord server](https://discord.gg/0p9LSGoRLu6Pet0k). (Note: I will not accept any feature requests that will require additional API keys, nor any non-music features). If you like this bot, be sure to add a star to the libraries that make this possible: [**JDA**](https://github.com/DV8FromTheWorld/JDA) and [**lavaplayer**](https://github.com/sedmelluq/lavaplayer)
+# 質問/提案/バグレポート
+**機能を提案する前に、提案/計画機能リストを読んでください。あなたは、ボットの機能は、より多くのカスタマイズオプションをお勧めしますどのように変更を提案、またはバグを報告し、開くことがどちらかお気軽にしたい場合は問題をこのリポジトリに、または参加する私の確執サーバーを。（注：追加のAPIキーを必要とする機能要求や、音楽以外の機能は一切受け付けません）。このボットが好きなら、これを可能にするライブラリに必ずスターを付けてください：JDAとlavaplayer
 
-# Example
+# コマンドの例
 ![Example](https://i.imgur.com/tevrtKt.png)
-
-# Editing
-This bot (and the source code here) is not meant to be edited. The main purpose of having the source public is to show the capabilities of the libraries, and to allow others to understand how the bot works. There are many requirements and dependencies required to edit and compile it, and there will not be support provided for people looking to make changes on their own. Instead, consider making a feature request (see the above section). If you still choose to make edits, please do so in accordance with the Apache 2.0 License.
