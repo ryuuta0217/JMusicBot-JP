@@ -34,7 +34,7 @@ public class SettingsCmd extends Command
     public SettingsCmd()
     {
         this.name = "settings";
-        this.help = "shows the bots settings";
+        this.help = "ボット設定を表示します";
         this.aliases = new String[]{"status"};
         this.guildOnly = true;
     }
@@ -60,7 +60,7 @@ public class SettingsCmd extends Command
                         )
                 .setFooter(event.getJDA().getGuilds().size()+" servers | "
                         +event.getJDA().getGuilds().stream().filter(g -> g.getSelfMember().getVoiceState().inVoiceChannel()).count()
-                        +" audio connections", null);
+                        +" オーディオ接続", null);
         event.getChannel().sendMessage(builder.setEmbed(ebuilder.build()).build()).queue();
     }
     
