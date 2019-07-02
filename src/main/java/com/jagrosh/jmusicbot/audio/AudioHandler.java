@@ -29,8 +29,6 @@ import java.util.Set;
 import com.jagrosh.jmusicbot.queue.FairQueue;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
-import static com.jagrosh.jmusicbot.utils.FormatUtil.formatTime;
-import static com.jagrosh.jmusicbot.utils.FormatUtil.volumeIcon;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
@@ -255,11 +253,11 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
             if(title==null || title.equals("Unknown Title"))
                 title = track.getInfo().uri;
             return "**"+title+"** ["+(userid==0 ? "autoplay" : "<@"+userid+">")+"]"
-                    + "\n"+(audioPlayer.isPaused()?"\u23F8":"\u25B6")+" "
-                    +"["+formatTime(track.getDuration())+"] "
-                    +volumeIcon(audioPlayer.getVolume());
+                    + "\n" + (audioPlayer.isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI) + " "
+                    + "[" + FormatUtil.formatTime(track.getDuration()) + "] "
+                    + FormatUtil.volumeIcon(audioPlayer.getVolume());
         }
-        else return "No music playing \u23F9 " + volumeIcon(audioPlayer.getVolume());
+        else return "No music playing " + JMusicBot.STOP_EMOJI + " " + FormatUtil.volumeIcon(audioPlayer.getVolume());
     }
     
     // Audio Send Handler methods

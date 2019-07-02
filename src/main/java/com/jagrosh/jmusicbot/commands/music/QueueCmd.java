@@ -37,7 +37,10 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
  */
 public class QueueCmd extends MusicCommand 
 {
+    private final static String REPEAT = "\uD83D\uDD01"; // 🔁
+    
     private final Paginator.Builder builder;
+    
     public QueueCmd(Bot bot)
     {
         super(bot);
@@ -49,7 +52,7 @@ public class QueueCmd extends MusicCommand
         this.botPermissions = new Permission[]{Permission.MESSAGE_ADD_REACTION,Permission.MESSAGE_EMBED_LINKS};
         builder = new Paginator.Builder()
                 .setColumns(1)
-                .setFinalAction(m -> {try{m.clearReactions().queue();}catch(PermissionException e){}})
+                .setFinalAction(m -> {try{m.clearReactions().queue();}catch(PermissionException ignore){}})
                 .setItemsPerPage(10)
                 .waitOnSinglePage(false)
                 .useNumberedItems(true)
@@ -66,7 +69,7 @@ public class QueueCmd extends MusicCommand
         {
             pagenum = Integer.parseInt(event.getArgs());
         }
-        catch(NumberFormatException e){}
+        catch(NumberFormatException ignore){}
         AudioHandler ah = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         List<QueuedTrack> list = ah.getQueue().getList();
         if(list.isEmpty())
@@ -110,6 +113,6 @@ public class QueueCmd extends MusicCommand
         }
         return FormatUtil.filter(sb.append(success).append(" Current Queue | ").append(songslength)
                 .append(" entries | `").append(FormatUtil.formatTime(total)).append("` ")
-                .append(repeatmode ? "| \uD83D\uDD01" : "").toString());
+                .append(repeatmode ? "| " + REPEAT : "").toString());
     }
 }

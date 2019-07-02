@@ -41,9 +41,9 @@ import org.slf4j.LoggerFactory;
  */
 public class JMusicBot 
 {
-    public final static String PLAY_EMOJI  = "\u25B6";
-    public final static String PAUSE_EMOJI = "\u23F8";
-    public final static String STOP_EMOJI  = "\u23F9";
+    public final static String PLAY_EMOJI  = "\u25B6"; // ▶
+    public final static String PAUSE_EMOJI = "\u23F8"; // ⏸
+    public final static String STOP_EMOJI  = "\u23F9"; // ⏹
     public final static Permission[] RECOMMENDED_PERMS = new Permission[]{Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.MESSAGE_HISTORY, Permission.MESSAGE_ADD_REACTION,
                                 Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_MANAGE, Permission.MESSAGE_EXT_EMOJI,
                                 Permission.MANAGE_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK, Permission.NICKNAME_CHANGE};
@@ -87,7 +87,7 @@ public class JMusicBot
                                 new String[]{"High-quality music playback", "FairQueue™ Technology", "Easy to host yourself"},
                                 RECOMMENDED_PERMS);
         aboutCommand.setIsAuthor(false);
-        aboutCommand.setReplacementCharacter("\uD83C\uDFB6");
+        aboutCommand.setReplacementCharacter("\uD83C\uDFB6"); // 🎶
         
         // set up the command client
         CommandClientBuilder cb = new CommandClientBuilder()
@@ -102,6 +102,7 @@ public class JMusicBot
                         new PingCommand(),
                         new SettingsCmd(),
                         
+                        new LyricsCmd(bot),
                         new NowplayingCmd(bot),
                         new PlayCmd(bot, config.getLoading()),
                         new PlaylistsCmd(bot),
@@ -113,6 +114,7 @@ public class JMusicBot
                         new SkipCmd(bot),
                         
                         new ForceskipCmd(bot),
+                        new MoveTrackCmd(bot),
                         new PauseCmd(bot),
                         new PlaynextCmd(bot, config.getLoading()),
                         new RepeatCmd(bot),
@@ -128,7 +130,7 @@ public class JMusicBot
                         new PlaylistCmd(bot),
                         new SetavatarCmd(),
                         new SetgameCmd(),
-                        new SetnameCmd(bot),
+                        new SetnameCmd(),
                         new SetstatusCmd(),
                         new ShutdownCmd(bot)
                 );
@@ -181,14 +183,15 @@ public class JMusicBot
         }
         catch (LoginException ex)
         {
-            log.error(ex+"\nPlease make sure you are "
+            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nPlease make sure you are "
                     + "editing the correct config.txt file, and that you have used the "
-                    + "correct token (not the 'secret'!)");
+                    + "correct token (not the 'secret'!)\nConfig Location: " + config.getConfigLocation());
             System.exit(1);
         }
         catch(IllegalArgumentException ex)
         {
-            log.error("Some aspect of the configuration is invalid: "+ex);
+            prompt.alert(Prompt.Level.ERROR, "JMusicBot", "Some aspect of the configuration is "
+                    + "invalid: " + ex + "\nConfig Location: " + config.getConfigLocation());
             System.exit(1);
         }
     }

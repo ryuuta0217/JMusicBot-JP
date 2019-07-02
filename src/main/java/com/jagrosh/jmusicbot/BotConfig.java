@@ -24,15 +24,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 
+<<<<<<< HEAD
+=======
+/**
+ * 
+ * 
+ * @author John Grosh (jagrosh)
+ */
+>>>>>>> upstream/master
 public class BotConfig
 {
     private final Prompt prompt;
     private final static String CONTEXT = "Config";
+    private final static String START_TOKEN = "/// START OF JMUSICBOT CONFIG ///";
+    private final static String END_TOKEN = "/// END OF JMUSICBOT CONFIG ///";
     
     private Path path = null;
     private String token, prefix, altprefix, helpWord, playlistsFolder,
@@ -69,9 +77,6 @@ public class BotConfig
             //Config config = ConfigFactory.parseFile(path.toFile()).withFallback(ConfigFactory.load());
             Config config = ConfigFactory.load();
             
-            // info on where the config is being loaded from
-            prompt.alert(Prompt.Level.INFO, CONTEXT, "Loading config from "+path.toAbsolutePath().toString());
-            
             // set values
             token = config.getString("token");
             prefix = config.getString("prefix");
@@ -94,8 +99,8 @@ public class BotConfig
             playlistsFolder = config.getString("playlistsfolder");
             dbots = owner == 113156185389092864L;
             
-            // we may need to get some additional data and write a new config file
-            List<String> lines = new LinkedList<>();
+            // we may need to write a new config file
+            boolean write = false;
 
             // validate bot token
             if(token==null || token.isEmpty() || token.equalsIgnoreCase("BOT_TOKEN_HERE"))
@@ -106,12 +111,12 @@ public class BotConfig
                         + "\nBot Token: ");
                 if(token==null)
                 {
-                    prompt.alert(Prompt.Level.WARNING, CONTEXT, "No token provided! Exiting.");
+                    prompt.alert(Prompt.Level.WARNING, CONTEXT, "No token provided! Exiting.\n\nConfig Location: " + path.toAbsolutePath().toString());
                     return;
                 }
                 else
                 {
-                    lines.add("token="+token);
+                    write = true;
                 }
             }
             
@@ -132,27 +137,39 @@ public class BotConfig
                 }
                 if(owner<=0)
                 {
-                    prompt.alert(Prompt.Level.ERROR, CONTEXT, "Invalid User ID! Exiting.");
+                    prompt.alert(Prompt.Level.ERROR, CONTEXT, "Invalid User ID! Exiting.\n\nConfig Location: " + path.toAbsolutePath().toString());
                     System.exit(0);
                 }
                 else
                 {
-                    lines.add("owner="+owner);
+                    write = true;
                 }
             }
             
-            if(!lines.isEmpty())
+            if(write)
             {
-                StringBuilder builder = new StringBuilder();
-                lines.stream().forEach(s -> builder.append(s).append("\r\n"));
+                String original = OtherUtil.loadResource(this, "/reference.conf");
+                byte[] bytes;
+                if(original==null)
+                {
+                    bytes = ("token = "+token+"\r\nowner = "+owner).getBytes();
+                }
+                else
+                {
+                    bytes = original.substring(original.indexOf(START_TOKEN)+START_TOKEN.length(), original.indexOf(END_TOKEN))
+                        .replace("BOT_TOKEN_HERE", token)
+                        .replace("0 // OWNER ID", Long.toString(owner))
+                        .trim().getBytes();
+                }
                 try 
                 {
-                    Files.write(path, builder.toString().trim().getBytes());
+                    Files.write(path, bytes);
                 }
                 catch(IOException ex) 
                 {
                     prompt.alert(Prompt.Level.WARNING, CONTEXT, "Failed to write new config options to config.txt: "+ex
-                        + "\nPlease make sure that the files are not on your desktop or some other restricted area.");
+                        + "\nPlease make sure that the files are not on your desktop or some other restricted area.\n\nConfig Location: " 
+                        + path.toAbsolutePath().toString());
                 }
             }
             
@@ -161,7 +178,7 @@ public class BotConfig
         }
         catch (ConfigException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, CONTEXT, ex + ": " + ex.getMessage());
+            prompt.alert(Prompt.Level.ERROR, CONTEXT, ex + ": " + ex.getMessage() + "\n\nConfig Location: " + path.toAbsolutePath().toString());
         }
     }
     
