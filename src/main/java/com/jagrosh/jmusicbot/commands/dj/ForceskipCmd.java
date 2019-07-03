@@ -42,7 +42,7 @@ public class ForceskipCmd extends DJCommand
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         User u = event.getJDA().getUserById(handler.getRequester());
         event.reply(event.getClient().getSuccess()+" スキップしました **"+handler.getPlayer().getPlayingTrack().getInfo().title
-                +"** (requested by "+(u==null ? "someone" : "**"+u.getName()+"**")+")");
+                +"** (リクエストした人 "+(u==null ? "someone" : "**"+u.getName()+"**")+")");
         handler.getPlayer().stopTrack();
     }
 }

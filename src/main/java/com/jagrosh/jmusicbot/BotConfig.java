@@ -125,11 +125,11 @@ public class BotConfig
             {
                 try
                 {
-                    owner = Long.parseLong(prompt.prompt("Owner ID was missing, or the provided owner ID is not valid."
-                        + "\nPlease provide the User ID of the bot's owner."
-                        + "\nInstructions for obtaining your User ID can be found here:"
+                    owner = Long.parseLong(prompt.prompt("オーナーIDがみつからない、または有効ではありません。"
+                        + "\nBOTのオーナーのオーナーIDを入力してください。"
+                        + "\nユーザーIDの入手方法はこちらから:"
                         + "\nhttps://github.com/jagrosh/MusicBot/wiki/Finding-Your-User-ID"
-                        + "\nOwner User ID: "));
+                        + "\nオーナーユーザーID: "));
                 }
                 catch(NumberFormatException | NullPointerException ex)
                 {
