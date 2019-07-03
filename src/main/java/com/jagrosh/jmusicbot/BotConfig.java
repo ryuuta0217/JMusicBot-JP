@@ -27,14 +27,14 @@ import java.nio.file.Paths;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 /**
  * 
  * 
  * @author John Grosh (jagrosh)
  */
->>>>>>> upstream/master
+//>>>>>>> upstream/master
 public class BotConfig
 {
     private final Prompt prompt;
@@ -105,10 +105,10 @@ public class BotConfig
             // validate bot token
             if(token==null || token.isEmpty() || token.equalsIgnoreCase("BOT_TOKEN_HERE"))
             {
-                token = prompt.prompt("Please provide a bot token."
-                        + "\nInstructions for obtaining a token can be found here:"
+                token = prompt.prompt("BOTトークンを入力してください。"
+                        + "\nトークンを取得する方法はこちらから:"
                         + "\nhttps://github.com/jagrosh/MusicBot/wiki/Getting-a-Bot-Token."
-                        + "\nBot Token: ");
+                        + "\nBOTトークン: ");
                 if(token==null)
                 {
                     prompt.alert(Prompt.Level.WARNING, CONTEXT, "No token provided! Exiting.\n\nConfig Location: " + path.toAbsolutePath().toString());
