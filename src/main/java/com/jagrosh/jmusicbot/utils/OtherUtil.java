@@ -36,7 +36,7 @@ public class OtherUtil
     public final static String NEW_VERSION_AVAILABLE = "There is a new version of JMusicBot available!\n"
                     + "Current version: %s\n"
                     + "New Version: %s\n\n"
-                    + "Please visit https://github.com/jagrosh/MusicBot/releases/latest to get the latest release.";
+                    + "Please visit https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest to get the latest release.";
     
     public static String loadResource(Object clazz, String name)
     {
@@ -129,7 +129,7 @@ public class OtherUtil
         try
         {
             Response response = new OkHttpClient.Builder().build()
-                    .newCall(new Request.Builder().get().url("https://api.github.com/repos/jagrosh/MusicBot/releases/latest").build())
+                    .newCall(new Request.Builder().get().url("https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest").build())
                     .execute();
             ResponseBody body = response.body();
             if(body != null)
