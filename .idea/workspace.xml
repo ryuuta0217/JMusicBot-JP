@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="80a79d00-f38c-43b3-9bb8-615e99622bdd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/audio/AudioHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/audio/AudioHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/utils/OtherUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/utils/OtherUtil.java" afterDir="false" />
-    </list>
+    <list default="true" id="80a79d00-f38c-43b3-9bb8-615e99622bdd" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -161,9 +158,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="698" />
-    <option name="y" value="46" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="669" />
+    <option name="y" value="-26" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -381,10 +378,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="957" y="172" width="974" height="1047" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.38730854" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18869936" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -393,7 +390,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32932165" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3261105" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
