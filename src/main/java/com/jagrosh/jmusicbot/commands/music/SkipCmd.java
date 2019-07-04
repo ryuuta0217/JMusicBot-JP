@@ -66,7 +66,7 @@ public class SkipCmd extends MusicCommand
             {
                 User u = event.getJDA().getUserById(handler.getRequester());
                 msg+="\n"+event.getClient().getSuccess()+" スキップしました **"+handler.getPlayer().getPlayingTrack().getInfo().title
-                    +"**"+(handler.getRequester()==0 ? "" : " (リクエストした曲 "+(u==null ? "投票した人" : "**"+u.getName()+"**")+")");
+                    +"**"+(handler.getRequester()==0 ? "" : " (リクエストした曲 "+(u==null ? "投票した人:" : "**"+u.getName()+"**")+")");
                 handler.getPlayer().stopTrack();
             }
             event.reply(msg);
