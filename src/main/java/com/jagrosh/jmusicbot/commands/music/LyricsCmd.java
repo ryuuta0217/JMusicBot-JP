@@ -56,7 +56,7 @@ public class LyricsCmd extends MusicCommand
         {
             if(lyrics == null)
             {
-                event.replyError("Lyrics for `" + title + "` could not be found!");
+                event.replyError("`" + title + "` の歌詞は見つかりませんでした。");
                 return;
             }
 
@@ -66,7 +66,7 @@ public class LyricsCmd extends MusicCommand
                     .setTitle(lyrics.getTitle(), lyrics.getURL());
             if(lyrics.getContent().length()>15000)
             {
-                event.replyWarning("Lyrics for `" + title + "` found but likely not correct: " + lyrics.getURL());
+                event.replyWarning(" `" + title + "` の歌詞の曲が見つかりましたが、正しくない可能性が高いです!: " + lyrics.getURL());
             }
             else if(lyrics.getContent().length()>2000)
             {

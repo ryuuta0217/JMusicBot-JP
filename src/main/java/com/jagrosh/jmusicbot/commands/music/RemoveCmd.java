@@ -47,16 +47,16 @@ public class RemoveCmd extends MusicCommand
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         if(handler.getQueue().isEmpty())
         {
-            event.replyError("There is nothing in the queue!");
+            event.replyError("キューには何もありません。");
             return;
         }
         if(event.getArgs().equalsIgnoreCase("all"))
         {
             int count = handler.getQueue().removeAll(event.getAuthor().getIdLong());
             if(count==0)
-                event.replyWarning("You don't have any songs in the queue!");
+                event.replyWarning("キューに曲がありません。");
             else
-                event.replySuccess("Successfully removed your "+count+" entries.");
+                event.replySuccess(count+" エントリを削除しました。");
             return;
         }
         int pos;
@@ -67,7 +67,7 @@ public class RemoveCmd extends MusicCommand
         }
         if(pos<1 || pos>handler.getQueue().size())
         {
-            event.replyError("Position must be a valid integer between 1 and "+handler.getQueue().size()+"!");
+            event.replyError("有効な1からの数字を入力してください! "+handler.getQueue().size());
             return;
         }
         Settings settings = event.getClient().getSettingsFor(event.getGuild());
@@ -78,7 +78,7 @@ public class RemoveCmd extends MusicCommand
         if(qt.getIdentifier()==event.getAuthor().getIdLong())
         {
             handler.getQueue().remove(pos-1);
-            event.replySuccess("Removed **"+qt.getTrack().getInfo().title+"** from the queue");
+            event.replySuccess("**"+qt.getTrack().getInfo().title+"** からキューを削除しました。");
         }
         else if(isDJ)
         {
@@ -94,7 +94,7 @@ public class RemoveCmd extends MusicCommand
         }
         else
         {
-            event.replyError("You cannot remove **"+qt.getTrack().getInfo().title+"** because you didn't add it!");
+            event.replyError("あなたは削除することができません **"+qt.getTrack().getInfo().title+"** 理由: 追加されなかったため");
         }
     }
 }

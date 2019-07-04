@@ -44,19 +44,19 @@ public class PlaylistsCmd extends MusicCommand
             bot.getPlaylistLoader().createFolder();
         if(!bot.getPlaylistLoader().folderExists())
         {
-            event.reply(event.getClient().getWarning()+" Playlists folder does not exist and could not be created!");
+            event.reply(event.getClient().getWarning()+" プレイリストフォルダが存在しないため作成できませんでした。");
             return;
         }
         List<String> list = bot.getPlaylistLoader().getPlaylistNames();
         if(list==null)
-            event.reply(event.getClient().getError()+" Failed to load available playlists!");
+            event.reply(event.getClient().getError()+" 利用可能な再生リストを読み込めませんでした。");
         else if(list.isEmpty())
-            event.reply(event.getClient().getWarning()+" There are no playlists in the Playlists folder!");
+            event.reply(event.getClient().getWarning()+" プレイリストフォルダにプレイリストがありません。");
         else
         {
-            StringBuilder builder = new StringBuilder(event.getClient().getSuccess()+" Available playlists:\n");
+            StringBuilder builder = new StringBuilder(event.getClient().getSuccess()+" 利用可能なプレイリスト:\n");
             list.forEach(str -> builder.append("`").append(str).append("` "));
-            builder.append("\nType `").append(event.getClient().getTextualPrefix()).append("play playlist <name>` to play a playlist");
+            builder.append("\nType `").append(event.getClient().getTextualPrefix()).append("play playlist <name>` でプレイリストを再生します。");
             event.reply(builder.toString());
         }
     }

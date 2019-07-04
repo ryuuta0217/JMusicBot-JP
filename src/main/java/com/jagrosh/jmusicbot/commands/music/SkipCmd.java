@@ -43,7 +43,7 @@ public class SkipCmd extends MusicCommand
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         if(event.getAuthor().getIdLong()==handler.getRequester())
         {
-            event.reply(event.getClient().getSuccess()+" Skipped **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**");
+            event.reply(event.getClient().getSuccess()+" スキップしました **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**");
             handler.getPlayer().stopTrack();
         }
         else
@@ -52,21 +52,21 @@ public class SkipCmd extends MusicCommand
                     .filter(m -> !m.getUser().isBot() && !m.getVoiceState().isDeafened()).count();
             String msg;
             if(handler.getVotes().contains(event.getAuthor().getId()))
-                msg = event.getClient().getWarning()+" You already voted to skip this song `[";
+                msg = event.getClient().getWarning()+" この曲をスキップすることをすでに投票済みです。 `[";
             else
             {
-                msg = event.getClient().getSuccess()+" You voted to skip the song `[";
+                msg = event.getClient().getSuccess()+"  あなたはこの曲をスキップすることを投票しました。`[";
                 handler.getVotes().add(event.getAuthor().getId());
             }
             int skippers = (int)event.getSelfMember().getVoiceState().getChannel().getMembers().stream()
                     .filter(m -> handler.getVotes().contains(m.getUser().getId())).count();
             int required = (int)Math.ceil(listeners * .55);
-            msg+= skippers+" votes, "+required+"/"+listeners+" needed]`";
+            msg+= skippers+" 必要な投票, "+required+"/"+listeners+" ]`";
             if(skippers>=required)
             {
                 User u = event.getJDA().getUserById(handler.getRequester());
-                msg+="\n"+event.getClient().getSuccess()+" Skipped **"+handler.getPlayer().getPlayingTrack().getInfo().title
-                    +"**"+(handler.getRequester()==0 ? "" : " (requested by "+(u==null ? "someone" : "**"+u.getName()+"**")+")");
+                msg+="\n"+event.getClient().getSuccess()+" スキップしました **"+handler.getPlayer().getPlayingTrack().getInfo().title
+                    +"**"+(handler.getRequester()==0 ? "" : " (リクエストした曲 "+(u==null ? "投票した人" : "**"+u.getName()+"**")+")");
                 handler.getPlayer().stopTrack();
             }
             event.reply(msg);
