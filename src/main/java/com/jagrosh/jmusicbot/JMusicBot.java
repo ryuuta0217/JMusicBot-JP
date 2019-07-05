@@ -184,10 +184,15 @@ public class JMusicBot
         catch (LoginException ex)
         {
             prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nあなたがいることを確認してください"
+<<<<<<< HEAD
 
                     + "正しいconfig.txtファイルを編集し、あなたが使ったことがある"
 
                     + "正しいトークン('secret'ではありません!)\n設定場所："+config.getConfigLocation());
+=======
+                     + "正しいconfig.txtファイルを編集し、あなたが使ったことがある"
+                     + "正しいトークン('secret'ではありません!)\n設定場所："+config.getConfigLocation());
+>>>>>>> eddde061dae873679cfeae361f2169b4739eba48
             System.exit(1);
         }
         catch(IllegalArgumentException ex)
