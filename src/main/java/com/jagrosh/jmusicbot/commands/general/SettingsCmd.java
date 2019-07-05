@@ -56,7 +56,7 @@ public class SettingsCmd extends Command
                 .setDescription("テキストチャンネル: "+(tchan==null ? "Any" : "**#"+tchan.getName()+"**")
                         + "\nボイスチャンネル: "+(vchan==null ? "Any" : "**"+vchan.getName()+"**")
                         + "\nDJ 権限: "+(role==null ? "None" : "**"+role.getName()+"**")
-                        + "\nリピートモード) ? "On" : "Off")+"**"
+                        + "\nリピートモード: **"+(s.getRepeatMode() ? "On" : "Off")+"**"
                         + "\nデフォルトプレイリスト: "+(s.getDefaultPlaylist()==null ? "None" : "**"+s.getDefaultPlaylist()+"**")
                         )
                 .setFooter(event.getJDA().getGuilds().size()+" サーバー | "
