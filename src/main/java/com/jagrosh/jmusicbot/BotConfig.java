@@ -27,15 +27,6 @@ import java.nio.file.Paths;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 
-//<<<<<<< HEAD
-//=======
-/**
- * 
- * 
- * @author John Grosh (jagrosh)
- */
-//>>>>>>> upstream/master
-public class BotConfig
 {
     private final Prompt prompt;
     private final static String CONTEXT = "Config";

@@ -56,15 +56,15 @@ public class JMusicBot
         Logger log = LoggerFactory.getLogger("Startup");
         
         // create prompt to handle startup
-        Prompt prompt = new Prompt("JMusicBot", "Switching to nogui mode. You can manually start in nogui mode by including the -Dnogui=true flag.", 
+        Prompt prompt = new Prompt("JMusicBot", "noguiモードに切り替えます。  -Dnogui = trueフラグを含めると、手動でnoguiモードで起動できます。", 
                 "true".equalsIgnoreCase(System.getProperty("nogui", "false")));
         
         // check deprecated nogui mode (new way of setting it is -Dnogui=true)
         for(String arg: args)
             if("-nogui".equalsIgnoreCase(arg))
             {
-                prompt.alert(Prompt.Level.WARNING, "GUI", "The -nogui flag has been deprecated. "
-                        + "Please use the -Dnogui=true flag before the name of the jar. Example: java -jar -Dnogui=true JMusicBot.jar");
+                prompt.alert(Prompt.Level.WARNING, "GUI", "-noguiフラグは廃止予定です。 "
+                        + "jarの名前の前に-Dnogui = trueフラグを使用してください。 例：java -jar -Dnogui = true JMusicBot.jar");
                 break;
             }
         
@@ -83,7 +83,7 @@ public class JMusicBot
         Bot bot = new Bot(waiter, config, settings);
         
         AboutCommand aboutCommand = new AboutCommand(Color.BLUE.brighter(),
-                                "a music bot that is [easy to host yourself!](https://github.com/Cosgy-Dev/MusicBot-JP-java) (v"+version+")",
+                                "[ホストするのは簡単](https://github.com/Cosgy-Dev/MusicBot-JP-java)であるミュージックボット(v"+version+")",
                                 new String[]{"High-quality music playback", "FairQueue™ Technology", "Easy to host yourself"},
                                 RECOMMENDED_PERMS);
         aboutCommand.setIsAuthor(false);
@@ -160,13 +160,13 @@ public class JMusicBot
             } 
             catch(Exception e) 
             {
-                log.error("Could not start GUI. If you are "
-                        + "running on a server or in a location where you cannot display a "
-                        + "window, please run in nogui mode using the -Dnogui=true flag.");
+                log.error("GUIを起動できませんでした。あなたがいる場合 "
+                         + "サーバー上、または表示できない場所で実行されている"
+                         + "ウィンドウ、-Dnogui = trueフラグを使用してnoguiモードで実行してください。");
             }
         }
         
-        log.info("Loaded config from "+config.getConfigLocation());
+        log.info(config.getConfigLocation()+"からロードされた設定");
         
         // attempt to log in and start
         try
@@ -183,15 +183,15 @@ public class JMusicBot
         }
         catch (LoginException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nPlease make sure you are "
-                    + "editing the correct config.txt file, and that you have used the "
-                    + "correct token (not the 'secret'!)\nConfig Location: " + config.getConfigLocation());
+            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nあなたがいることを確認してください」
+                     + "正しいconfig.txtファイルを編集し、あなたが使ったことがある"
+                     + "正しいトークン('secret'ではありません!)\n設定場所：" + config.getConfigLocation());
             System.exit(1);
         }
         catch(IllegalArgumentException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, "JMusicBot", "Some aspect of the configuration is "
-                    + "invalid: " + ex + "\nConfig Location: " + config.getConfigLocation());
+            prompt.alert(Prompt.Level.ERROR, "JMusicBot", "設定のいくつかの側面は "
+                     + "無効: " + ex + "\n 設定場所:" + config.getConfigLocation());
             System.exit(1);
         }
     }

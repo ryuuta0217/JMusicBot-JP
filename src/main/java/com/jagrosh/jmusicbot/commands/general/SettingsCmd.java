@@ -47,19 +47,19 @@ public class SettingsCmd extends Command
         MessageBuilder builder = new MessageBuilder()
                 .append(EMOJI + " **")
                 .append(event.getSelfUser().getName())
-                .append("** settings:");
+                .append("** 設定:");
         TextChannel tchan = s.getTextChannel(event.getGuild());
         VoiceChannel vchan = s.getVoiceChannel(event.getGuild());
         Role role = s.getRole(event.getGuild());
         EmbedBuilder ebuilder = new EmbedBuilder()
                 .setColor(event.getSelfMember().getColor())
-                .setDescription("Text Channel: "+(tchan==null ? "Any" : "**#"+tchan.getName()+"**")
-                        + "\nVoice Channel: "+(vchan==null ? "Any" : "**"+vchan.getName()+"**")
-                        + "\nDJ Role: "+(role==null ? "None" : "**"+role.getName()+"**")
-                        + "\nRepeat Mode: **"+(s.getRepeatMode() ? "On" : "Off")+"**"
-                        + "\nDefault Playlist: "+(s.getDefaultPlaylist()==null ? "None" : "**"+s.getDefaultPlaylist()+"**")
+                .setDescription("テキストチャンネル: "+(tchan==null ? "Any" : "**#"+tchan.getName()+"**")
+                        + "\nボイスチャンネル: "+(vchan==null ? "Any" : "**"+vchan.getName()+"**")
+                        + "\nDJ 権限: "+(role==null ? "None" : "**"+role.getName()+"**")
+                        + "\nリピートモード) ? "On" : "Off")+"**"
+                        + "\nデフォルトプレイリスト: "+(s.getDefaultPlaylist()==null ? "None" : "**"+s.getDefaultPlaylist()+"**")
                         )
-                .setFooter(event.getJDA().getGuilds().size()+" servers | "
+                .setFooter(event.getJDA().getGuilds().size()+" サーバー | "
                         +event.getJDA().getGuilds().stream().filter(g -> g.getSelfMember().getVoiceState().inVoiceChannel()).count()
                         +" オーディオ接続", null);
         event.getChannel().sendMessage(builder.setEmbed(ebuilder.build()).build()).queue();
