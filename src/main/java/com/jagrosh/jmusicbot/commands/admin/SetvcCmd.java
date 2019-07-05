@@ -33,7 +33,7 @@ public class SetvcCmd extends AdminCommand
     {
         this.name = "setvc";
         this.help = "音楽を再生するための音声チャンネルを設定します。";
-        this.arguments = "<channel|NONE>";
+        this.arguments = "<チャンネル名|NONE>";
     }
     
     @Override

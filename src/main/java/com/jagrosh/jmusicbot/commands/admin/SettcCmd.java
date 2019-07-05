@@ -33,7 +33,7 @@ public class SettcCmd extends AdminCommand
     {
         this.name = "settc";
         this.help = "ボットのコマンドチャンネルを設定します";
-        this.arguments = "<channel|NONE>";
+        this.arguments = "<チャンネル名|NONE>";
     }
     
     @Override

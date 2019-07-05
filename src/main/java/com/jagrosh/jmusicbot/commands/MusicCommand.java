@@ -53,13 +53,13 @@ public abstract class MusicCommand extends Command
             {
                 event.getMessage().delete().queue();
             } catch(PermissionException ignore){}
-            event.replyInDm(event.getClient().getError()+" You can only use that command in "+tchannel.getAsMention()+"!");
+            event.replyInDm(event.getClient().getError()+" そのコマンドを使用できるのは"+tchannel.getAsMention()+"です!");
             return;
         }
         bot.getPlayerManager().setUpHandler(event.getGuild()); // no point constantly checking for this later
         if(bePlaying && !((AudioHandler)event.getGuild().getAudioManager().getSendingHandler()).isMusicPlaying(event.getJDA()))
         {
-            event.reply(event.getClient().getError()+" There must be music playing to use that!");
+            event.reply(event.getClient().getError()+"それを使うには音楽が流れていないといけません！");
             return;
         }
         if(beListening)
@@ -70,7 +70,7 @@ public abstract class MusicCommand extends Command
             GuildVoiceState userState = event.getMember().getVoiceState();
             if(!userState.inVoiceChannel() || userState.isDeafened() || (current!=null && !userState.getChannel().equals(current)))
             {
-                event.replyError("You must be listening in "+(current==null ? "a voice channel" : "**"+current.getName()+"**")+" to use that!");
+                event.replyError("これを使うには "+(current==null ? "音声チャンネル" : "**"+current.getName()+"**")+" で聴いている必要があります。");
                 return;
             }
             if(!event.getGuild().getSelfMember().getVoiceState().inVoiceChannel())
@@ -81,7 +81,7 @@ public abstract class MusicCommand extends Command
                 }
                 catch(PermissionException ex) 
                 {
-                    event.reply(event.getClient().getError()+" I am unable to connect to **"+userState.getChannel().getName()+"**!");
+                    event.reply(event.getClient().getError()+"**"+userState.getChannel().getName()+"**に接続できません!");
                     return;
                 }
             }

@@ -32,8 +32,8 @@ public class SetdjCmd extends AdminCommand
     public SetdjCmd()
     {
         this.name = "setdj";
-        this.help = "設定されたボットコマンドを使用できる役割DJを設定します。";
-        this.arguments = "<rolename|NONE>";
+        this.help = "ボットコマンドを使用できる役割DJを設定します。";
+        this.arguments = "<役割名|NONE>";
     }
     
     @Override

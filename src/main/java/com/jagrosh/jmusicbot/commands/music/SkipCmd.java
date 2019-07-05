@@ -31,7 +31,7 @@ public class SkipCmd extends MusicCommand
     {
         super(bot);
         this.name = "skip";
-        this.help = "votes to skip the current song";
+        this.help = "現在の曲をスキップする投票";
         this.aliases = new String[]{"voteskip"};
         this.beListening = true;
         this.bePlaying = true;
@@ -43,7 +43,7 @@ public class SkipCmd extends MusicCommand
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         if(event.getAuthor().getIdLong()==handler.getRequester())
         {
-            event.reply(event.getClient().getSuccess()+" スキップしました **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**");
+            event.reply(event.getClient().getSuccess()+"**"+handler.getPlayer().getPlayingTrack().getInfo().title+"** をスキップしました。");
             handler.getPlayer().stopTrack();
         }
         else
@@ -65,8 +65,7 @@ public class SkipCmd extends MusicCommand
             if(skippers>=required)
             {
                 User u = event.getJDA().getUserById(handler.getRequester());
-                msg+="\n"+event.getClient().getSuccess()+" スキップしました **"+handler.getPlayer().getPlayingTrack().getInfo().title
-                    +"**"+(handler.getRequester()==0 ? "" : " (リクエストした曲 "+(u==null ? "投票した人:" : "**"+u.getName()+"**")+")");
+                msg+="\n"+event.getClient().getSuccess()+"**"+handler.getPlayer().getPlayingTrack().getInfo().title+"**をスキップしました 。"+(handler.getRequester()==0 ? "" : " (リクエストした曲 "+(u==null ? "投票した人:" : "**"+u.getName()+"**")+")");
                 handler.getPlayer().stopTrack();
             }
             event.reply(msg);

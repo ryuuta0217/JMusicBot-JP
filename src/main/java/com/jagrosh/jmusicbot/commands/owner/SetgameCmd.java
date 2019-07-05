@@ -28,7 +28,7 @@ public class SetgameCmd extends OwnerCommand
     public SetgameCmd()
     {
         this.name = "setgame";
-        this.help = "sets the game the bot is playing";
+        this.help = "ボットがプレイしているゲームを設定します";
         this.arguments = "[action] [game]";
         this.guildOnly = false;
         this.children = new OwnerCommand[]{
@@ -46,7 +46,7 @@ public class SetgameCmd extends OwnerCommand
         {
             event.getJDA().getPresence().setGame(title.isEmpty() ? null : Game.playing(title));
             event.reply(event.getClient().getSuccess()+" **"+event.getSelfUser().getName()
-                    +"** is "+(title.isEmpty() ? "no longer playing anything." : "now playing `"+title+"`"));
+                    +"** は "+(title.isEmpty() ? "何もなくなりました。" : "現在、`"+title+"`を再生中です。"));
         }
         catch(Exception e)
         {
@@ -60,7 +60,7 @@ public class SetgameCmd extends OwnerCommand
         {
             this.name = "stream";
             this.aliases = new String[]{"twitch","streaming"};
-            this.help = "sets the game the bot is playing to a stream";
+            this.help = "ボットがプレイしているゲームをストリームに設定します。";
             this.arguments = "<username> <game>";
             this.guildOnly = false;
         }
@@ -71,18 +71,18 @@ public class SetgameCmd extends OwnerCommand
             String[] parts = event.getArgs().split("\\s+", 2);
             if(parts.length<2)
             {
-                event.replyError("Please include a twitch username and the name of the game to 'stream'");
+                event.replyError("ユーザー名と'ストリーミングするゲーム'の名前を入力してください");
                 return;
             }
             try
             {
                 event.getJDA().getPresence().setGame(Game.streaming(parts[1], "https://twitch.tv/"+parts[0]));
                 event.replySuccess("**"+event.getSelfUser().getName()
-                        +"** is now streaming `"+parts[1]+"`");
+                        +"** は、現在`"+parts[1]+"`をストリーム中です。");
             }
             catch(Exception e)
             {
-                event.reply(event.getClient().getError()+" The game could not be set!");
+                event.reply(event.getClient().getError()+" ゲームを設定できませんでした。");
             }
         }
     }
@@ -93,7 +93,7 @@ public class SetgameCmd extends OwnerCommand
         {
             this.name = "listen";
             this.aliases = new String[]{"listening"};
-            this.help = "sets the game the bot is listening to";
+            this.help = "ボットが聞いているゲームを設定します";
             this.arguments = "<title>";
             this.guildOnly = false;
         }
@@ -103,14 +103,14 @@ public class SetgameCmd extends OwnerCommand
         {
             if(event.getArgs().isEmpty())
             {
-                event.replyError("Please include a title to listen to!");
+                event.replyError("聴くためのタイトルを含めてください！");
                 return;
             }
             String title = event.getArgs().toLowerCase().startsWith("to") ? event.getArgs().substring(2).trim() : event.getArgs();
             try
             {
                 event.getJDA().getPresence().setGame(Game.listening(title));
-                event.replySuccess("**"+event.getSelfUser().getName()+"** is now listening to `"+title+"`");
+                event.replySuccess("**"+event.getSelfUser().getName()+"** は、現在`"+title+"`を聴いています。");
             } catch(Exception e) {
                 event.reply(event.getClient().getError()+" The game could not be set!");
             }
@@ -123,7 +123,7 @@ public class SetgameCmd extends OwnerCommand
         {
             this.name = "watch";
             this.aliases = new String[]{"watching"};
-            this.help = "sets the game the bot is watching";
+            this.help = "ボットが見ているゲームを設定します";
             this.arguments = "<title>";
             this.guildOnly = false;
         }
@@ -133,16 +133,16 @@ public class SetgameCmd extends OwnerCommand
         {
             if(event.getArgs().isEmpty())
             {
-                event.replyError("Please include a title to watch!");
+                event.replyError("見ているタイトルを入力してください。");
                 return;
             }
             String title = event.getArgs();
             try
             {
                 event.getJDA().getPresence().setGame(Game.watching(title));
-                event.replySuccess("**"+event.getSelfUser().getName()+"** is now watching `"+title+"`");
+                event.replySuccess("**"+event.getSelfUser().getName()+"** は、現在`"+title+"`を見ています。");
             } catch(Exception e) {
-                event.reply(event.getClient().getError()+" The game could not be set!");
+                event.reply(event.getClient().getError()+" ゲームを設定できませんでした。");
             }
         }
     }
