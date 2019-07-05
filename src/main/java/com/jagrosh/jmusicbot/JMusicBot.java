@@ -56,7 +56,7 @@ public class JMusicBot
         Logger log = LoggerFactory.getLogger("Startup");
         
         // create prompt to handle startup
-        Prompt prompt = new Prompt("JMusicBot", "noguiモードに切り替えます。  -Dnogui = trueフラグを含めると、手動でnoguiモードで起動できます。", 
+        Prompt prompt = new Prompt("JMusicBot", "noguiモードに切り替えます。  -Dnogui=trueフラグを含めると、手動でnoguiモードで起動できます。", 
                 "true".equalsIgnoreCase(System.getProperty("nogui", "false")));
         
         // check deprecated nogui mode (new way of setting it is -Dnogui=true)
@@ -64,7 +64,7 @@ public class JMusicBot
             if("-nogui".equalsIgnoreCase(arg))
             {
                 prompt.alert(Prompt.Level.WARNING, "GUI", "-noguiフラグは廃止予定です。 "
-                        + "jarの名前の前に-Dnogui = trueフラグを使用してください。 例：java -jar -Dnogui = true JMusicBot.jar");
+                        + "jarの名前の前に-Dnogui = trueフラグを使用してください。 例：java -jar -Dnogui=true JMusicBot.jar");
                 break;
             }
         
@@ -162,7 +162,7 @@ public class JMusicBot
             {
                 log.error("GUIを起動できませんでした。あなたがいる場合 "
                          + "サーバー上、または表示できない場所で実行されている"
-                         + "ウィンドウ、-Dnogui = trueフラグを使用してnoguiモードで実行してください。");
+                         + "ウィンドウ、-Dnogui=trueフラグを使用してnoguiモードで実行してください。");
             }
         }
         
@@ -183,15 +183,15 @@ public class JMusicBot
         }
         catch (LoginException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nあなたがいることを確認してください」
+            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nあなたがいることを確認してください"
                      + "正しいconfig.txtファイルを編集し、あなたが使ったことがある"
-                     + "正しいトークン(`secret`ではありません!)\n設定場所：" + config.getConfigLocation());
+                     + "正しいトークン(`secret`ではありません!)\n設定場所："+config.getConfigLocation());
             System.exit(1);
         }
         catch(IllegalArgumentException ex)
         {
             prompt.alert(Prompt.Level.ERROR, "JMusicBot", "設定のいくつかの側面は "
-                     + "無効: " + ex + "\n 設定場所:" + config.getConfigLocation());
+                     + "無効: " + ex + "\n設定場所:"+config.getConfigLocation());
             System.exit(1);
         }
     }
