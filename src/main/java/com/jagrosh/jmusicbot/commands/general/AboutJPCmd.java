@@ -21,14 +21,14 @@ public class AboutJPCmd extends Command {
         event.getTextChannel().sendMessage(new EmbedBuilder()
         .setDescription("**MusicBot-JP**\n" +
         "`2019/7/06更新`\n\n" +
-        "**開発**\n" +
+        "**日本語化**\n" +
         "`CosgyDev`\n\n" +
         "**Botバージョン**\n" +
         "`version 0.10-BETA`\n\n" +
         "**ライセンス**\n" +
-        "`GNU General Public License v3.0`\n\n" +
+        "`Apache License 2.0`\n\n" +
         "**著作権**\n" +
-        "`Copyright (c)2019 Cosgy Dev`")
+        "`Copyright 2017 John Grosh`")
         .setColor(Color.CYAN)
         .build()).queue();
 
