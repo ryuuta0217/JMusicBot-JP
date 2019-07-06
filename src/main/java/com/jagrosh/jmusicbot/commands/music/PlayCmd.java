@@ -94,7 +94,7 @@ public class PlayCmd extends MusicCommand
         String args = event.getArgs().startsWith("<") && event.getArgs().endsWith(">") 
                 ? event.getArgs().substring(1,event.getArgs().length()-1) 
                 : event.getArgs().isEmpty() ? event.getMessage().getAttachments().get(0).getUrl() : event.getArgs();
-        event.reply(":calling: ロード中... `["+args+"]`", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m,event,false)));
+        event.reply(loadingEmoji+"ロード中... `["+args+"]`", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m,event,false)));
     }
     
     private class ResultHandler implements AudioLoadResultHandler
@@ -120,21 +120,21 @@ public class PlayCmd extends MusicCommand
             }
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
-            String addMsg = FormatUtil.filter(event.getClient().getSuccess()+" Added **"+track.getInfo().title
-                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"to begin playing":" to the queue at position "+pos));
+            String addMsg = FormatUtil.filter(event.getClient().getSuccess()+" **"+track.getInfo().title
+                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"を追加しました。":" をキューに追加しました。 "+pos));
             if(playlist==null || !event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION))
                 m.editMessage(addMsg).queue();
             else
             {
                 new ButtonMenu.Builder()
-                        .setText(addMsg+"\n"+event.getClient().getWarning()+" このトラックの再生リストは **"+playlist.getTracks().size()+"** トラックが付いています。選択する "+LOAD+" プレイリストをロードします。添付しました。選択する")
+                        .setText(addMsg+"\n"+event.getClient().getWarning()+" このトラックの再生リストには **"+playlist.getTracks().size()+"** トラックあります。トラックを読み込むには "+LOAD+" を選択して下さい。")
                         .setChoices(LOAD, CANCEL)
                         .setEventWaiter(bot.getWaiter())
                         .setTimeout(30, TimeUnit.SECONDS)
                         .setAction(re ->
                         {
                             if(re.getName().equals(LOAD))
-                                m.editMessage(addMsg+"\n"+event.getClient().getSuccess()+" ロード済み **"+loadPlaylist(playlist, track)+"** additional tracks!").queue();
+                                m.editMessage(addMsg+"\n"+event.getClient().getSuccess()+"**"+loadPlaylist(playlist, track)+"** トラックを読み込み、追加しました!").queue();
                             else
                                 m.editMessage(addMsg).queue();
                         }).setFinalAction(m ->
@@ -182,8 +182,8 @@ public class PlayCmd extends MusicCommand
                 int count = loadPlaylist(playlist, null);
                 if(count==0)
                 {
-                    m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" この再生リスト内のすべてのエントリーは "+(playlist.getName()==null ? "" : "(**"+playlist.getName()
-                            +"**) ")+"許容最大長より長い (`"+bot.getConfig().getMaxTime()+"`)")).queue();
+                    m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" この再生リスト内"+(playlist.getName()==null ? "" : "(**"+playlist.getName()
+                            +"**) ")+"は、許可された大長より長いです。(`"+bot.getConfig().getMaxTime()+"`)")).queue();
                 }
                 else
                 {
