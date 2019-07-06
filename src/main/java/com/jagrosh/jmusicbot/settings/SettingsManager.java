@@ -49,7 +49,7 @@ public class SettingsManager implements GuildSettingsManager
                         o.has("repeat")          ? o.getBoolean("repeat")         : false));
             });
         } catch(IOException | JSONException e) {
-            LoggerFactory.getLogger("Settings").warn("Failed to load server settings (this is normal if no settings have been set yet): "+e);
+            LoggerFactory.getLogger("Settings").warn("サーバー設定を読み込めませんでした(まだ設定がない場合は正常です): "+e);
         }
     }
     

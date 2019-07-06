@@ -252,7 +252,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
             String title = track.getInfo().title;
             if(title==null || title.equals("不明なタイトル"))
                 title = track.getInfo().uri;
-            return "**"+title+"** ["+(userid==0 ? "autoplay" : "<@"+userid+">")+"]"
+            return "**"+title+"** ["+(userid==0 ? "オートプレイ" : "<@"+userid+">")+"]"
                     + "\n" + (audioPlayer.isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI) + " "
                     + "[" + FormatUtil.formatTime(track.getDuration()) + "] "
                     + FormatUtil.volumeIcon(audioPlayer.getVolume());

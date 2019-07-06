@@ -45,7 +45,7 @@ public class Prompt
     public Prompt(String title, String noguiMessage, boolean nogui)
     {
         this.title = title;
-        this.noguiMessage = noguiMessage == null ? "noguiモードに切り替えます。 -Nogui = trueフラグを含めることで、手動でnon guiモードで起動できます。" : noguiMessage;
+        this.noguiMessage = noguiMessage == null ? "noguiモードに切り替えます。 -nogui=trueフラグを含めることで、手動でnoguiモードで起動できます。" : noguiMessage;
         this.nogui = nogui;
     }
     
