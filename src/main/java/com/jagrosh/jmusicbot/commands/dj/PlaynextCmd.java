@@ -77,7 +77,7 @@ public class PlaynextCmd extends DJCommand
         {
             if(bot.getConfig().isTooLong(track))
             {
-                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+"(**"+track.getInfo().title+"**) このトラックは許容最大長よりも長いです: `"
+                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+"(**"+track.getInfo().title+"**) このトラックは許可されている最大長よりも長いです: `"
                         +FormatUtil.formatTime(track.getDuration())+"` > `"+FormatUtil.formatTime(bot.getConfig().getMaxSeconds()*1000)+"`")).queue();
                 return;
             }
