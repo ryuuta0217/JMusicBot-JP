@@ -67,7 +67,7 @@ public class SearchCmd extends MusicCommand
             event.replyError("クエリを含めてください。");
             return;
         }
-        event.reply(searchingEmoji+" 検索中... `["+event.getArgs()+"]`",
+        event.reply(searchingEmoji+"`["+event.getArgs()+"]`を検索中... ",
                 m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), searchPrefix + event.getArgs(), new ResultHandler(m,event)));
     }
 
@@ -93,8 +93,8 @@ public class SearchCmd extends MusicCommand
             }
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
-            m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+" 追加しました **"+track.getInfo().title
-                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
+            m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+"**"+track.getInfo().title
+                    +"** を追加しました(`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
                     : "このポジションのキューへ  "+pos))).queue();
         }
 
@@ -115,8 +115,8 @@ public class SearchCmd extends MusicCommand
                         }
                         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
                         int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
-                        event.replySuccess("追加しました **"+track.getInfo().title
-                                +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
+                        event.replySuccess("**"+track.getInfo().title
+                                +"**を追加しました (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
                                 : " このキューのポジションへ "+pos));
                     })
                     .setCancel((msg) -> {})
