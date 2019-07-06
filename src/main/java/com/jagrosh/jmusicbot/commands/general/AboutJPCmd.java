@@ -24,8 +24,8 @@ public class AboutJPCmd extends Command {
         .setDescription("2019/07/06更新")
         .addField("ボットバージョン", "0.1.0-BETA", false)
         .addField("ライセンス", "Apache License 2.0", false)
-        .addField("著作権","Copyright 2017 John Grosh")
-        .addField("日本語化","Cosgy Dev")
+        .addField("著作権","Copyright 2017 John Grosh", false)
+        .addField("日本語化","Cosgy Dev", false)
         .setAuthor("JMusicBot JP", null, "https://avatars1.githubusercontent.com/u/42630152?s=400&u=3bc25d4a1d13b627f715829ab66ee82cc48a93f9&v=4")
         .setFooter("JMusicBot JP", "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png")
 
