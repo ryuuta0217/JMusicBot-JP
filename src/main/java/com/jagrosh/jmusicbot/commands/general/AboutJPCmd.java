@@ -11,7 +11,7 @@ public class AboutJPCmd extends Command {
     public AboutJPCmd() {
 
         this.name = "about-jp";
-        this.help = "CosgyDevsのスタッフ一覧を表示します";
+        this.help = "CosgyDevのスタッフ一覧を表示します";
         this.guildOnly = true;
     }
 
