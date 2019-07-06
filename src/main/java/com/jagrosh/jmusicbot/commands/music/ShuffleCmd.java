@@ -30,7 +30,7 @@ public class ShuffleCmd extends MusicCommand
     {
         super(bot);
         this.name = "shuffle";
-        this.help = "shuffles songs you have added";
+        this.help = "追加した曲をシャッフル";
         this.beListening = true;
         this.bePlaying = true;
     }
@@ -46,7 +46,7 @@ public class ShuffleCmd extends MusicCommand
                 event.replyError("シャッフルするキューに音楽がありません!");
                 break;
             case 1:
-                event.replyWarning("このキューには1曲歯科ありません!");
+                event.replyWarning("このキューには1曲しかありません!");
                 break;
             default:
                 event.replySuccess(""+s+"シャッフルしました。");

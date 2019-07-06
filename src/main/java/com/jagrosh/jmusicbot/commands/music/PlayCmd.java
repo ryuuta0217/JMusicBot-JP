@@ -239,7 +239,7 @@ public class PlayCmd extends MusicCommand
             Playlist playlist = bot.getPlaylistLoader().getPlaylist(event.getArgs());
             if(playlist==null)
             {
-                event.replyError("私は見つけられませんでした `"+event.getArgs()+".Playlistsフォルダのtxt `");
+                event.replyError("`"+event.getArgs()+".txt `を見つけられませんでした ");
                 return;
             }
             event.getChannel().sendMessage(":calling: 再生リストを読み込んでいます **"+event.getArgs()+"**... ("+playlist.getItems().size()+" items)").queue(m ->
@@ -248,9 +248,9 @@ public class PlayCmd extends MusicCommand
                 playlist.loadTracks(bot.getPlayerManager(), (at)->handler.addTrack(new QueuedTrack(at, event.getAuthor())), () -> {
                     StringBuilder builder = new StringBuilder(playlist.getTracks().isEmpty() 
                             ? event.getClient().getWarning()+" トラックがロードされていません。" 
-                            : event.getClient().getSuccess()+" ロード済み **"+playlist.getTracks().size()+"** トラック");
+                            : event.getClient().getSuccess()+"**"+playlist.getTracks().size()+"**トラックをロードしました。");
                     if(!playlist.getErrors().isEmpty())
-                        builder.append("\n次のトラックを読み込めませんでした:");
+                        builder.append("\n次のトラックをロードできませんでした:");
                     playlist.getErrors().forEach(err -> builder.append("\n`[").append(err.getIndex()+1).append("]` **").append(err.getItem()).append("**: ").append(err.getReason()));
                     String str = builder.toString();
                     if(str.length()>2000)
