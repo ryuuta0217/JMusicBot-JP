@@ -27,7 +27,7 @@ public class AboutJPCmd extends Command {
         .addField("著作権","Copyright 2017 John Grosh", false)
         .addField("日本語化","Cosgy Dev", false)
         .setAuthor("JMusicBot JP", null, "https://avatars1.githubusercontent.com/u/42630152?s=400&u=3bc25d4a1d13b627f715829ab66ee82cc48a93f9&v=4")
-        .setFooter("JMusicBot JP", "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png")
+        .setFooter("Cosgy-Dev/JMusicBot-JP", "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png")
 
 /*
         .setDescription("**MusicBot-JP**\n" +
