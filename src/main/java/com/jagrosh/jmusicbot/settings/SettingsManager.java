@@ -98,7 +98,7 @@ public class SettingsManager implements GuildSettingsManager
         try {
             Files.write(Paths.get("serversettings.json"), obj.toString(4).getBytes());
         } catch(IOException ex){
-            LoggerFactory.getLogger("Settings").warn("Failed to write to file: "+ex);
+            LoggerFactory.getLogger("Settings").warn("ファイルへの書き込みに失敗しました： "+ex);
         }
     }
 }

@@ -48,7 +48,7 @@ public class Listener extends ListenerAdapter
         if(event.getJDA().getGuilds().isEmpty())
         {
             Logger log = LoggerFactory.getLogger("MusicBot");
-            log.warn("This bot is not on any guilds! Use the following link to add the bot to your guilds!");
+            log.warn("このボットはグループに入っていません！ボットをあなたのグループに追加するには、以下のリンクを使用してください。");
             log.warn(event.getJDA().asBot().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
         }
         credit(event.getJDA());
