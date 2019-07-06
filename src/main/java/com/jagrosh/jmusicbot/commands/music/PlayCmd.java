@@ -79,7 +79,7 @@ public class PlayCmd extends MusicCommand
                 else
                 {
                     handler.getPlayer().setPaused(false);
-                    event.replySuccess("再開しました **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**.");
+                    event.replySuccess("**"+handler.getPlayer().getPlayingTrack().getInfo().title+"**の再生を再開しました。");
                 }
                 return;
             }
@@ -94,7 +94,7 @@ public class PlayCmd extends MusicCommand
         String args = event.getArgs().startsWith("<") && event.getArgs().endsWith(">") 
                 ? event.getArgs().substring(1,event.getArgs().length()-1) 
                 : event.getArgs().isEmpty() ? event.getMessage().getAttachments().get(0).getUrl() : event.getArgs();
-        event.reply(loadingEmoji+"ロード中... `["+args+"]`", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m,event,false)));
+        event.reply(loadingEmoji+"`["+args+"]`をロード中です…", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m,event,false)));
     }
     
     private class ResultHandler implements AudioLoadResultHandler
@@ -114,14 +114,14 @@ public class PlayCmd extends MusicCommand
         {
             if(bot.getConfig().isTooLong(track))
             {
-                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このトラック (**"+track.getInfo().title+"**) は許容最大長よりも長いです: `"
+                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このトラック (**"+track.getInfo().title+"**) は許可されている最大長よりも長いです: `"
                         +FormatUtil.formatTime(track.getDuration())+"` > `"+FormatUtil.formatTime(bot.getConfig().getMaxSeconds()*1000)+"`")).queue();
                 return;
             }
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
             String addMsg = FormatUtil.filter(event.getClient().getSuccess()+" **"+track.getInfo().title
-                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"を追加しました。":" をキューに追加しました。 "+pos));
+                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"を追加しました。":pos+"トラックをキューに追加しました。 "));
             if(playlist==null || !event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION))
                 m.editMessage(addMsg).queue();
             else
@@ -190,7 +190,7 @@ public class PlayCmd extends MusicCommand
                     m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+" 見つかった "
                             +(playlist.getName()==null?"プレイリスト":"プレイリスト **"+playlist.getName()+"**")+" と `"
                             + playlist.getTracks().size()+"` エントリーキューに追加しました。"
-                            + (count<playlist.getTracks().size() ? "\n"+event.getClient().getWarning()+" 許容最大長より長いトラック (`"
+                            + (count<playlist.getTracks().size() ? "\n"+event.getClient().getWarning()+" 許可された最大長より長いトラック (`"
                             + bot.getConfig().getMaxTime()+"`) 省略されています。" : ""))).queue();
                 }
             }

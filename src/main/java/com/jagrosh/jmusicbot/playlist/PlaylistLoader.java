@@ -170,7 +170,7 @@ public class PlaylistLoader
                         public void trackLoaded(AudioTrack at) 
                         {
                             if(config.isTooLong(at))
-                                errors.add(new PlaylistLoadError(index, items.get(index), "This track is longer than the allowed maximum"));
+                                errors.add(new PlaylistLoadError(index, items.get(index), "このトラックは許可されている最大長より長いです"));
                             else
                             {
                                 at.setUserData(0L);
