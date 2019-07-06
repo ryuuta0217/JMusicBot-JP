@@ -87,7 +87,7 @@ public class SearchCmd extends MusicCommand
         {
             if(bot.getConfig().isTooLong(track))
             {
-                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このトラック (**"+track.getInfo().title+"**) : `は許容最大長より長いです。"
+                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このトラック (**"+track.getInfo().title+"**) : `は許可されている最大長より長いです。"
                         +FormatUtil.formatTime(track.getDuration())+"` > `"+bot.getConfig().getMaxTime()+"`")).queue();
                 return;
             }
@@ -109,7 +109,7 @@ public class SearchCmd extends MusicCommand
                         AudioTrack track = playlist.getTracks().get(i-1);
                         if(bot.getConfig().isTooLong(track))
                         {
-                            event.replyWarning("このトラック (**"+track.getInfo().title+"**) : `は許容最大長よりも長いです。"
+                            event.replyWarning("このトラック (**"+track.getInfo().title+"**) : `は許可されている最大長よりも長いです。"
                                     +FormatUtil.formatTime(track.getDuration())+"` > `"+bot.getConfig().getMaxTime()+"`");
                             return;
                         }

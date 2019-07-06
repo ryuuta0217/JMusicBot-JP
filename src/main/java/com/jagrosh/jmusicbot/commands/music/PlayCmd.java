@@ -114,7 +114,7 @@ public class PlayCmd extends MusicCommand
         {
             if(bot.getConfig().isTooLong(track))
             {
-                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このトラック (**"+track.getInfo().title+"**) は許容最大長よりも長いです: `"
+                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このトラック (**"+track.getInfo().title+"**) は許可されている最大長よりも長いです: `"
                         +FormatUtil.formatTime(track.getDuration())+"` > `"+FormatUtil.formatTime(bot.getConfig().getMaxSeconds()*1000)+"`")).queue();
                 return;
             }
@@ -183,14 +183,14 @@ public class PlayCmd extends MusicCommand
                 if(count==0)
                 {
                     m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" この再生リスト内"+(playlist.getName()==null ? "" : "(**"+playlist.getName()
-                            +"**) ")+"は、許可された大長より長いです。(`"+bot.getConfig().getMaxTime()+"`)")).queue();
+                            +"**) ")+"は、許可された最大長より長いです。(`"+bot.getConfig().getMaxTime()+"`)")).queue();
                 }
                 else
                 {
                     m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+" 見つかった "
                             +(playlist.getName()==null?"プレイリスト":"プレイリスト **"+playlist.getName()+"**")+" と `"
                             + playlist.getTracks().size()+"` エントリーキューに追加しました。"
-                            + (count<playlist.getTracks().size() ? "\n"+event.getClient().getWarning()+" 許容最大長より長いトラック (`"
+                            + (count<playlist.getTracks().size() ? "\n"+event.getClient().getWarning()+" 許可されている最大長より長いトラック (`"
                             + bot.getConfig().getMaxTime()+"`) 省略されています。" : ""))).queue();
                 }
             }
