@@ -67,7 +67,7 @@ public class SearchCmd extends MusicCommand
             event.replyError("クエリを含めてください。");
             return;
         }
-        event.reply(searchingEmoji+" 検索中... `["+event.getArgs()+"]`",
+        event.reply(searchingEmoji+"`["+event.getArgs()+"]`を検索中... ",
                 m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), searchPrefix + event.getArgs(), new ResultHandler(m,event)));
     }
 
@@ -87,14 +87,14 @@ public class SearchCmd extends MusicCommand
         {
             if(bot.getConfig().isTooLong(track))
             {
-                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このトラック (**"+track.getInfo().title+"**) : `は許容最大長より長いです。"
+                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このトラック (**"+track.getInfo().title+"**) : `は許可されている最大長より長いです。"
                         +FormatUtil.formatTime(track.getDuration())+"` > `"+bot.getConfig().getMaxTime()+"`")).queue();
                 return;
             }
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
-            m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+" 追加しました **"+track.getInfo().title
-                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
+            m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+"**"+track.getInfo().title
+                    +"** を追加しました(`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
                     : "このポジションのキューへ  "+pos))).queue();
         }
 
@@ -109,14 +109,14 @@ public class SearchCmd extends MusicCommand
                         AudioTrack track = playlist.getTracks().get(i-1);
                         if(bot.getConfig().isTooLong(track))
                         {
-                            event.replyWarning("このトラック (**"+track.getInfo().title+"**) : `は許容最大長よりも長いです。"
+                            event.replyWarning("このトラック (**"+track.getInfo().title+"**) : `は許可されている最大長よりも長いです。"
                                     +FormatUtil.formatTime(track.getDuration())+"` > `"+bot.getConfig().getMaxTime()+"`");
                             return;
                         }
                         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
                         int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
-                        event.replySuccess("追加しました **"+track.getInfo().title
-                                +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
+                        event.replySuccess("**"+track.getInfo().title
+                                +"**を追加しました (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
                                 : " このキューのポジションへ "+pos));
                     })
                     .setCancel((msg) -> {})
