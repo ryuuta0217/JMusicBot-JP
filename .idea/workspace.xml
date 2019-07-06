@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80a79d00-f38c-43b3-9bb8-615e99622bdd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/commands/music/PlayCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/commands/music/PlayCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/commands/music/SearchCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/commands/music/SearchCmd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/entities/Prompt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/entities/Prompt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/playlist/PlaylistLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/playlist/PlaylistLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/SettingsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/SettingsManager.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -25,9 +23,54 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/Settings.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/SettingsManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="705">
+              <caret line="100" column="54" selection-start-line="100" selection-start-column="54" selection-end-line="100" selection-end-column="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/entities/Pair.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/entities/Prompt.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="123" column="63" selection-start-line="123" selection-start-column="63" selection-end-line="123" selection-end-column="63" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/gui/ConsolePanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/gui/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
+            <state relative-caret-position="48">
               <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
             </state>
           </provider>
@@ -45,71 +88,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/playlist/PlaylistLoader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3375">
-              <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/Settings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-978">
-              <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/SettingsManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-128">
-              <caret line="45" column="74" selection-start-line="45" selection-start-column="74" selection-end-line="45" selection-end-column="74" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/BotConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="864">
-              <caret line="186" column="18" selection-start-line="186" selection-start-column="18" selection-end-line="186" selection-end-column="18" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#7308#7309#0" expanded="true" />
-                <element signature="e#7337#7338#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/utils/FormatUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-434">
-              <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/utils/OtherUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1301">
-              <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-              <folding>
-                <element signature="e#0#5378#0" expanded="true" />
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/queue/Queueable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+            <state relative-caret-position="-9">
+              <caret line="239" column="104" selection-start-line="239" selection-start-column="104" selection-end-line="239" selection-end-column="104" />
             </state>
           </provider>
         </entry>
@@ -119,6 +99,15 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-859">
               <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/queue/Queueable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -165,6 +154,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/JMusicBot.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/commands/music/PlayCmd.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/commands/music/SearchCmd.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/entities/Prompt.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/playlist/PlaylistLoader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/SettingsManager.java" />
       </list>
     </option>
   </component>
@@ -422,7 +414,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1705757" />
@@ -748,76 +740,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/entities/Pair.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/entities/Prompt.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/gui/ConsolePanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/gui/GUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/gui/TextAreaOutputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1301">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/playlist/PlaylistLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3375">
-          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/queue/FairQueue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-859">
-          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/queue/Queueable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/Settings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-978">
-          <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/SettingsManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-128">
-          <caret line="45" column="74" selection-start-line="45" selection-start-column="74" selection-end-line="45" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/utils/FormatUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-434">
@@ -845,6 +767,76 @@
             <element signature="e#7308#7309#0" expanded="true" />
             <element signature="e#7337#7338#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/entities/Pair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/entities/Prompt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="123" column="63" selection-start-line="123" selection-start-column="63" selection-end-line="123" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/gui/ConsolePanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/gui/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/gui/TextAreaOutputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1301">
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/playlist/PlaylistLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-9">
+          <caret line="239" column="104" selection-start-line="239" selection-start-column="104" selection-end-line="239" selection-end-column="104" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/queue/FairQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-859">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/queue/Queueable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/Settings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jagrosh/jmusicbot/settings/SettingsManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="705">
+          <caret line="100" column="54" selection-start-line="100" selection-start-column="54" selection-end-line="100" selection-end-column="54" />
         </state>
       </provider>
     </entry>
