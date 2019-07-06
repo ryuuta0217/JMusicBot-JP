@@ -49,7 +49,7 @@ public class SetnameCmd extends OwnerCommand
         }
         catch(Exception e) 
         {
-            event.reply(event.getClient().getError()+" That name is not valid!");
+            event.reply(event.getClient().getError()+" その名前は使用できません。");
         }
     }
 }

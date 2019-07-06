@@ -30,7 +30,7 @@ public class PlaylistsCmd extends MusicCommand
     {
         super(bot);
         this.name = "playlists";
-        this.help = "shows the available playlists";
+        this.help = "利用可能なプレイリストを表示します";
         this.aliases = new String[]{"pls"};
         this.guildOnly = true;
         this.beListening = false;
@@ -49,7 +49,7 @@ public class PlaylistsCmd extends MusicCommand
         }
         List<String> list = bot.getPlaylistLoader().getPlaylistNames();
         if(list==null)
-            event.reply(event.getClient().getError()+" 利用可能な再生リストを読み込めませんでした。");
+            event.reply(event.getClient().getError()+" 利用可能なプレイリストを読み込めませんでした。");
         else if(list.isEmpty())
             event.reply(event.getClient().getWarning()+" プレイリストフォルダにプレイリストがありません。");
         else

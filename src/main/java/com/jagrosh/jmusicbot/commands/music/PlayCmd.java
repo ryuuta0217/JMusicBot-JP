@@ -127,7 +127,7 @@ public class PlayCmd extends MusicCommand
             else
             {
                 new ButtonMenu.Builder()
-                        .setText(addMsg+"\n"+event.getClient().getWarning()+" このトラックの再生リストには **"+playlist.getTracks().size()+"** トラックあります。トラックを読み込むには "+LOAD+" を選択して下さい。")
+                        .setText(addMsg+"\n"+event.getClient().getWarning()+" このトラックのプレイリストには **"+playlist.getTracks().size()+"** トラックあります。トラックを読み込むには "+LOAD+" を選択して下さい。")
                         .setChoices(LOAD, CANCEL)
                         .setEventWaiter(bot.getWaiter())
                         .setTimeout(30, TimeUnit.SECONDS)
@@ -182,7 +182,7 @@ public class PlayCmd extends MusicCommand
                 int count = loadPlaylist(playlist, null);
                 if(count==0)
                 {
-                    m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" この再生リスト内"+(playlist.getName()==null ? "" : "(**"+playlist.getName()
+                    m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このプレイリスト内"+(playlist.getName()==null ? "" : "(**"+playlist.getName()
                             +"**) ")+"は、許可された最大長より長いです。(`"+bot.getConfig().getMaxTime()+"`)")).queue();
                 }
                 else
@@ -242,7 +242,7 @@ public class PlayCmd extends MusicCommand
                 event.replyError("`"+event.getArgs()+".txt `を見つけられませんでした ");
                 return;
             }
-            event.getChannel().sendMessage(":calling: 再生リストを読み込んでいます **"+event.getArgs()+"**... ("+playlist.getItems().size()+" items)").queue(m ->
+            event.getChannel().sendMessage(":calling: プレイリスト**"+event.getArgs()+"**を読み込んでいます... ("+playlist.getItems().size()+" items)").queue(m ->
             {
                 AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
                 playlist.loadTracks(bot.getPlayerManager(), (at)->handler.addTrack(new QueuedTrack(at, event.getAuthor())), () -> {

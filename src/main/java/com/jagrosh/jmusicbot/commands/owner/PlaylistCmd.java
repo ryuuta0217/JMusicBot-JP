@@ -77,7 +77,7 @@ public class PlaylistCmd extends OwnerCommand
                 try
                 {
                     bot.getPlaylistLoader().createPlaylist(pname);
-                    event.reply(event.getClient().getSuccess()+" `"+pname+"`と言う再生リストを作成しました!");
+                    event.reply(event.getClient().getSuccess()+" `"+pname+"`という名前でプレイリストを作成しました!");
                 }
                 catch(IOException e)
                 {
@@ -164,7 +164,7 @@ public class PlaylistCmd extends OwnerCommand
                 }
                 catch(IOException e)
                 {
-                    event.reply(event.getClient().getError()+" 再生リストに追加できませんでした: "+e.getLocalizedMessage());
+                    event.reply(event.getClient().getError()+" プレイリストに追加できませんでした: "+e.getLocalizedMessage());
                 }
             }
         }
@@ -204,7 +204,7 @@ public class PlaylistCmd extends OwnerCommand
             }
             List<String> list = bot.getPlaylistLoader().getPlaylistNames();
             if(list==null)
-                event.reply(event.getClient().getError()+" 利用可能な再生リストを読み込めませんでした。");
+                event.reply(event.getClient().getError()+" 利用可能なプレイリストを読み込めませんでした。");
             else if(list.isEmpty())
                 event.reply(event.getClient().getWarning()+" プレイリストフォルダにプレイリストがありません。");
             else

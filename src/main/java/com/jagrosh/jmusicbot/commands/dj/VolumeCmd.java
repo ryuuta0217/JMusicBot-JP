@@ -61,7 +61,7 @@ public class VolumeCmd extends DJCommand
             {
                 handler.getPlayer().setVolume(nvolume);
                 settings.setVolume(nvolume);
-                event.reply(FormatUtil.volumeIcon(nvolume)+" 音量がから変更されました `"+volume+"` to `"+nvolume+"`");
+                event.reply(FormatUtil.volumeIcon(nvolume)+" 音量を`"+volume+"`から`"+nvolume+"`に変更しました。");
             }
         }
     }

@@ -52,11 +52,11 @@ public class SkiptoCmd extends DJCommand
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         if(index<1 || index>handler.getQueue().size())
         {
-            event.reply(event.getClient().getError()+" この位置は1からの間の有効な整数でないといけません。 "+handler.getQueue().size()+"!");
+            event.reply(event.getClient().getError()+" この位置は1から"+handler.getQueue().size()+"の間の有効な整数でないといけません!");
             return;
         }
         handler.getQueue().skip(index-1);
-        event.reply(event.getClient().getSuccess()+" **"+handler.getQueue().get(0).getTrack().getInfo().title+"にスキップ  **");
+        event.reply(event.getClient().getSuccess()+" **"+handler.getQueue().get(0).getTrack().getInfo().title+"にスキップしました。**");
         handler.getPlayer().stopTrack();
     }
 }

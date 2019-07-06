@@ -40,10 +40,10 @@ public class PauseCmd extends DJCommand
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         if(handler.getPlayer().isPaused())
         {
-            event.replyWarning("曲はすでに一時停止しています。 Use `"+event.getClient().getPrefix()+"play` 一時停止を解除する");
+            event.replyWarning("曲はすでに一時停止しています。 `"+event.getClient().getPrefix()+"play` を使用して一時停止を解除する事ができます。");
             return;
         }
         handler.getPlayer().setPaused(true);
-        event.replySuccess("一時停止 **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**. Type `"+event.getClient().getPrefix()+"play` 一時停止を解除する");
+        event.replySuccess("**"+handler.getPlayer().getPlayingTrack().getInfo().title+"**を一時停止にしました。 `"+event.getClient().getPrefix()+"play` を使用すると一時停止を解除できます。");
     }
 }
