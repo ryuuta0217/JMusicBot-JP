@@ -94,8 +94,8 @@ public class SearchCmd extends MusicCommand
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
             m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+"**"+track.getInfo().title
-                    +"** を追加しました(`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
-                    : "このポジションのキューへ  "+pos))).queue();
+                    +"**(`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "を追加しました。"
+                    : "を"+pos+"番目のキューに追加しました。"))).queue();
         }
 
         @Override
@@ -116,8 +116,8 @@ public class SearchCmd extends MusicCommand
                         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
                         int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
                         event.replySuccess("**"+track.getInfo().title
-                                +"**を追加しました (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "再生します"
-                                : " このキューのポジションへ "+pos));
+                                +"**(`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "を追加しました。"
+                                : " を"+pos+"番目のキューに追加しました。 "));
                     })
                     .setCancel((msg) -> {})
                     .setUsers(event.getAuthor())

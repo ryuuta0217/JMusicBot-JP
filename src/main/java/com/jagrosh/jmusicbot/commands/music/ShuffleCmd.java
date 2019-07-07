@@ -49,7 +49,7 @@ public class ShuffleCmd extends MusicCommand
                 event.replyWarning("このキューには1曲しかありません!");
                 break;
             default:
-                event.replySuccess(""+s+"シャッフルしました。");
+                event.replySuccess(""+s+"曲をシャッフルしました。");
                 break;
         }
     }

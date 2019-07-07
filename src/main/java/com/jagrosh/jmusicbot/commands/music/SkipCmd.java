@@ -31,7 +31,7 @@ public class SkipCmd extends MusicCommand
     {
         super(bot);
         this.name = "skip";
-        this.help = "現在の曲をスキップする投票";
+        this.help = "現在流れている曲をスキップするリクエストをする";
         this.aliases = new String[]{"voteskip"};
         this.beListening = true;
         this.bePlaying = true;
@@ -52,20 +52,20 @@ public class SkipCmd extends MusicCommand
                     .filter(m -> !m.getUser().isBot() && !m.getVoiceState().isDeafened()).count();
             String msg;
             if(handler.getVotes().contains(event.getAuthor().getId()))
-                msg = event.getClient().getWarning()+" この曲をスキップすることをすでに投票済みです。 `[";
+                msg = event.getClient().getWarning()+" 再生中の曲のスキップリクエス済みです。 `[";
             else
             {
-                msg = event.getClient().getSuccess()+"  あなたはこの曲をスキップすることを投票しました。`[";
+                msg = event.getClient().getSuccess()+"現在の曲をスキップリクエストしました。`[";
                 handler.getVotes().add(event.getAuthor().getId());
             }
             int skippers = (int)event.getSelfMember().getVoiceState().getChannel().getMembers().stream()
                     .filter(m -> handler.getVotes().contains(m.getUser().getId())).count();
             int required = (int)Math.ceil(listeners * .55);
-            msg+= skippers+" 必要な投票, "+required+"/"+listeners+" ]`";
+            msg+= "スキップリクエスト数は、"+skippers+"スキップするには、"+required+"/"+listeners+"必要です。]`";
             if(skippers>=required)
             {
                 User u = event.getJDA().getUserById(handler.getRequester());
-                msg+="\n"+event.getClient().getSuccess()+"**"+handler.getPlayer().getPlayingTrack().getInfo().title+"**をスキップしました 。"+(handler.getRequester()==0 ? "" : " (リクエストした曲 "+(u==null ? "投票した人:" : "**"+u.getName()+"**")+")");
+                msg+="\n"+event.getClient().getSuccess()+"**"+handler.getPlayer().getPlayingTrack().getInfo().title+"**をスキップしました 。"+(handler.getRequester()==0 ? "" : " ("+(u==null ? "この曲は誰かがリクエストしました。" : "この曲は**"+u.getName()+"**がリクエストしました。")+")");
                 handler.getPlayer().stopTrack();
             }
             event.reply(msg);

@@ -34,8 +34,8 @@ public class RemoveCmd extends MusicCommand
     {
         super(bot);
         this.name = "remove";
-        this.help = "removes a song from the queue";
-        this.arguments = "<position|ALL>";
+        this.help = "キューから曲を削除します";
+        this.arguments = "<キュー番号|ALL>";
         this.aliases = new String[]{"delete"};
         this.beListening = true;
         this.bePlaying = true;
@@ -56,7 +56,7 @@ public class RemoveCmd extends MusicCommand
             if(count==0)
                 event.replyWarning("キューに曲がありません。");
             else
-                event.replySuccess(count+" エントリを削除しました。");
+                event.replySuccess(count+"個のエントリを削除しました。");
             return;
         }
         int pos;
@@ -78,7 +78,7 @@ public class RemoveCmd extends MusicCommand
         if(qt.getIdentifier()==event.getAuthor().getIdLong())
         {
             handler.getQueue().remove(pos-1);
-            event.replySuccess("**"+qt.getTrack().getInfo().title+"** からキューを削除しました。");
+            event.replySuccess("**"+qt.getTrack().getInfo().title+"**をキューから削除しました。");
         }
         else if(isDJ)
         {
@@ -89,8 +89,8 @@ public class RemoveCmd extends MusicCommand
             } catch(Exception e) {
                 u = null;
             }
-            event.replySuccess("Removed **"+qt.getTrack().getInfo().title
-                    +"** from the queue (requested by "+(u==null ? "someone" : "**"+u.getName()+"**")+")");
+            event.replySuccess("**"+qt.getTrack().getInfo().title
+                    +"**をキューから削除しました。 (この曲は"+(u==null ? "誰かがリクエストしました。" : "**"+u.getName()+"がリクエストしました。**")+")");
         }
         else
         {

@@ -111,7 +111,7 @@ public class QueueCmd extends MusicCommand
             sb.append(ah.getPlayer().isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI).append(" **")
                     .append(ah.getPlayer().getPlayingTrack().getInfo().title).append("**\n");
         }
-        return FormatUtil.filter(sb.append(success).append(" 現在のキュー | ").append(songslength)
+        return FormatUtil.filter(sb.append(success).append(" 現在のキューリスト | ").append(songslength)
                 .append(" エントリー | `").append(FormatUtil.formatTime(total)).append("` ")
                 .append(repeatmode ? "| " + REPEAT : "").toString());
     }

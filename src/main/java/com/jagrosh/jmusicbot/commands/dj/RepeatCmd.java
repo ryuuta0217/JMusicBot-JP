@@ -59,7 +59,7 @@ public class RepeatCmd extends DJCommand
             return;
         }
         settings.setRepeatMode(value);
-        event.replySuccess("繰り返しモードは今 `"+(value ? "ON" : "OFF")+"です  `");
+        event.replySuccess("繰り返しモードは現在、 `"+(value ? "ON" : "OFF")+"です  `");
     }
 
     @Override
