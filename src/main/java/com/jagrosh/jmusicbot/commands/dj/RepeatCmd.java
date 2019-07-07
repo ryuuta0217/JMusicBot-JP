@@ -55,11 +55,11 @@ public class RepeatCmd extends DJCommand
         }
         else
         {
-            event.replyError("有効なオプションは `on` or `off` (または書かずに切り替える)");
+            event.replyError("有効なオプションは `on`か`off` (または書かずに切り替える)");
             return;
         }
         settings.setRepeatMode(value);
-        event.replySuccess("繰り返しモードは現在、 `"+(value ? "ON" : "OFF")+"です  `");
+        event.replySuccess("リピートモードを、 `"+(value ? "ON" : "OFF")+"に設定しました。`");
     }
 
     @Override
