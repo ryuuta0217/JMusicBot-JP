@@ -22,7 +22,7 @@ public class AboutJPCmd extends Command {
         .setTitle("JMusicBot JP", null)
         .setColor(Color.blue)
         .setDescription("2019/07/06更新")
-        .addField("ボットバージョン", "0.1.0-BETA", false)
+        .addField("ボットバージョン", "0.1.0", false)
         .addField("ライセンス", "Apache License 2.0", false)
         .addField("著作権","Copyright 2017 John Grosh", false)
         .addField("日本語化","Cosgy Dev", false)

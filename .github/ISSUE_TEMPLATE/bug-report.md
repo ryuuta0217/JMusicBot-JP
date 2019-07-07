@@ -1,30 +1,30 @@
 ---
-name: Bug Report
-about: Report a bug or unexpected behavior
-title: "[Bug Report] Title Here"
+name: バグレポート
+about: バグや予期しない動作を報告する
+title: "[バグレポート] はこちら"
 labels: ''
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+** バグを説明する**
+どのようなバグであるかの明確かつ簡潔な説明。
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Run with '...'
-2. Do a command '....'
-3. Some other step '....'
+** 再現する方法**
+問題の再現手順:
+1. '...' を実行
+2. '....'コマンドを実行する
+3. その他の方法 '....'
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+** 予想される動作**
+どのような事がが起こるが予想されていたのかについての明確で簡潔な説明。
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**スクリーンショット**
+該当する場合は、問題を説明するためにスクリーンショットを追加してください。
 
-**Version Info (please complete the following information):**
- - Operating System: [e.g. Windows 64bit]
- - JMusicBot Version: [e.g. 0.2.1]
+** バージョン情報(以下の情報を記入してください):**
+ - オペレーティングシステム(OS): [例 Windows 64bit]
+ - ボットバージョン: [例 0.1.0]
 
-**Additional context**
-Add any other context about the problem here.
+** 追加のコンテキスト**
+この問題に関する他の文脈をここに追加してください。

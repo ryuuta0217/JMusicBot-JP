@@ -1,14 +1,15 @@
-### This pull request...
-  - [ ] Fixes a bug
-  - [ ] Introduces a new feature
-  - [ ] Improves an existing feature
-  - [ ] Boosts code quality or performance
+### このプルリクエストは...
+  - [ ] バグを修正しました。
+  - [ ] 新機能を追加します
+  - [ ] 既存の機能を改善
+  - [ ] コードの品質やパフォーマンスを向上させる
+  - [ ] 誤訳などの修正をしました。
 
-### Description
-Replace this with a description of the pull request
+### 説明
+この部分にプルリクエストの説明を書いて下さい。
 
-### Purpose
-Replace this with a description of the problem or use-case
+### 目的
+ここに問題の説明または活用事例を書いてください。
 
-### Relevant Issue(s)
-This PR closes issue #...
+### 関連する問題
+ここには関連する問題を#[issuesの番目] で表示して下さい。
