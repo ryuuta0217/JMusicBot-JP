@@ -61,7 +61,7 @@ public class SkipCmd extends MusicCommand
             int skippers = (int)event.getSelfMember().getVoiceState().getChannel().getMembers().stream()
                     .filter(m -> handler.getVotes().contains(m.getUser().getId())).count();
             int required = (int)Math.ceil(listeners * .55);
-            msg+= "スキップリクエスト数は、"+skippers+"スキップするには、"+required+"/"+listeners+"必要です。]`";
+            msg+= "スキップリクエスト数は、"+skippers+"です。スキップするには、"+required+"/"+listeners+"必要です。]`";
             if(skippers>=required)
             {
                 User u = event.getJDA().getUserById(handler.getRequester());
