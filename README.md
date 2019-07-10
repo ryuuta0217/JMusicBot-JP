@@ -4,8 +4,6 @@
 [![Stars](https://img.shields.io/github/stars/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/stargazers)
 [![Release](https://img.shields.io/github/release/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest)
 [![License](https://img.shields.io/github/license/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/blob/master/LICENSE)<br>
-[![CircleCI](https://img.shields.io/circleci/project/github/Cosgy-Dev/MusicBot-JP-java/master.svg)](https://circleci.com/gh/Cosgy-Dev/MusicBot)
-[![Travis-CI](https://travis-ci.com/Cosgy-Dev/MusicBot-JP-java.svg?branch=master)](https://travis-ci.com/Cosgy-Dev/MusicBot)
 
 # JMusicBotJP
 Discordミュージックボットは、シンプルでかつ操作性の良いUIを使用しています。セットアップも起動も簡単です。
