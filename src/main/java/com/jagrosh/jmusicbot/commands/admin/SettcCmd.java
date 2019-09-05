@@ -60,7 +60,7 @@ public class SettcCmd extends AdminCommand
             else
             {
                 s.setTextChannel(list.get(0));
-                event.reply(event.getClient().getSuccess()+"音楽コマンドは現在しか使用できません <#"+list.get(0).getId()+">");
+                event.reply(event.getClient().getSuccess()+"音楽コマンドは現在<#"+list.get(0).getId()+">でしか使用できません");
             }
         }
     }

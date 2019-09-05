@@ -83,7 +83,7 @@ public class JMusicBot
         Bot bot = new Bot(waiter, config, settings);
         
         AboutCommand aboutCommand = new AboutCommand(Color.BLUE.brighter(),
-                                "[ホストするのは簡単](https://github.com/Cosgy-Dev/MusicBot-JP-java)であるミュージックボット(v"+version+")",
+                                "[ホストするのは簡単！](https://github.com/Cosgy-Dev/MusicBot-JP-java)MusicBot(v"+version+")",
                                 new String[]{"High-quality music playback", "FairQueue™ Technology", "Easy to host yourself"},
                                 RECOMMENDED_PERMS);
         aboutCommand.setIsAuthor(false);
@@ -177,7 +177,7 @@ public class JMusicBot
             JDA jda = new JDABuilder(AccountType.BOT)
                     .setToken(config.getToken())
                     .setAudioEnabled(true)
-                    .setGame(nogame ? null : Game.playing("loading..."))
+                    .setGame(nogame ? null : Game.playing("ロード中..."))
                     .setStatus(config.getStatus()==OnlineStatus.INVISIBLE||config.getStatus()==OnlineStatus.OFFLINE ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
                     .addEventListener(client, waiter, new Listener(bot))
                     .setBulkDeleteSplittingEnabled(true)

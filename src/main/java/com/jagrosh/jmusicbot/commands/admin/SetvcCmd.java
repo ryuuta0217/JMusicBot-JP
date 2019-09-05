@@ -60,7 +60,7 @@ public class SetvcCmd extends AdminCommand
             else
             {
                 s.setVoiceChannel(list.get(0));
-                event.reply(event.getClient().getSuccess()+"音楽は現在しか再生できません **"+list.get(0).getName()+"**");
+                event.reply(event.getClient().getSuccess()+"音楽は**"+list.get(0).getName()+"**でのみ再生します。");
             }
         }
     }

@@ -60,7 +60,7 @@ public class SetdjCmd extends AdminCommand
             else
             {
                 s.setDJRole(list.get(0));
-                event.reply(event.getClient().getSuccess()+"DJコマンドは現在、これらのユーザーが使用することができます **"+list.get(0).getName()+"** role.");
+                event.reply(event.getClient().getSuccess()+"DJコマンドは役割が、**"+list.get(0).getName()+"**のユーザーが使用することができます");
             }
         }
     }

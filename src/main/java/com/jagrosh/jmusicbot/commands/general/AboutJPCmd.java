@@ -21,7 +21,7 @@ public class AboutJPCmd extends Command {
         event.getTextChannel().sendMessage(new EmbedBuilder()
         .setTitle("JMusicBot JP", null)
         .setColor(Color.blue)
-        .setDescription("2019/07/06更新")
+        .setDescription("2019/08/31更新")
         .addField("ボットバージョン", "0.1.0", false)
         .addField("ライセンス", "Apache License 2.0", false)
         .addField("著作権","Copyright 2017 John Grosh", false)
