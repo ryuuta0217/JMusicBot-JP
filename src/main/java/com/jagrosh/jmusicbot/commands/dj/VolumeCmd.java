@@ -56,7 +56,7 @@ public class VolumeCmd extends DJCommand
                 nvolume = -1;
             }
             if(nvolume<0 || nvolume>150)
-                event.reply(event.getClient().getError()+" ボリュームは0から150までの有効な整数でないといけません。");
+                event.reply(event.getClient().getError()+" 音量は0から150までの有効な整数でないといけません。");
             else
             {
                 handler.getPlayer().setVolume(nvolume);
