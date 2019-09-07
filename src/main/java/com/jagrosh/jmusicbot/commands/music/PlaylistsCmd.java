@@ -30,7 +30,7 @@ public class PlaylistsCmd extends MusicCommand
     {
         super(bot);
         this.name = "playlists";
-        this.help = "利用可能なプレイリストを表示します";
+        this.help = "利用可能な再生リストを表示します";
         this.aliases = new String[]{"pls"};
         this.guildOnly = true;
         this.beListening = false;
@@ -44,19 +44,19 @@ public class PlaylistsCmd extends MusicCommand
             bot.getPlaylistLoader().createFolder();
         if(!bot.getPlaylistLoader().folderExists())
         {
-            event.reply(event.getClient().getWarning()+" プレイリストフォルダが存在しないため作成できませんでした。");
+            event.reply(event.getClient().getWarning()+" 再生リストフォルダが存在しないため作成できませんでした。");
             return;
         }
         List<String> list = bot.getPlaylistLoader().getPlaylistNames();
         if(list==null)
-            event.reply(event.getClient().getError()+" 利用可能なプレイリストを読み込めませんでした。");
+            event.reply(event.getClient().getError()+" 利用可能な再生リストを読み込めませんでした。");
         else if(list.isEmpty())
-            event.reply(event.getClient().getWarning()+" プレイリストフォルダにプレイリストがありません。");
+            event.reply(event.getClient().getWarning()+" 再生リストフォルダにプレイリストがありません。");
         else
         {
-            StringBuilder builder = new StringBuilder(event.getClient().getSuccess()+" 利用可能なプレイリスト:\n");
+            StringBuilder builder = new StringBuilder(event.getClient().getSuccess()+" 利用可能な再生リスト:\n");
             list.forEach(str -> builder.append("`").append(str).append("` "));
-            builder.append("\nType `").append(event.getClient().getTextualPrefix()).append("play playlist <name>` でプレイリストを再生します。");
+            builder.append("\n`").append(event.getClient().getTextualPrefix()).append("play playlist <name>` と入力することで再生リストを再生できます。");
             event.reply(builder.toString());
         }
     }
