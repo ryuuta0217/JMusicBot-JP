@@ -77,21 +77,21 @@ public class AboutCommand extends Command {
                 oauthLink = info.isBotPublic() ? info.getInviteUrl(0L, perms) : "";
             } catch (Exception e) {
                 Logger log = LoggerFactory.getLogger("OAuth2");
-                log.error("Could not generate invite link ", e);
+                log.error("招待リンクを生成できませんでした ", e);
                 oauthLink = "";
             }
         }
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(event.getGuild() == null ? color : event.getGuild().getSelfMember().getColor());
-        builder.setAuthor("All about " + event.getSelfUser().getName() + "!", null, event.getSelfUser().getAvatarUrl());
+        builder.setAuthor("" + event.getSelfUser().getName() + "について!", null, event.getSelfUser().getAvatarUrl());
         boolean join = !(event.getClient().getServerInvite() == null || event.getClient().getServerInvite().isEmpty());
         boolean inv = !oauthLink.isEmpty();
-        String invline = "\n" + (join ? "Join my server [`here`](" + event.getClient().getServerInvite() + ")" : (inv ? "Please " : ""))
-                + (inv ? (join ? ", or " : "") + "[`invite`](" + oauthLink + ") me to your server" : "") + "!";
+        String invline = "\n" + (join ? "公式Discordチャンネルは [`こちら`](" + event.getClient().getServerInvite() + ")" : (inv ? "からお願いします " : ""))
+                + (inv ? (join ? ", または " : "") + "あなたのサーバーに[`invite`](" + oauthLink + ") " : "で招待して下さい。") + "!";
         String author = event.getJDA().getUserById(event.getClient().getOwnerId())==null ? "<@" + event.getClient().getOwnerId()+">"
                 : event.getJDA().getUserById(event.getClient().getOwnerId()).getName();
-        StringBuilder descr = new StringBuilder().append("Hello! I am **").append(event.getSelfUser().getName()).append("**, ")
-                .append(description).append("\nI ").append(IS_AUTHOR ? "was written in Java" : "am owned").append(" by **")
+        StringBuilder descr = new StringBuilder().append("こんにちは！ 私は **").append(event.getSelfUser().getName()).append("**です。 ")
+                .append(description).append("\n私は").append(IS_AUTHOR ? "was written in Java" : "am owned").append(" by **")
                 .append(author).append("** using " + JDAUtilitiesInfo.AUTHOR + "'s [Commands Extension](" + JDAUtilitiesInfo.GITHUB + ") (")
                 .append(JDAUtilitiesInfo.VERSION).append(") and the [JDA library](https://github.com/DV8FromTheWorld/JDA) (")
                 .append(JDAInfo.VERSION).append(")\nType `").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
@@ -102,8 +102,8 @@ public class AboutCommand extends Command {
         builder.setDescription(descr);
         if (event.getJDA().getShardInfo() == null)
         {
-            builder.addField("Stats", event.getJDA().getGuilds().size() + " servers\n1 shard", true);
-            builder.addField("Users", event.getJDA().getUsers().size() + " unique\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers().size()).sum() + " total", true);
+            builder.addField("統計", event.getJDA().getGuilds().size() + " サーバー\n1個の破片", true);
+            builder.addField("ユーザー", event.getJDA().getUsers().size() + " unique\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers().size()).sum() + " total", true);
             builder.addField("Channels", event.getJDA().getTextChannels().size() + " Text\n" + event.getJDA().getVoiceChannels().size() + " Voice", true);
         }
         else
