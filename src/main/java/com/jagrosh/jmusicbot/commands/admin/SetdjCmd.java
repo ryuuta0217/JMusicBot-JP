@@ -33,7 +33,7 @@ public class SetdjCmd extends AdminCommand
     {
         this.name = "setdj";
         this.help = "ボットコマンドを使用できる役割DJを設定します。";
-        this.arguments = "<役割名|NONE>";
+        this.arguments = "<役割名|NONE|なし>";
     }
     
     @Override
@@ -45,7 +45,7 @@ public class SetdjCmd extends AdminCommand
             return;
         }
         Settings s = event.getClient().getSettingsFor(event.getGuild());
-        if(event.getArgs().equalsIgnoreCase("none"))
+        if(event.getArgs().toLowerCase().matches("(none|なし)"))
         {
             s.setDJRole(null);
             event.reply(event.getClient().getSuccess()+"DJの役割はリセットされました。管理者だけがDJコマンドを使用できます。");

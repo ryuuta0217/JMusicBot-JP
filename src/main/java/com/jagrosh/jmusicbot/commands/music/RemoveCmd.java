@@ -50,7 +50,7 @@ public class RemoveCmd extends MusicCommand
             event.replyError("キューには何もありません。");
             return;
         }
-        if(event.getArgs().matches("(all|すべて)"))
+        if(event.getArgs().toLowerCase().matches("(all|すべて)"))
         {
             int count = handler.getQueue().removeAll(event.getAuthor().getIdLong());
             if(count==0)

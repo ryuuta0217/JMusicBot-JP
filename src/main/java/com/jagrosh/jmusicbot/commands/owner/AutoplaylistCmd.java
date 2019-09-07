@@ -45,7 +45,7 @@ public class AutoplaylistCmd extends OwnerCommand
             event.reply(event.getClient().getError()+" 再生リスト名またはNONEを含めてください");
             return;
         }
-        if(event.getArgs().matches("(none|なし)"))
+        if(event.getArgs().toLowerCase().matches("(none|なし)"))
         {
             Settings settings = event.getClient().getSettingsFor(event.getGuild());
             settings.setDefaultPlaylist(null);
