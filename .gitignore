@@ -4,3 +4,5 @@
 *.json
 *.txt
 nb*.xml
+.idea/**
+*.iml
