@@ -50,7 +50,7 @@ public class PlaylistCmd extends OwnerCommand
     @Override
     public void execute(CommandEvent event) 
     {
-        StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" プレイリスト管理コマンド:\n");
+        StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" 再生リスト管理コマンド:\n");
         for(Command cmd: this.children)
             builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" ").append(cmd.getName())
                     .append(" ").append(cmd.getArguments()==null ? "" : cmd.getArguments()).append("` - ").append(cmd.getHelp());
