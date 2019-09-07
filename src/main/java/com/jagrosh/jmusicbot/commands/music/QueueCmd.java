@@ -45,8 +45,8 @@ public class QueueCmd extends MusicCommand
     {
         super(bot);
         this.name = "queue";
-        this.help = "現在のキューを表示します";
-        this.arguments = "[pagenum]";
+        this.help = "再生待ちの楽曲一覧を表示します";
+        this.arguments = "[ページ]";
         this.aliases = new String[]{"list"};
         this.bePlaying = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_ADD_REACTION,Permission.MESSAGE_EMBED_LINKS};
@@ -77,7 +77,7 @@ public class QueueCmd extends MusicCommand
             Message nowp = ah.getNowPlaying(event.getJDA());
             Message nonowp = ah.getNoMusicPlaying(event.getJDA());
             Message built = new MessageBuilder()
-                    .setContent(event.getClient().getWarning() + " キューに音楽はありません。")
+                    .setContent(event.getClient().getWarning() + " 再生待ちの楽曲はありません。")
                     .setEmbed((nowp==null ? nonowp : nowp).getEmbeds().get(0)).build();
             event.reply(built, m -> 
             {
@@ -111,7 +111,7 @@ public class QueueCmd extends MusicCommand
             sb.append(ah.getPlayer().isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI).append(" **")
                     .append(ah.getPlayer().getPlayingTrack().getInfo().title).append("**\n");
         }
-        return FormatUtil.filter(sb.append(success).append(" 現在のキューリスト | ").append(songslength)
+        return FormatUtil.filter(sb.append(success).append(" 再生待ち楽曲一覧 | ").append(songslength)
                 .append(" エントリー | `").append(FormatUtil.formatTime(total)).append("` ")
                 .append(repeatmode ? "| " + REPEAT : "").toString());
     }
