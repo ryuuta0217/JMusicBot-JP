@@ -103,17 +103,17 @@ public class CommandClientImpl implements CommandClient, EventListener
                              boolean useHelp, boolean shutdownAutomatically, Consumer<CommandEvent> helpConsumer, String helpWord, ScheduledExecutorService executor,
                              int linkedCacheSize, AnnotatedModuleCompiler compiler, GuildSettingsManager manager)
     {
-        Checks.check(ownerId != null, "Owner ID was set null or not set! Please provide an User ID to register as the owner!");
+        Checks.check(ownerId != null, "所有者IDがnull、または設定されていません！ 所有者として登録するには、ユーザーIDを入力してください！");
 
         if(!SafeIdUtil.checkId(ownerId))
-            LOG.warn(String.format("The provided Owner ID (%s) was found unsafe! Make sure ID is a non-negative long!", ownerId));
+            LOG.warn(String.format("指定された所有者ID(%s)は安全ではないことが判明しました！ IDが非負の長さであることを確認してください！", ownerId));
 
         if(coOwnerIds!=null)
         {
             for(String coOwnerId : coOwnerIds)
             {
                 if(!SafeIdUtil.checkId(coOwnerId))
-                    LOG.warn(String.format("The provided CoOwner ID (%s) was found unsafe! Make sure ID is a non-negative long!", coOwnerId));
+                    LOG.warn(String.format("提供された共同所有者ID(%s)は安全でないことが判明しました！ IDが非負の長さであることを確認してください！", coOwnerId));
             }
         }
 
@@ -153,7 +153,7 @@ public class CommandClientImpl implements CommandClient, EventListener
                     if(!Objects.equals(category, command.getCategory()))
                     {
                         category = command.getCategory();
-                        builder.append("\n\n  __").append(category==null ? "No Category" : category.getName()).append("__:\n");
+                        builder.append("\n\n  __").append(category==null ? "カテゴリーなし" : category.getName()).append("__:\n");
                     }
                     builder.append("\n`").append(textPrefix).append(prefix==null?" ":"").append(command.getName())
                             .append(command.getArguments()==null ? "`" : " "+command.getArguments()+"`")
@@ -163,9 +163,9 @@ public class CommandClientImpl implements CommandClient, EventListener
             User owner = event.getJDA().getUserById(ownerId);
             if(owner!=null)
             {
-                builder.append("\n\nFor additional help, contact **").append(owner.getName()).append("**#").append(owner.getDiscriminator());
+                builder.append("\n\n追加のヘルプについては、お問い合わせください **").append(owner.getName()).append("**#").append(owner.getDiscriminator());
                 if(serverInvite!=null)
-                    builder.append(" or join ").append(serverInvite);
+                    builder.append(" または参加する ").append(serverInvite);
             }
             event.replyInDm(builder.toString(), unused ->
             {
@@ -263,16 +263,16 @@ public class CommandClientImpl implements CommandClient, EventListener
     public void addCommand(Command command, int index)
     {
         if(index>commands.size() || index<0)
-            throw new ArrayIndexOutOfBoundsException("Index specified is invalid: ["+index+"/"+commands.size()+"]");
+            throw new ArrayIndexOutOfBoundsException("指定されたインデックスが無効です: ["+index+"/"+commands.size()+"]");
         String name = command.getName();
         synchronized(commandIndex)
         {
             if(commandIndex.containsKey(name))
-                throw new IllegalArgumentException("Command added has a name or alias that has already been indexed: \""+name+"\"!");
+                throw new IllegalArgumentException("追加されたコマンドには、すでにインデックスが作成された名前またはエイリアスがあります。: \""+name+"\"!");
             for(String alias : command.getAliases())
             {
                 if(commandIndex.containsKey(alias))
-                    throw new IllegalArgumentException("Command added has a name or alias that has already been indexed: \""+alias+"\"!");
+                    throw new IllegalArgumentException("追加されたコマンドには、すでにインデックスが作成された名前またはエイリアスがあります。: \""+alias+"\"!");
                 commandIndex.put(alias, index);
             }
             commandIndex.put(name, index);
@@ -289,7 +289,7 @@ public class CommandClientImpl implements CommandClient, EventListener
     public void removeCommand(String name)
     {
         if(!commandIndex.containsKey(name))
-            throw new IllegalArgumentException("Name provided is not indexed: \"" + name + "\"!");
+            throw new IllegalArgumentException("指定された名前にはインデックスが付けられていません: \"" + name + "\"!");
         int targetIndex = commandIndex.remove(name);
         if(commandIndex.containsValue(targetIndex))
         {
@@ -465,7 +465,7 @@ public class CommandClientImpl implements CommandClient, EventListener
     {
         if(!event.getJDA().getSelfUser().isBot())
         {
-            LOG.error("JDA-Utilities does not support CLIENT accounts.");
+            LOG.error("JDA-Utilitiesはクライアントアカウントをサポートしていません。");
             event.getJDA().shutdown();
             return;
         }
@@ -591,14 +591,14 @@ public class CommandClientImpl implements CommandClient, EventListener
                 @Override
                 public void onResponse(Call call, Response response)
                 {
-                    LOG.info("Successfully send information to carbonitex.net");
+                    LOG.info("carbonitex.netに情報を送信しました");
                     response.close();
                 }
 
                 @Override
                 public void onFailure(Call call, IOException e)
                 {
-                    LOG.error("Failed to send information to carbonitex.net ", e);
+                    LOG.error("carbonitex.netへの情報の送信に失敗しました ", e);
                 }
             });
         }
@@ -625,25 +625,25 @@ public class CommandClientImpl implements CommandClient, EventListener
                 {
                     if(response.isSuccessful())
                     {
-                        LOG.info("Successfully sent information to discord.bots.gg");
+                        LOG.info("discord.bots.ggに情報を送信しました");
                         try(Reader reader = response.body().charStream())
                         {
                             totalGuilds = new JSONObject(new JSONTokener(reader)).getInt("guildCount");
                         }
                         catch(Exception ex)
                         {
-                            LOG.error("Failed to retrieve bot shard information from discord.bots.gg ", ex);
+                            LOG.error("discord.bots.ggからボットシャード情報を取得できませんでした ", ex);
                         }
                     }
                     else
-                        LOG.error("Failed to send information to discord.bots.gg: "+response.body().string());
+                        LOG.error("discord.bots.ggに情報を送信できませんでした: "+response.body().string());
                     response.close();
                 }
 
                 @Override
                 public void onFailure(Call call, IOException e)
                 {
-                    LOG.error("Failed to send information to discord.bots.gg ", e);
+                    LOG.error("discord.bots.ggに情報を送信できませんでした ", e);
                 }
             });
         }

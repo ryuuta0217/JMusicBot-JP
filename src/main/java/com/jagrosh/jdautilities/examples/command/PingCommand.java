@@ -27,7 +27,7 @@ import com.jagrosh.jdautilities.examples.doc.Author;
  */
 @CommandInfo(
         name = {"Ping", "Pong"},
-        description = "Checks the bot's latency"
+        description = "ボットのレイテンシを確認します"
 )
 @Author("John Grosh (jagrosh)")
 public class PingCommand extends Command {
@@ -35,7 +35,7 @@ public class PingCommand extends Command {
     public PingCommand()
     {
         this.name = "ping";
-        this.help = "checks the bot's latency";
+        this.help = "ボットのレイテンシをチェックします";
         this.guildOnly = false;
         this.aliases = new String[]{"pong"};
     }
