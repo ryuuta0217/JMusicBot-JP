@@ -121,7 +121,7 @@ public class PlayCmd extends MusicCommand
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
             String addMsg = FormatUtil.filter(event.getClient().getSuccess()+" **"+track.getInfo().title
-                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"を追加しました。":"を"+pos+"番目のキューに追加しました。 "));
+                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"を追加しました。":"を"+pos+"番目の再生待ちに追加しました。 "));
             if(playlist==null || !event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION))
                 m.editMessage(addMsg).queue();
             else
@@ -187,9 +187,9 @@ public class PlayCmd extends MusicCommand
                 }
                 else
                 {
-                    m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+" 見つかった "
-                            +(playlist.getName()==null?"プレイリスト":"プレイリスト **"+playlist.getName()+"**")+" と `"
-                            + playlist.getTracks().size()+"` エントリーキューに追加しました。"
+                    m.editMessage(FormatUtil.filter(event.getClient().getSuccess()
+                            + (playlist.getName() == null ? "再生リスト" : "再生リスト **" + playlist.getName() + "**")+" と `"
+                            + playlist.getTracks().size()+"` 曲を再生待ちに追加しました。"
                             + (count<playlist.getTracks().size() ? "\n"+event.getClient().getWarning()+" 許可されている最大長より長いトラック (`"
                             + bot.getConfig().getMaxTime()+"`) 省略されています。" : ""))).queue();
                 }
