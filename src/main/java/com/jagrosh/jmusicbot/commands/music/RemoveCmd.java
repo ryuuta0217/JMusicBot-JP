@@ -34,8 +34,8 @@ public class RemoveCmd extends MusicCommand
     {
         super(bot);
         this.name = "remove";
-        this.help = "キューから曲を削除します";
-        this.arguments = "<キュー番号|ALL>";
+        this.help = "再生待ちから曲を削除します";
+        this.arguments = "<キュー番号|すべて|ALL>";
         this.aliases = new String[]{"delete"};
         this.beListening = true;
         this.bePlaying = true;
@@ -50,13 +50,13 @@ public class RemoveCmd extends MusicCommand
             event.replyError("キューには何もありません。");
             return;
         }
-        if(event.getArgs().equalsIgnoreCase("all"))
+        if(event.getArgs().toLowerCase().matches("(all|すべて)"))
         {
             int count = handler.getQueue().removeAll(event.getAuthor().getIdLong());
             if(count==0)
-                event.replyWarning("キューに曲がありません。");
+                event.replyWarning("再生待ちに曲がありません。");
             else
-                event.replySuccess(count+"個のエントリを削除しました。");
+                event.replySuccess(count+"曲を削除しました。");
             return;
         }
         int pos;
@@ -67,7 +67,7 @@ public class RemoveCmd extends MusicCommand
         }
         if(pos<1 || pos>handler.getQueue().size())
         {
-            event.replyError("有効な1からの数字を入力してください! "+handler.getQueue().size());
+            event.replyError(String.format("1から%sまでの有効な数字を入力してください!", handler.getQueue().size()));
             return;
         }
         Settings settings = event.getClient().getSettingsFor(event.getGuild());
@@ -78,7 +78,7 @@ public class RemoveCmd extends MusicCommand
         if(qt.getIdentifier()==event.getAuthor().getIdLong())
         {
             handler.getQueue().remove(pos-1);
-            event.replySuccess("**"+qt.getTrack().getInfo().title+"**をキューから削除しました。");
+            event.replySuccess("**"+qt.getTrack().getInfo().title+"**を再生待ちから削除しました。");
         }
         else if(isDJ)
         {
@@ -90,11 +90,11 @@ public class RemoveCmd extends MusicCommand
                 u = null;
             }
             event.replySuccess("**"+qt.getTrack().getInfo().title
-                    +"**をキューから削除しました。 (この曲は"+(u==null ? "誰かがリクエストしました。" : "**"+u.getName()+"がリクエストしました。**")+")");
+                    +"**を再生待ちから削除しました。\n(この曲は"+(u==null ? "誰かがリクエストしました。" : "**"+u.getName()+"がリクエストしました。**")+")");
         }
         else
         {
-            event.replyError("あなたは削除することができません **"+qt.getTrack().getInfo().title+"** 理由: 追加されなかったため");
+            event.replyError("楽曲 **"+qt.getTrack().getInfo().title+"** を削除できませんでした。理由: 追加されなかったため");
         }
     }
 }

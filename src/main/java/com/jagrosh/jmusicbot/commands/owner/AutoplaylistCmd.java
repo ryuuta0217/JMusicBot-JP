@@ -33,8 +33,8 @@ public class AutoplaylistCmd extends OwnerCommand
         this.bot = bot;
         this.guildOnly = true;
         this.name = "autoplaylist";
-        this.arguments = "<name|NONE>";
-        this.help = "サーバーのデフォルトのプレイリストを設定します。";
+        this.arguments = "<name|NONE|なし>";
+        this.help = "サーバーのデフォルトの再生リストを設定します。";
     }
 
     @Override
@@ -42,14 +42,14 @@ public class AutoplaylistCmd extends OwnerCommand
     {
         if(event.getArgs().isEmpty())
         {
-            event.reply(event.getClient().getError()+" プレイリスト名またはNONEを含めてください");
+            event.reply(event.getClient().getError()+" 再生リスト名またはNONEを含めてください");
             return;
         }
-        if(event.getArgs().equalsIgnoreCase("none"))
+        if(event.getArgs().toLowerCase().matches("(none|なし)"))
         {
             Settings settings = event.getClient().getSettingsFor(event.getGuild());
             settings.setDefaultPlaylist(null);
-            event.reply(event.getClient().getSuccess()+"**"+event.getGuild().getName()+"**のデフォルトプレイリストをクリアしました");
+            event.reply(event.getClient().getSuccess()+" サーバー **"+event.getGuild().getName()+"** の規定の再生リストを削除しました");
             return;
         }
         String pname = event.getArgs().replaceAll("\\s+", "_");
@@ -61,7 +61,8 @@ public class AutoplaylistCmd extends OwnerCommand
         {
             Settings settings = event.getClient().getSettingsFor(event.getGuild());
             settings.setDefaultPlaylist(pname);
-            event.reply(event.getClient().getSuccess()+"**"+event.getGuild().getName()+"**のデフォルトプレイリストの`"+pname+"`を再生中です。");
+            event.reply(event.getClient().getSuccess()+" サーバー **"+event.getGuild().getName()+"** の規定の再生リストを`"+pname+"`に設定しました。\n"
+                        + "再生待ちに曲がないときは、再生リストから曲が再生されます。");
         }
     }
 }

@@ -37,7 +37,7 @@ public class PlaylistCmd extends OwnerCommand
         this.guildOnly = false;
         this.name = "playlist";
         this.arguments = "<append|delete|make|setdefault>";
-        this.help = "プレイリスト管理";
+        this.help = "再生リスト管理";
         this.children = new OwnerCommand[]{
             new ListCmd(),
             new AppendlistCmd(),
@@ -50,7 +50,7 @@ public class PlaylistCmd extends OwnerCommand
     @Override
     public void execute(CommandEvent event) 
     {
-        StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" プレイリスト管理コマンド:\n");
+        StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" 再生リスト管理コマンド:\n");
         for(Command cmd: this.children)
             builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" ").append(cmd.getName())
                     .append(" ").append(cmd.getArguments()==null ? "" : cmd.getArguments()).append("` - ").append(cmd.getHelp());
@@ -63,7 +63,7 @@ public class PlaylistCmd extends OwnerCommand
         {
             this.name = "make";
             this.aliases = new String[]{"create"};
-            this.help = "新しいプレイリストを作る";
+            this.help = "新しい再生リストを作る";
             this.arguments = "<name>";
             this.guildOnly = false;
         }
@@ -77,15 +77,15 @@ public class PlaylistCmd extends OwnerCommand
                 try
                 {
                     bot.getPlaylistLoader().createPlaylist(pname);
-                    event.reply(event.getClient().getSuccess()+" `"+pname+"`という名前でプレイリストを作成しました!");
+                    event.reply(event.getClient().getSuccess()+" `"+pname+"`という名前で再生リストを作成しました!");
                 }
                 catch(IOException e)
                 {
-                    event.reply(event.getClient().getError()+" プレイリストを作成できませんでした。:"+e.getLocalizedMessage());
+                    event.reply(event.getClient().getError()+" 再生リストを作成できませんでした。:"+e.getLocalizedMessage());
                 }
             }
             else
-                event.reply(event.getClient().getError()+" プレイリスト `"+pname+"` はすでに存在しています!");
+                event.reply(event.getClient().getError()+" 再生リスト `"+pname+"` はすでに存在しています!");
         }
     }
     
@@ -95,7 +95,7 @@ public class PlaylistCmd extends OwnerCommand
         {
             this.name = "delete";
             this.aliases = new String[]{"remove"};
-            this.help = "既存のプレイリストを削除します";
+            this.help = "既存の再生リストを削除します";
             this.arguments = "<name>";
             this.guildOnly = false;
         }
@@ -105,17 +105,17 @@ public class PlaylistCmd extends OwnerCommand
         {
             String pname = event.getArgs().replaceAll("\\s+", "_");
             if(bot.getPlaylistLoader().getPlaylist(pname)==null)
-                event.reply(event.getClient().getError()+" プレイリスト `"+pname+"` は存在していません!");
+                event.reply(event.getClient().getError()+" 再生リスト `"+pname+"` は存在しません!");
             else
             {
                 try
                 {
                     bot.getPlaylistLoader().deletePlaylist(pname);
-                    event.reply(event.getClient().getSuccess()+" プレイリスト `"+pname+"`を削除しました。!");
+                    event.reply(event.getClient().getSuccess()+" 再生リスト `"+pname+"`を削除しました。!");
                 }
                 catch(IOException e)
                 {
-                    event.reply(event.getClient().getError()+" プレイリストを削除できませんでした: "+e.getLocalizedMessage());
+                    event.reply(event.getClient().getError()+" 再生リストを削除できませんでした: "+e.getLocalizedMessage());
                 }
             }
         }
@@ -127,7 +127,7 @@ public class PlaylistCmd extends OwnerCommand
         {
             this.name = "append";
             this.aliases = new String[]{"add"};
-            this.help = "既存のプレイリストに曲を追加します";
+            this.help = "既存の再生リストに曲を追加します";
             this.arguments = "<name> <URL> | <URL> | ...";
             this.guildOnly = false;
         }
@@ -138,13 +138,13 @@ public class PlaylistCmd extends OwnerCommand
             String[] parts = event.getArgs().split("\\s+", 2);
             if(parts.length<2)
             {
-                event.reply(event.getClient().getError()+" 追加するプレイリスト名とURLを含めてください。");
+                event.reply(event.getClient().getError()+" 追加先の再生リスト名とURLを含めてください。");
                 return;
             }
             String pname = parts[0];
             Playlist playlist = bot.getPlaylistLoader().getPlaylist(pname);
             if(playlist==null)
-                event.reply(event.getClient().getError()+" プレイリスト `"+pname+"` は存在しません!");
+                event.reply(event.getClient().getError()+" 再生リスト `"+pname+"` は存在しません!");
             else
             {
                 StringBuilder builder = new StringBuilder();
@@ -160,11 +160,11 @@ public class PlaylistCmd extends OwnerCommand
                 try
                 {
                     bot.getPlaylistLoader().writePlaylist(pname, builder.toString());
-                    event.reply(event.getClient().getSuccess()+urls.length+"項目をプレイリスト `"+pname+"`に追加しました!");
+                    event.reply(event.getClient().getSuccess()+urls.length+" 項目を再生リスト `"+pname+"`に追加しました!");
                 }
                 catch(IOException e)
                 {
-                    event.reply(event.getClient().getError()+" プレイリストに追加できませんでした: "+e.getLocalizedMessage());
+                    event.reply(event.getClient().getError()+" 再生リストに追加できませんでした: "+e.getLocalizedMessage());
                 }
             }
         }
@@ -188,7 +188,7 @@ public class PlaylistCmd extends OwnerCommand
         {
             this.name = "all";
             this.aliases = new String[]{"available","list"};
-            this.help = "利用可能なすべてのプレイリストを一覧表示します。";
+            this.help = "利用可能なすべての再生リストを表示します。";
             this.guildOnly = true;
         }
 
@@ -199,17 +199,17 @@ public class PlaylistCmd extends OwnerCommand
                 bot.getPlaylistLoader().createFolder();
             if(!bot.getPlaylistLoader().folderExists())
             {
-                event.reply(event.getClient().getWarning()+" プレイリストフォルダが存在しないため作成できませんでした。");
+                event.reply(event.getClient().getWarning()+" 再生リストフォルダが存在しないため作成できませんでした。");
                 return;
             }
             List<String> list = bot.getPlaylistLoader().getPlaylistNames();
             if(list==null)
-                event.reply(event.getClient().getError()+" 利用可能なプレイリストを読み込めませんでした。");
+                event.reply(event.getClient().getError()+" 利用可能な再生リストを読み込めませんでした。");
             else if(list.isEmpty())
-                event.reply(event.getClient().getWarning()+" プレイリストフォルダにプレイリストがありません。");
+                event.reply(event.getClient().getWarning()+" 再生リストフォルダに再生リストがありません。");
             else
             {
-                StringBuilder builder = new StringBuilder(event.getClient().getSuccess()+" 利用可能なプレイリスト:\n");
+                StringBuilder builder = new StringBuilder(event.getClient().getSuccess()+" 利用可能な再生リスト:\n");
                 list.forEach(str -> builder.append("`").append(str).append("` "));
                 event.reply(builder.toString());
             }

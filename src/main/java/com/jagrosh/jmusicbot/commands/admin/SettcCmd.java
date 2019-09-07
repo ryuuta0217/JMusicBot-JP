@@ -33,7 +33,7 @@ public class SettcCmd extends AdminCommand
     {
         this.name = "settc";
         this.help = "ボットのコマンドチャンネルを設定します";
-        this.arguments = "<チャンネル名|NONE>";
+        this.arguments = "<チャンネル名|NONE|なし>";
     }
     
     @Override
@@ -45,7 +45,7 @@ public class SettcCmd extends AdminCommand
             return;
         }
         Settings s = event.getClient().getSettingsFor(event.getGuild());
-        if(event.getArgs().equalsIgnoreCase("none"))
+        if(event.getArgs().toLowerCase().matches("(none|なし)"))
         {
             s.setTextChannel(null);
             event.reply(event.getClient().getSuccess()+"音楽コマンドは現在どのチャンネルでも使用できます。");

@@ -30,7 +30,7 @@ public class StopCmd extends DJCommand
     {
         super(bot);
         this.name = "stop";
-        this.help = "現在の曲を停止してキューをクリアします";
+        this.help = "現在の曲を停止して再生待ちを削除します";
         this.bePlaying = false;
     }
 
@@ -40,6 +40,6 @@ public class StopCmd extends DJCommand
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         handler.stopAndClear();
         event.getGuild().getAudioManager().closeAudioConnection();
-        event.reply(event.getClient().getSuccess()+" プレイヤーは停止し、キューはクリアされました。");
+        event.reply(event.getClient().getSuccess()+" 再生は停止され、再生待ちは削除されました。");
     }
 }

@@ -33,7 +33,7 @@ public class SetvcCmd extends AdminCommand
     {
         this.name = "setvc";
         this.help = "音楽を再生するための音声チャンネルを設定します。";
-        this.arguments = "<チャンネル名|NONE>";
+        this.arguments = "<チャンネル名|NONE|なし>";
     }
     
     @Override
@@ -45,7 +45,7 @@ public class SetvcCmd extends AdminCommand
             return;
         }
         Settings s = event.getClient().getSettingsFor(event.getGuild());
-        if(event.getArgs().equalsIgnoreCase("none"))
+        if(event.getArgs().toLowerCase().matches("(none|なし)"))
         {
             s.setVoiceChannel(null);
             event.reply(event.getClient().getSuccess()+"音楽はどの音声チャンネルでも再生できます。");

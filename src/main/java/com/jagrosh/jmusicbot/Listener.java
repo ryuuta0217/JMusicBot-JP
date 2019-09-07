@@ -51,7 +51,6 @@ public class Listener extends ListenerAdapter
             log.warn("このボットはグループに入っていません！ボットをあなたのグループに追加するには、以下のリンクを使用してください。");
             log.warn(event.getJDA().asBot().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
         }
-        credit(event.getJDA());
         event.getJDA().getGuilds().forEach((guild) -> 
         {
             try
@@ -94,24 +93,5 @@ public class Listener extends ListenerAdapter
     public void onShutdown(ShutdownEvent event) 
     {
         bot.shutdown();
-    }
-
-    @Override
-    public void onGuildJoin(GuildJoinEvent event) 
-    {
-        credit(event.getJDA());
-    }
-    
-    // make sure people aren't adding clones to dbots
-    private void credit(JDA jda)
-    {
-        Guild dbots = jda.getGuildById(110373943822540800L);
-        if(dbots==null)
-            return;
-        if(bot.getConfig().getDBots())
-            return;
-        jda.getTextChannelById(119222314964353025L)
-                .sendMessage("このアカウントはJMusicBotを実行しています。 このサーバーにボットクローンをリストしないでください。<@"+bot.getConfig().getOwnerId()+">.").complete();
-        dbots.leave().queue();
     }
 }

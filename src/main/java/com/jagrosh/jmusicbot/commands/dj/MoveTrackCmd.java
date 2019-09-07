@@ -9,7 +9,7 @@ import com.jagrosh.jmusicbot.commands.DJCommand;
 import com.jagrosh.jmusicbot.queue.FairQueue;
 
 /**
- * Command that provides users the ability to move a track in the playlist.
+ * ユーザーが再生リスト内のトラックを移動できるようにするコマンドです。
  */
 public class MoveTrackCmd extends DJCommand
 {
@@ -18,7 +18,7 @@ public class MoveTrackCmd extends DJCommand
     {
         super(bot);
         this.name = "movetrack";
-        this.help = "現在の列のポジションを別のポジションへ移動させてください。";
+        this.help = "再生待ちの曲の再生順を移動させます。";
         this.arguments = "<from> <to>";
         this.aliases = new String[]{"move"};
         this.bePlaying = true;
@@ -33,7 +33,7 @@ public class MoveTrackCmd extends DJCommand
         String[] parts = event.getArgs().split("\\s+", 2);
         if(parts.length < 2)
         {
-            event.replyError("2つの有効なインデックスを含んでください。");
+            event.replyError("2つの有効な数字を含んでください。");
             return;
         }
 
@@ -45,13 +45,13 @@ public class MoveTrackCmd extends DJCommand
         }
         catch (NumberFormatException e)
         {
-            event.replyError("２つの有効なインデックスを含んでください。");
+            event.replyError("2つの有効な数字を含んでください。");
             return;
         }
 
         if (from == to)
         {
-            event.replyError("トラックを同じ位置に移動できません。");
+            event.replyError("同じ位置に移動することはできません。");
             return;
         }
 
@@ -60,13 +60,13 @@ public class MoveTrackCmd extends DJCommand
         FairQueue<QueuedTrack> queue = handler.getQueue();
         if (isUnavailablePosition(queue, from))
         {
-            String reply = String.format("`%d` キュー内の有効な位置ではありません。", from);
+            String reply = String.format("`%d` は再生待ちに存在しない位置です。", from);
             event.replyError(reply);
             return;
         }
         if (isUnavailablePosition(queue, to))
         {
-            String reply = String.format("`%d` キュー内の有効な位置ではありません。", to);
+            String reply = String.format("`%d` 再生待ちに存在しない位置です。", to);
             event.replyError(reply);
             return;
         }
@@ -74,7 +74,7 @@ public class MoveTrackCmd extends DJCommand
         // Move the track
         QueuedTrack track = queue.moveItem(from - 1, to - 1);
         String trackTitle = track.getTrack().getInfo().title;
-        String reply = String.format("トラックを移動させました。 **%s** から `%d` へ `%d`.", trackTitle, from, to);
+        String reply = String.format("トラックを移動させました。\n**%s** から `%d` へ `%d`.", trackTitle, from, to);
         event.replySuccess(reply);
     }
 
