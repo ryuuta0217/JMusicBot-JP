@@ -52,7 +52,7 @@ public class SkipCmd extends MusicCommand
                     .filter(m -> !m.getUser().isBot() && !m.getVoiceState().isDeafened()).count();
             String msg;
             if(handler.getVotes().contains(event.getAuthor().getId()))
-                msg = event.getClient().getWarning()+" 再生中の曲のスキップリクエス済みです。 `[";
+                msg = event.getClient().getWarning()+" 再生中の曲のスキップリクエスト済みです。 `[";
             else
             {
                 msg = event.getClient().getSuccess()+"現在の曲をスキップリクエストしました。`[";
@@ -65,7 +65,7 @@ public class SkipCmd extends MusicCommand
             if(skippers>=required)
             {
                 User u = event.getJDA().getUserById(handler.getRequester());
-                msg+="\n"+event.getClient().getSuccess()+"**"+handler.getPlayer().getPlayingTrack().getInfo().title+"**をスキップしました 。"+(handler.getRequester()==0 ? "" : " ("+(u==null ? "この曲は誰かがリクエストしました。" : "この曲は**"+u.getName()+"**がリクエストしました。")+")");
+                msg+="\n"+event.getClient().getSuccess()+"**"+handler.getPlayer().getPlayingTrack().getInfo().title+"**をスキップしました 。\n"+(handler.getRequester()==0 ? "" : " ("+(u==null ? "この曲は誰かがリクエストしました。" : "この曲は**"+u.getName()+"**がリクエストしました。")+")");
                 handler.getPlayer().stopTrack();
             }
             event.reply(msg);
