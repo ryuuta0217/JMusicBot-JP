@@ -84,7 +84,7 @@ public class PlaynextCmd extends DJCommand
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrackToFront(new QueuedTrack(track, event.getAuthor()))+1;
             String addMsg = FormatUtil.filter(event.getClient().getSuccess()+"**"+track.getInfo().title
-                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"をキューに追加しました。" : "を"+pos+"番目のキューに追加しました。"));
+                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"を再生待ちに追加しました。" : "を"+pos+"番目の再生待ちに追加しました。"));
             m.editMessage(addMsg).queue();
         }
         
@@ -122,7 +122,7 @@ public class PlaynextCmd extends DJCommand
             if(throwable.severity==FriendlyException.Severity.COMMON)
                 m.editMessage(event.getClient().getError()+" 読み込みエラー: "+throwable.getMessage()).queue();
             else
-                m.editMessage(event.getClient().getError()+" トラックの読み込み中にエラーが発生しました。").queue();
+                m.editMessage(event.getClient().getError()+" 曲の読み込み中にエラーが発生しました。").queue();
         }
     }
 }
