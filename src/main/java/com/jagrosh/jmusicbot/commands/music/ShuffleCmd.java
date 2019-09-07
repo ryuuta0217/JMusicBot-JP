@@ -43,10 +43,10 @@ public class ShuffleCmd extends MusicCommand
         switch (s) 
         {
             case 0:
-                event.replyError("シャッフルするキューに音楽がありません!");
+                event.replyError("再生待ちに曲がありません!");
                 break;
             case 1:
-                event.replyWarning("このキューには1曲しかありません!");
+                event.replyWarning("再生待ちには現在1曲しかありません!");
                 break;
             default:
                 event.replySuccess(""+s+"曲をシャッフルしました。");
