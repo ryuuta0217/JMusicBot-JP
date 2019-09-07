@@ -3,7 +3,8 @@
 [![Downloads](https://img.shields.io/github/downloads/Cosgy-Dev/MusicBot-JP-java/total.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest)
 [![Stars](https://img.shields.io/github/stars/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/stargazers)
 [![Release](https://img.shields.io/github/release/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest)
-[![License](https://img.shields.io/github/license/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/blob/master/LICENSE)<br>
+[![License](https://img.shields.io/github/license/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/blob/master/LICENSE)
+[![Discord](https://discordapp.com/api/guilds/497317844191805450/widget.png)](https://discord.gg/RBpkHxf)<br>
 
 # JMusicBotJP
 Discordミュージックボットは、シンプルでかつ操作性の良いUIを使用しています。セットアップも起動も簡単です。
@@ -28,7 +29,7 @@ Discordミュージックボットは、シンプルでかつ操作性の良いU
 
 # 質問/提案/バグレポート
 **機能を提案する前に、推奨/計画された機能リストをお読みください。**<br>
-ボットの機能の変更を提案したり、カスタマイズ・オプションを推奨したり、バグを報告したりしたい場合には、このリポジトリーでIssueを開くか、あるいはDiscordサーバーに参加してください。(注意: 追加のAPIキーを必要とする機能リクエストや音楽以外の機能は受け付けません)。
+ボットの機能の変更を提案したり、カスタマイズ・オプションを推奨したり、バグを報告したりしたい場合には、このリポジトリーでIssueを開くか、あるいは[Discordサーバー](https://discord.gg/RBpkHxf)に参加してください。(注意: 追加のAPIキーを必要とする機能リクエストや音楽以外の機能は受け付けません)。
 <br>このBotが好きでしたら、このBotに使われているライブラリにStarを追加してください:<br>[JDA](https://github.com/DV8FromTheWorld/JDA) と [lavaplayer](https://github.com/sedmelluq/lavaplayer)
 
 # コマンドの例
