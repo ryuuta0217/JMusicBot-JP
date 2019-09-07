@@ -48,7 +48,7 @@ public class SearchCmd extends MusicCommand
         this.name = "search";
         this.aliases = new String[]{"ytsearch"};
         this.arguments = "<query>";
-        this.help = "提供されたクエリのYouTubeを検索します。";
+        this.help = "指定した文字列を使用してYouTube上の動画を検索します。";
         this.beListening = true;
         this.bePlaying = false;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
@@ -64,7 +64,7 @@ public class SearchCmd extends MusicCommand
     {
         if(event.getArgs().isEmpty())
         {
-            event.replyError("クエリを含めてください。");
+            event.replyError("文字列を指定してください。");
             return;
         }
         event.reply(searchingEmoji+"`["+event.getArgs()+"]`を検索中... ",
@@ -95,7 +95,7 @@ public class SearchCmd extends MusicCommand
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
             m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+"**"+track.getInfo().title
                     +"**(`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "を追加しました。"
-                    : "を"+pos+"番目のキューに追加しました。"))).queue();
+                    : "を"+pos+"番目の再生待ちに追加しました。"))).queue();
         }
 
         @Override
@@ -117,7 +117,7 @@ public class SearchCmd extends MusicCommand
                         int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
                         event.replySuccess("**"+track.getInfo().title
                                 +"**(`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0 ? "を追加しました。"
-                                : " を"+pos+"番目のキューに追加しました。 "));
+                                : " を"+pos+"番目の再生待ちに追加しました。 "));
                     })
                     .setCancel((msg) -> {})
                     .setUsers(event.getAuthor())
