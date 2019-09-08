@@ -144,7 +144,7 @@ public class CommandClientImpl implements CommandClient, EventListener
         this.compiler = compiler;
         this.manager = manager;
         this.helpConsumer = helpConsumer==null ? (event) -> {
-            StringBuilder builder = new StringBuilder("**"+event.getSelfUser().getName()+"** commands:\n");
+            StringBuilder builder = new StringBuilder("**"+event.getSelfUser().getName()+"** コマンド一覧:\n");
             Category category = null;
             for(Command command : commands)
             {
