@@ -53,7 +53,7 @@ public class AboutCommand extends Command {
         this.description = description;
         this.features = features;
         this.name = "about";
-        this.help = "shows info about the bot";
+        this.help = "ボットに関する情報を表示します";
         this.guildOnly = false;
         this.perms = perms;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
@@ -87,33 +87,33 @@ public class AboutCommand extends Command {
         boolean join = !(event.getClient().getServerInvite() == null || event.getClient().getServerInvite().isEmpty());
         boolean inv = !oauthLink.isEmpty();
         String invline = "\n" + (join ? "公式Discordチャンネルは [`こちら`](" + event.getClient().getServerInvite() + ")" : (inv ? "からお願いします " : ""))
-                + (inv ? (join ? ", または " : "") + "あなたのサーバーに[`invite`](" + oauthLink + ") " : "で招待して下さい。") + "!";
+                + (inv ? (join ? ", または " : "") + "あなたのサーバーに[`招待リンク`](" + oauthLink + ") " : "で招待することができます。") + "!";
         String author = event.getJDA().getUserById(event.getClient().getOwnerId())==null ? "<@" + event.getClient().getOwnerId()+">"
                 : event.getJDA().getUserById(event.getClient().getOwnerId()).getName();
         StringBuilder descr = new StringBuilder().append("こんにちは！ 私は **").append(event.getSelfUser().getName()).append("**です。 ")
-                .append(description).append("\n私は").append(IS_AUTHOR ? "was written in Java" : "am owned").append(" by **")
-                .append(author).append("** using " + JDAUtilitiesInfo.AUTHOR + "'s [Commands Extension](" + JDAUtilitiesInfo.GITHUB + ") (")
-                .append(JDAUtilitiesInfo.VERSION).append(") and the [JDA library](https://github.com/DV8FromTheWorld/JDA) (")
-                .append(JDAInfo.VERSION).append(")\nType `").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
-                .append("` to see my commands!").append(join || inv ? invline : "").append("\n\nSome of my features include: ```css");
+                .append(description).append("\n私は").append(JDAUtilitiesInfo.AUTHOR + "の[コマンド拡張](" + JDAUtilitiesInfo.GITHUB + ") (")
+                .append(JDAUtilitiesInfo.VERSION).append(")と[JDAライブラリ](https://github.com/DV8FromTheWorld/JDA) (")
+                .append(JDAInfo.VERSION).append(")を使用しており、私は、").append(author).append(IS_AUTHOR ? "にJava言語で作られました。" : "が所有しています。")
+                .append("\n`").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
+                .append("`でコマンドを確認することができます。").append(join || inv ? invline : "").append("\n\n機能の特徴： ```css");
         for (String feature : features)
             descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append(feature);
         descr.append(" ```");
         builder.setDescription(descr);
         if (event.getJDA().getShardInfo() == null)
         {
-            builder.addField("統計", event.getJDA().getGuilds().size() + " サーバー\n1個の破片", true);
-            builder.addField("ユーザー", event.getJDA().getUsers().size() + " unique\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers().size()).sum() + " total", true);
-            builder.addField("Channels", event.getJDA().getTextChannels().size() + " Text\n" + event.getJDA().getVoiceChannels().size() + " Voice", true);
+            builder.addField("統計", event.getJDA().getGuilds().size() + " サーバー\n1 シャード", true);
+            builder.addField("ユーザー", event.getJDA().getUsers().size() + " ユニーク\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers().size()).sum() + " トータル", true);
+            builder.addField("チャンネル", event.getJDA().getTextChannels().size() + " テキスト\n" + event.getJDA().getVoiceChannels().size() + " ボイス", true);
         }
         else
         {
-            builder.addField("Stats", (event.getClient()).getTotalGuilds() + " Servers\nShard " + (event.getJDA().getShardInfo().getShardId() + 1)
+            builder.addField("ステータス", (event.getClient()).getTotalGuilds() + " サーバー\nシャード " + (event.getJDA().getShardInfo().getShardId() + 1)
                     + "/" + event.getJDA().getShardInfo().getShardTotal(), true);
-            builder.addField("This shard", event.getJDA().getUsers().size() + " Users\n" + event.getJDA().getGuilds().size() + " Servers", true);
-            builder.addField("", event.getJDA().getTextChannels().size() + " Text Channels\n" + event.getJDA().getVoiceChannels().size() + " Voice Channels", true);
+            builder.addField("", event.getJDA().getUsers().size() + " ユーザーのシャード\n" + event.getJDA().getGuilds().size() + " サーバー", true);
+            builder.addField("", event.getJDA().getTextChannels().size() + " テキストチャンネル\n" + event.getJDA().getVoiceChannels().size() + " ボイスチャンネル", true);
         }
-        builder.setFooter("Last restart", null);
+        builder.setFooter("最後に行われた再起動", null);
         builder.setTimestamp(event.getClient().getStartTime());
         event.reply(builder.build());
     }
