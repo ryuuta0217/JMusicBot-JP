@@ -118,8 +118,6 @@ public class BotConfig
                     write = true;
                 }
             }
-
-            System.out.println("Token Check Passed");
             
             // validate bot owner
             if(owner<=0)
