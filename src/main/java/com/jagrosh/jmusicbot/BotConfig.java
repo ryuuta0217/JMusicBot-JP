@@ -31,13 +31,15 @@ public class BotConfig
 {
     private final Prompt prompt;
     private final static String CONTEXT = "Config";
-    private final static String START_TOKEN = "/// START OF JMUSICBOT CONFIG ///";
-    private final static String END_TOKEN = "/// END OF JMUSICBOT CONFIG ///";
+    private final static String START_TOKEN = "/// START OF JMUSICBOT-JP CONFIG ///";
+    private final static String END_TOKEN = "/// END OF JMUSICBOT-JP CONFIG ///";
     
     private Path path = null;
+    // [JMusicBot-JP] added nicoEmail, nicoPass
     private String token, prefix, altprefix, helpWord, playlistsFolder,
-            successEmoji, warningEmoji, errorEmoji, loadingEmoji, searchingEmoji;
-    private boolean stayInChannel, songInGame, npImages, updatealerts, useEval, dbots;
+            successEmoji, warningEmoji, errorEmoji, loadingEmoji, searchingEmoji, nicoEmail, nicoPass;
+    // [JMusicBot-JP] added useNicoNico
+    private boolean useNicoNico, stayInChannel, songInGame, npImages, updatealerts, useEval, dbots;
     private long owner, maxSeconds;
     private OnlineStatus status;
     private Game game;
@@ -74,7 +76,7 @@ public class BotConfig
             prefix = config.getString("prefix");
             altprefix = config.getString("altprefix");
             helpWord = config.getString("help");
-            owner = config.getLong("owner");
+            owner = (config.getAnyRef("owner") instanceof String ? 0L : config.getLong("owner"));
             successEmoji = config.getString("success");
             warningEmoji = config.getString("warning");
             errorEmoji = config.getString("error");
@@ -90,20 +92,25 @@ public class BotConfig
             maxSeconds = config.getLong("maxtime");
             playlistsFolder = config.getString("playlistsfolder");
             dbots = owner == 113156185389092864L;
+
+            // [JMusicBot-JP] new function: support niconico play
+            useNicoNico = config.getBoolean("useniconico");
+            nicoEmail = config.getString("nicomail");
+            nicoPass = config.getString("nicopass");
+            // [JMusicBot-JP] End
             
             // we may need to write a new config file
             boolean write = false;
 
             // validate bot token
-            if(token==null || token.isEmpty() || token.equalsIgnoreCase("BOT_TOKEN_HERE"))
-            {
+            if(token==null || token.isEmpty() || token.matches("(BOT_TOKEN_HERE|Botトークンをここに貼り付け)")) {
                 token = prompt.prompt("BOTトークンを入力してください。"
                         + "\nトークンを取得する方法はこちらから:"
                         + "\nhttps://github.com/jagrosh/MusicBot/wiki/Getting-a-Bot-Token."
                         + "\nBOTトークン: ");
                 if(token==null)
                 {
-                    prompt.alert(Prompt.Level.WARNING, CONTEXT, "No token provided! Exiting.\n\nConfig Location: " + path.toAbsolutePath().toString());
+                    prompt.alert(Prompt.Level.WARNING, CONTEXT, "トークンが入力されていません！終了します。\n\n設定ファイルの場所: " + path.toAbsolutePath().toString());
                     return;
                 }
                 else
@@ -117,11 +124,11 @@ public class BotConfig
             {
                 try
                 {
-                    owner = Long.parseLong(prompt.prompt("オーナーIDがみつからない、または有効ではありません。"
-                        + "\nBOTのオーナーのオーナーIDを入力してください。"
+                    owner = Long.parseLong(prompt.prompt("所有者のユーザーIDが設定されていない、または有効なIDではありません。"
+                        + "\nBOTの所有者のユーザーIDを入力してください。"
                         + "\nユーザーIDの入手方法はこちらから:"
                         + "\nhttps://github.com/jagrosh/MusicBot/wiki/Finding-Your-User-ID"
-                        + "\nオーナーユーザーID: "));
+                        + "\n所有者のユーザーID: "));
                 }
                 catch(NumberFormatException | NullPointerException ex)
                 {
@@ -129,7 +136,7 @@ public class BotConfig
                 }
                 if(owner<=0)
                 {
-                    prompt.alert(Prompt.Level.ERROR, CONTEXT, "Invalid User ID! Exiting.\n\nConfig Location: " + path.toAbsolutePath().toString());
+                    prompt.alert(Prompt.Level.ERROR, CONTEXT, "無効なユーザーIDです！終了します。\n\n設定ファイルの場所: " + path.toAbsolutePath().toString());
                     System.exit(0);
                 }
                 else
@@ -149,8 +156,8 @@ public class BotConfig
                 else
                 {
                     bytes = original.substring(original.indexOf(START_TOKEN)+START_TOKEN.length(), original.indexOf(END_TOKEN))
-                        .replace("BOT_TOKEN_HERE", token)
-                        .replace("0 // OWNER ID", Long.toString(owner))
+                        .replace("BOT_TOKEN_HERE", token).replace("Botトークンをここに貼り付け", token)
+                        .replace("0 // OWNER ID", Long.toString(owner)).replace("所有者IDをここに貼り付け", Long.toString(owner))
                         .trim().getBytes();
                 }
                 try 
@@ -159,8 +166,8 @@ public class BotConfig
                 }
                 catch(IOException ex) 
                 {
-                    prompt.alert(Prompt.Level.WARNING, CONTEXT, "Failed to write new config options to config.txt: "+ex
-                        + "\nPlease make sure that the files are not on your desktop or some other restricted area.\n\nConfig Location: " 
+                    prompt.alert(Prompt.Level.WARNING, CONTEXT, "新しい設定を書き込めませんでした: "+ex
+                        + "\nファイルがデスクトップまたはその他の制限された領域にないことを確認してください。\n\n設定ファイルの場所: "
                         + path.toAbsolutePath().toString());
                 }
             }
@@ -170,7 +177,7 @@ public class BotConfig
         }
         catch (ConfigException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, CONTEXT, ex + ": " + ex.getMessage() + "\n\nConfig Location: " + path.toAbsolutePath().toString());
+            prompt.alert(Prompt.Level.ERROR, CONTEXT, ex + ": " + ex.getMessage() + "\n\n設定ファイルの場所: " + path.toAbsolutePath().toString());
         }
     }
     
@@ -295,4 +302,18 @@ public class BotConfig
             return false;
         return Math.round(track.getDuration()/1000.0) > maxSeconds;
     }
+
+    // [JMusicBot-JP] new function: support niconico play
+    public boolean isNicoNicoEnabled() {
+        return useNicoNico;
+    }
+
+    public String getNicoNicoEmailAddress() {
+        return nicoEmail;
+    }
+
+    public String getNicoNicoPassword() {
+        return nicoPass;
+    }
+    // [JMusicBot-JP] End
 }

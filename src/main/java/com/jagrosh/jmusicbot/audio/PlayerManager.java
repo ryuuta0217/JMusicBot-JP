@@ -19,6 +19,7 @@ import com.jagrosh.jmusicbot.Bot;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.nico.NicoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.core.entities.Guild;
 
@@ -40,6 +41,13 @@ public class PlayerManager extends DefaultAudioPlayerManager
         AudioSourceManagers.registerRemoteSources(this);
         AudioSourceManagers.registerLocalSource(this);
         source(YoutubeAudioSourceManager.class).setPlaylistPageCount(10);
+        if(bot.getConfig().isNicoNicoEnabled()) {
+            registerSourceManager(
+                    new NicoAudioSourceManager(
+                            bot.getConfig().getNicoNicoEmailAddress(),
+                            bot.getConfig().getNicoNicoPassword())
+            );
+        }
     }
     
     public Bot getBot()

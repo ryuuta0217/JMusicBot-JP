@@ -15,6 +15,9 @@
  */
 package com.jagrosh.jmusicbot.utils;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.List;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -25,7 +28,14 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class FormatUtil {
-    
+    public static String getStacktraceByString(Throwable t) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        t.printStackTrace(pw);
+        pw.flush();
+        return sw.toString();
+    }
+
     public static String formatTime(long duration)
     {
         if(duration == Long.MAX_VALUE)

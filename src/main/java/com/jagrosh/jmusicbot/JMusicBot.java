@@ -142,7 +142,7 @@ public class JMusicBot
             cb.setStatus(config.getStatus());
         if(config.getGame()==null)
             cb.useDefaultGame();
-        else if(config.getGame().getName().equalsIgnoreCase("none"))
+        else if(config.getGame().getName().toLowerCase().matches("(none|なし)"))
         {
             cb.setGame(null);
             nogame = true;
@@ -169,7 +169,7 @@ public class JMusicBot
             }
         }
         
-        log.info(config.getConfigLocation()+"からロードされた設定");
+        log.info(config.getConfigLocation() + " から設定を読み込みました");
         
         // attempt to log in and start
         try
@@ -186,18 +186,16 @@ public class JMusicBot
         }
         catch (LoginException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nあなたがいることを確認してください"
-
-                    + "正しいconfig.txtファイルを編集し、あなたが使ったことがある"
-
-                    + "正しいトークン('secret'ではありません!)\n設定場所："+config.getConfigLocation());
+            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\n" +
+                    "正しい設定ファイルを編集していることを確認してください。Botトークンでのログインに失敗しました。" +
+                    "正しいBotトークンを入力してください。(CLIENT SECRET ではありません!)\n" +
+                    "設定ファイルの場所: "+config.getConfigLocation());
             System.exit(1);
         }
         catch(IllegalArgumentException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, "JMusicBot", "設定のいくつかの側面は "
-
-                    + "無効: " + ex + "\n設定場所:"+config.getConfigLocation());
+            prompt.alert(Prompt.Level.ERROR, "JMusicBot", "設定の一部が無効です:" + ex + "\n" +
+                    "設定ファイルの場所: "+config.getConfigLocation());
             System.exit(1);
         }
     }

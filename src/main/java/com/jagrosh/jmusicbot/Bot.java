@@ -109,7 +109,7 @@ public class Bot
     
     public void resetGame()
     {
-        Game game = config.getGame()==null || config.getGame().getName().equalsIgnoreCase("none") ? null : config.getGame();
+        Game game = config.getGame()==null || config.getGame().getName().toLowerCase().matches("(none|なし)") ? null : config.getGame();
         if(!Objects.equals(jda.getPresence().getGame(), game))
             jda.getPresence().setGame(game);
     }
