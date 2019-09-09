@@ -38,9 +38,6 @@ public class PlayerManager extends DefaultAudioPlayerManager
     
     public void init()
     {
-        AudioSourceManagers.registerRemoteSources(this);
-        AudioSourceManagers.registerLocalSource(this);
-        source(YoutubeAudioSourceManager.class).setPlaylistPageCount(10);
         if(bot.getConfig().isNicoNicoEnabled()) {
             registerSourceManager(
                     new NicoAudioSourceManager(
@@ -48,6 +45,10 @@ public class PlayerManager extends DefaultAudioPlayerManager
                             bot.getConfig().getNicoNicoPassword())
             );
         }
+
+        AudioSourceManagers.registerRemoteSources(this);
+        AudioSourceManagers.registerLocalSource(this);
+        source(YoutubeAudioSourceManager.class).setPlaylistPageCount(10);
     }
     
     public Bot getBot()
