@@ -1,10 +1,10 @@
 node {
    def mvnHome
-   stage('下準備') {
+   stage('Prepare') {
       git 'https://github.com/ryuuta0217/JMusicBot-JP.git'         
-      mvnHome = tool 'M3'
+      mvnHome = tool 'Maven 3.6.0'
    }
-   stage('ビルド') {
+   stage('build') {
       withEnv(["MVN_HOME=$mvnHome"]) {
          if (isUnix()) {
             sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore -Dfile.encoding=UTF-8 clean package'
@@ -13,7 +13,7 @@ node {
          }
       }
    }
-   stage('結果') {
+   stage('result') {
       junit '**/target/surefire-reports/TEST-*.xml'
       archiveArtifacts 'target/*.jar'
    }
