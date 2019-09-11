@@ -16,12 +16,15 @@
 package com.jagrosh.jmusicbot.audio;
 
 import com.jagrosh.jmusicbot.Bot;
+import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.source.nico.NicoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.core.entities.Guild;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,6 +33,7 @@ import net.dv8tion.jda.core.entities.Guild;
 public class PlayerManager extends DefaultAudioPlayerManager
 {
     private final Bot bot;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     public PlayerManager(Bot bot)
     {
@@ -49,6 +53,16 @@ public class PlayerManager extends DefaultAudioPlayerManager
         AudioSourceManagers.registerRemoteSources(this);
         AudioSourceManagers.registerLocalSource(this);
         source(YoutubeAudioSourceManager.class).setPlaylistPageCount(10);
+
+        if(getConfiguration().getOpusEncodingQuality() != 10) {
+            logger.debug("OpusEncodingQuality is " + getConfiguration().getOpusEncodingQuality() + "(< 10)" + ", Setting Quality to 10.");
+            getConfiguration().setOpusEncodingQuality(10);
+        }
+
+        if(getConfiguration().getResamplingQuality() != AudioConfiguration.ResamplingQuality.HIGH) {
+            logger.debug("ResamplingQuality is " + getConfiguration().getResamplingQuality().name() + "(not HIGH), Setting Quality to HIGH");
+            getConfiguration().setResamplingQuality(AudioConfiguration.ResamplingQuality.HIGH);
+        }
     }
     
     public Bot getBot()
