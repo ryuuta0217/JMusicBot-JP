@@ -7,7 +7,7 @@
 [![Discord](https://discordapp.com/api/guilds/497317844191805450/widget.png)](https://discord.gg/RBpkHxf)<br>
 
 # JMusicBotJP
-Discordミュージックボットは、シンプルでかつ操作性の良いUIを使用しています。セットアップも起動も簡単です。
+JMusicBotは、シンプルでかつ操作性の良いUIを使用しています。セットアップも起動も簡単です。
 
 [![Setup](http://i.imgur.com/VvXYp5j.png)](https://www.cosgy.jp/2019/09/06/jmusicbot-setup/)
 
