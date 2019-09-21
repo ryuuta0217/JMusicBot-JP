@@ -66,7 +66,7 @@ public class LyricsCmd extends MusicCommand
                     .setTitle(lyrics.getTitle(), lyrics.getURL());
             if(lyrics.getContent().length()>15000)
             {
-                event.replyWarning(" `" + title + "` の歌詞の曲が見つかりましたが、正しくない可能性が高いです!: " + lyrics.getURL());
+                event.replyWarning(" `" + title + "` の歌詞の曲が見つかりましたが、正しくないかもしれません: " + lyrics.getURL());
             }
             else if(lyrics.getContent().length()>2000)
             {
