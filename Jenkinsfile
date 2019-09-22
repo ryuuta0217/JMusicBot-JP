@@ -4,7 +4,7 @@ node {
       git 'https://github.com/ryuuta0217/JMusicBot-JP.git'         
       mvnHome = tool 'Maven 3.6.0'
    }
-   stage('build') {
+   stage('Build') {
       withEnv(["MVN_HOME=$mvnHome"]) {
          if (isUnix()) {
             sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore -Dfile.encoding=UTF-8 clean package'
@@ -13,8 +13,7 @@ node {
          }
       }
    }
-   stage('result') {
-      junit '**/target/surefire-reports/TEST-*.xml'
+   stage('Result') {
       archiveArtifacts 'target/*.jar'
    }
 }
