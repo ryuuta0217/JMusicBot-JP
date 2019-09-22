@@ -19,13 +19,17 @@ import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.typesafe.config.*;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigException;
+import com.typesafe.config.ConfigFactory;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
+import org.apache.commons.io.FileUtils;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class BotConfig
 {
@@ -148,34 +152,26 @@ public class BotConfig
             if(write)
             {
                 String original = OtherUtil.loadResource(this, "/reference.conf");
-                byte[] bytes;
+                String mod;
                 if(original==null)
                 {
-                    bytes = ("token = "+token+"\r\nowner = "+owner).getBytes();
+                    mod = ("token = "+token+"\r\nowner = "+owner);
                 }
                 else
                 {
-                    bytes = original.substring(original.indexOf(START_TOKEN)+START_TOKEN.length(), original.indexOf(END_TOKEN))
+                    mod = original.substring(original.indexOf(START_TOKEN)+START_TOKEN.length(), original.indexOf(END_TOKEN))
                         .replace("BOT_TOKEN_HERE", token).replace("Botトークンをここに貼り付け", token)
                         .replace("0 // OWNER ID", Long.toString(owner)).replace("所有者IDをここに貼り付け", Long.toString(owner))
-                        .trim().getBytes();
+                        .trim();
                 }
-                try 
-                {
-                    Files.write(path, bytes);
-                }
-                catch(IOException ex) 
-                {
-                    prompt.alert(Prompt.Level.WARNING, CONTEXT, "新しい設定を書き込めませんでした: "+ex
-                        + "\nファイルがデスクトップまたはその他の制限された領域にないことを確認してください。\n\n設定ファイルの場所: "
-                        + path.toAbsolutePath().toString());
-                }
+
+                FileUtils.writeStringToFile(path.toFile(), mod, StandardCharsets.UTF_8);
             }
             
             // if we get through the whole config, it's good to go
             valid = true;
         }
-        catch (ConfigException ex)
+        catch (ConfigException | IOException ex)
         {
             prompt.alert(Prompt.Level.ERROR, CONTEXT, ex + ": " + ex.getMessage() + "\n\n設定ファイルの場所: " + path.toAbsolutePath().toString());
         }

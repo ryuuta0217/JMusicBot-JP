@@ -15,11 +15,13 @@
  */
 package com.jagrosh.jmusicbot.gui;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-import java.util.List;
 import javax.swing.*;
+import java.awt.*;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 /**
  *
  * @author Lawrence Dol
@@ -77,7 +79,7 @@ public synchronized void write(byte[] ba,int str,int len) {
 //@edu.umd.cs.findbugs.annotations.SuppressWarnings("DM_DEFAULT_ENCODING")
 static private String bytesToString(byte[] ba, int str, int len) {
     try { 
-        return new String(ba,str,len,"UTF-8"); 
+        return new String(ba,str,len,System.getProperty("file.encoding"));
     } catch(UnsupportedEncodingException thr) { 
         return new String(ba,str,len); 
     } // all JVMs are required to support UTF-8
