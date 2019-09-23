@@ -15,8 +15,6 @@
  */
 package com.jagrosh.jmusicbot.commands.music;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.menu.Paginator;
 import com.jagrosh.jmusicbot.Bot;
@@ -30,6 +28,9 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  *

@@ -19,16 +19,17 @@ import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.entities.Pair;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
