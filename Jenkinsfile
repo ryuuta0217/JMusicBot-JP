@@ -1,7 +1,7 @@
 node {
    def mvnHome
    stage('Prepare') {
-      git 'https://github.com/ryuuta0217/JMusicBot-JP.git'         
+      git 'https://github.com/Cosgy-Dev/JMusicBot-JP.git'         
       mvnHome = tool 'Maven 3.6.0'
    }
    stage('Build') {
