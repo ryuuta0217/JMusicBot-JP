@@ -15,13 +15,14 @@
  */
 package com.jagrosh.jmusicbot.commands.admin;
 
-import java.util.List;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import com.jagrosh.jmusicbot.commands.AdminCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+
+import java.util.List;
 
 /**
  *
@@ -32,7 +33,7 @@ public class SetvcCmd extends AdminCommand
     public SetvcCmd()
     {
         this.name = "setvc";
-        this.help = "音楽を再生するための音声チャンネルを設定します。";
+        this.help = "再生に使用する音声チャンネルを固定します。";
         this.arguments = "<チャンネル名|NONE|なし>";
     }
     
@@ -60,7 +61,7 @@ public class SetvcCmd extends AdminCommand
             else
             {
                 s.setVoiceChannel(list.get(0));
-                event.reply(event.getClient().getSuccess()+"音楽は**"+list.get(0).getName()+"**でのみ再生します。");
+                event.reply(event.getClient().getSuccess()+"音楽は**"+list.get(0).getName()+"**でのみ再生できるようになりました。");
             }
         }
     }

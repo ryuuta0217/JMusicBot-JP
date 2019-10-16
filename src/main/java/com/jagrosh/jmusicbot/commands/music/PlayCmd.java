@@ -15,11 +15,6 @@
  */
 package com.jagrosh.jmusicbot.commands.music;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException.Severity;
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.menu.ButtonMenu;
@@ -30,11 +25,17 @@ import com.jagrosh.jmusicbot.commands.MusicCommand;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
-import java.util.concurrent.TimeUnit;
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException.Severity;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -76,7 +77,7 @@ public class PlayCmd extends MusicCommand
                 if(!isDJ && dj!=null)
                     isDJ = event.getMember().getRoles().contains(dj);
                 if(!isDJ)
-                    event.replyError("DJだけがプレーヤーを一時停止解除できます。");
+                    event.replyError("DJだけが一時停止を解除できます。");
                 else
                 {
                     handler.getPlayer().setPaused(false);
@@ -84,9 +85,9 @@ public class PlayCmd extends MusicCommand
                 }
                 return;
             }
-            StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" Play Commands:\n");
-            builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" <song title>` - YouTubeから最初の結果を再生");
-            builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" <URL>` - 指定された曲、プレイリスト、またはストリームを再生します");
+            StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" Play コマンド:\n");
+            builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" <曲名>` - YouTubeから最初の結果を再生");
+            builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" <URL>` - 指定された曲、再生リスト、またはストリームを再生します");
             for(Command cmd: children)
                 builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" ").append(cmd.getName()).append(" ").append(cmd.getArguments()).append("` - ").append(cmd.getHelp());
             event.reply(builder.toString());
@@ -115,8 +116,8 @@ public class PlayCmd extends MusicCommand
         {
             if(bot.getConfig().isTooLong(track))
             {
-                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このトラック (**"+track.getInfo().title+"**) は許可されている最大長よりも長いです: `"
-                        +FormatUtil.formatTime(track.getDuration())+"` > `"+FormatUtil.formatTime(bot.getConfig().getMaxSeconds()*1000)+"`")).queue();
+                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+
+                        " **"+track.getInfo().title+"**`(" + FormatUtil.formatTime(track.getDuration()) + ")` は設定された長さ`(" + FormatUtil.formatTime(bot.getConfig().getMaxSeconds()*1000) + ")` を超えています。")).queue();
                 return;
             }
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();

@@ -16,18 +16,16 @@
 package com.jagrosh.jmusicbot;
 
 import com.jagrosh.jmusicbot.utils.OtherUtil;
-import java.util.concurrent.TimeUnit;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ShutdownEvent;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  *

@@ -15,14 +15,14 @@
  */
 package com.jagrosh.jmusicbot.commands.owner;
 
-import java.io.IOException;
-import java.util.List;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.OwnerCommand;
-import com.jagrosh.jmusicbot.commands.owner.AutoplaylistCmd;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  *

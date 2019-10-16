@@ -17,15 +17,23 @@ package com.jagrosh.jmusicbot.utils;
 
 import com.jagrosh.jmusicbot.JMusicBot;
 import com.jagrosh.jmusicbot.entities.Prompt;
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
-import okhttp3.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 
 /**
  *
@@ -40,16 +48,24 @@ public class OtherUtil
     
     public static String loadResource(Object clazz, String name)
     {
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(clazz.getClass().getResourceAsStream(name))))
+        try
         {
-            StringBuilder sb = new StringBuilder();
-            reader.lines().forEach(line -> sb.append("\r\n").append(line));
-            return sb.toString().trim();
+            return readString(clazz.getClass().getResourceAsStream(name));
         }
-        catch(IOException ex)
+        catch(Exception ex)
         {
             return null;
         }
+    }
+
+    public static String readString(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream into = new ByteArrayOutputStream();
+        byte[] buf = new byte[32768];
+        for (int n; 0 < (n = inputStream.read(buf));) {
+            into.write(buf, 0, n);
+        }
+        into.close();
+        return new String(into.toByteArray(), StandardCharsets.UTF_8);
     }
     
     public static InputStream imageFromUrl(String url)
