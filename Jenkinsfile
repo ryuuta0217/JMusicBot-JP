@@ -1,10 +1,10 @@
 node {
    def mvnHome
-   stage('Prepare') {
-      git 'https://github.com/ryuuta0217/JMusicBot-JP.git'         
+   stage('準備') {
+      git 'https://github.com/Cosgy-Dev/JMusicBot-JP.git'         
       mvnHome = tool 'Maven 3.6.0'
    }
-   stage('Build') {
+   stage('ビルド') {
       withEnv(["MVN_HOME=$mvnHome"]) {
          if (isUnix()) {
             sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore -Dfile.encoding=UTF-8 clean package'
@@ -13,7 +13,7 @@ node {
          }
       }
    }
-   stage('Result') {
+   stage('成果物の保存') {
       archiveArtifacts 'target/*.jar'
    }
 }
