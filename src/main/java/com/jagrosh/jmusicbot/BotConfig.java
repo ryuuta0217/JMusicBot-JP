@@ -42,8 +42,8 @@ public class BotConfig
     // [JMusicBot-JP] added nicoEmail, nicoPass
     private String token, prefix, altprefix, helpWord, playlistsFolder,
             successEmoji, warningEmoji, errorEmoji, loadingEmoji, searchingEmoji, nicoEmail, nicoPass;
-    // [JMusicBot-JP] added useNicoNico
-    private boolean useNicoNico, stayInChannel, songInGame, npImages, updatealerts, useEval, dbots;
+    // [JMusicBot-JP] added useNicoNico, changeNickName, pauseNoUsers, resumeJoined, stopNoUsers
+    private boolean useNicoNico, changeNickName, stayInChannel, pauseNoUsers, resumeJoined, stopNoUsers, songInGame, npImages, updatealerts, useEval, dbots;
     private long owner, maxSeconds;
     private OnlineStatus status;
     private Game game;
@@ -101,6 +101,13 @@ public class BotConfig
             useNicoNico = config.getBoolean("useniconico");
             nicoEmail = config.getString("nicomail");
             nicoPass = config.getString("nicopass");
+
+            // [JMUsicBot-JP] new function: if all users disconnected from voice channel, pause or stop music and if joined resume music.
+            pauseNoUsers = config.getBoolean("pausenousers");
+            resumeJoined = config.getBoolean("resumejoined");
+            stopNoUsers = config.getBoolean("stopnousers");
+
+            changeNickName = config.getBoolean("changenickname");
             // [JMusicBot-JP] End
             
             // we may need to write a new config file
@@ -250,6 +257,22 @@ public class BotConfig
     public boolean getStay()
     {
         return stayInChannel;
+    }
+
+    public boolean getNoUserPause() {
+        return pauseNoUsers;
+    }
+
+    public boolean getResumeJoined() {
+        return resumeJoined;
+    }
+
+    public boolean getNoUserStop() {
+        return stopNoUsers;
+    }
+
+    public boolean getChangeNickName() {
+        return changeNickName;
     }
     
     public boolean getSongInStatus()

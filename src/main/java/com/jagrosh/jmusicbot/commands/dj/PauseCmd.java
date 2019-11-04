@@ -19,6 +19,8 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.DJCommand;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Member;
 
 /**
  *
@@ -45,5 +47,25 @@ public class PauseCmd extends DJCommand
         }
         handler.getPlayer().setPaused(true);
         event.replySuccess("**"+handler.getPlayer().getPlayingTrack().getInfo().title+"**を一時停止にしました。 `"+event.getClient().getPrefix()+"play` を使用すると一時停止を解除できます。");
+
+        if(bot.getConfig().getChangeNickName()) {
+            Member botMember = event.getGuild().getSelfMember();
+            // botのニックネーム変更
+
+            // botにニックネームがつけられていないとき
+            if(botMember.getNickname() == null || botMember.getNickname().isEmpty()) {
+                // ニックネームの変更権限があるかどうか
+                if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                // ニックネームを変更
+                event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getUser().getName()).complete();
+
+                // botにニックネームがつけられているとき
+            } else {
+                // ニックネームの変更権限があるかどうか
+                if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                // ニックネームを変更
+                event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getNickname().replaceAll("^[▶⏹] ", "")).complete();
+            }
+        }
     }
 }

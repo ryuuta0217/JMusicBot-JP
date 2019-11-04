@@ -29,8 +29,10 @@ import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.audio.AudioSendHandler;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
@@ -98,6 +100,25 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
         defaultQueue.clear();
         audioPlayer.stopTrack();
         //current = null;
+
+        if(manager.getBot().getConfig().getChangeNickName()) {
+            Guild guild = guild(manager.getBot().getJDA());
+            Member botMember = guild.getSelfMember();
+            // botにニックネームがつけられていないとき
+            if(botMember.getNickname() == null || botMember.getNickname().isEmpty()) {
+                // ニックネームの変更権限があるかどうか
+                if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                // ニックネームを変更
+                guild.getController().setNickname(botMember, "⏹ " + botMember.getUser().getName()).complete();
+
+                // botにニックネームがつけられているとき
+            } else {
+                // ニックネームの変更権限があるかどうか
+                if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                // ニックネームを変更
+                guild.getController().setNickname(botMember, "⏹ " + botMember.getNickname().replaceAll("^[▶⏸] ", "")).complete();
+            }
+        }
     }
     
     public boolean isMusicPlaying(JDA jda)
@@ -165,8 +186,28 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
             if(!playFromDefault())
             {
                 manager.getBot().getNowplayingHandler().onTrackUpdate(guildId, null, this);
-                if(!manager.getBot().getConfig().getStay())
-                    manager.getBot().closeAudioConnection(guildId);
+                if(!manager.getBot().getConfig().getStay()) manager.getBot().closeAudioConnection(guildId);
+                if(manager.getBot().getConfig().getChangeNickName()) {
+                    // botのニックネーム変更
+
+                    Guild guild = guild(manager.getBot().getJDA());
+                    Member botMember = guild.getSelfMember();
+
+                    // botにニックネームがつけられていないとき
+                    if(botMember.getNickname() == null || botMember.getNickname().isEmpty()) {
+                        // ニックネームの変更権限があるかどうか
+                        if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                        // ニックネームを変更
+                        guild.getController().setNickname(botMember, "⏹ " + botMember.getUser().getName()).complete();
+
+                        // botにニックネームがつけられているとき
+                    } else {
+                        // ニックネームの変更権限があるかどうか
+                        if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                        // ニックネームを変更
+                        guild.getController().setNickname(botMember, "⏹ " + botMember.getNickname().replaceAll("^[▶⏸] ", "")).complete();
+                    }
+                }
             }
         }
         else
@@ -181,6 +222,28 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
     {
         votes.clear();
         manager.getBot().getNowplayingHandler().onTrackUpdate(guildId, track, this);
+
+        if(manager.getBot().getConfig().getChangeNickName()) {
+            // botのニックネーム変更
+
+            Guild guild = guild(manager.getBot().getJDA());
+            Member botMember = guild.getSelfMember();
+
+            // botにニックネームがつけられていないとき
+            if(botMember.getNickname() == null || botMember.getNickname().isEmpty()) {
+                // ニックネームの変更権限があるかどうか
+                if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                // ニックネームを変更
+                guild.getController().setNickname(botMember, "▶ " + botMember.getUser().getName()).complete();
+
+                // botにニックネームがつけられているとき
+            } else {
+                // ニックネームの変更権限があるかどうか
+                if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                // ニックネームを変更
+                guild.getController().setNickname(botMember, "▶ " + botMember.getNickname().replaceAll("^[⏸⏹] ", "")).complete();
+            }
+        }
     }
 
     
@@ -215,7 +278,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
 
             if(track instanceof YoutubeAudioTrack && manager.getBot().getConfig().useNPImages())
             {
-                eb.setThumbnail("https://img.youtube.com/vi/"+track.getIdentifier()+"/mqdefault.jpg");
+                eb.setThumbnail("https://img.youtube.com/vi/"+track.getIdentifier()+"/maxdefault.jpg");
             }
             
             if(track.getInfo().author != null && !track.getInfo().author.isEmpty())
