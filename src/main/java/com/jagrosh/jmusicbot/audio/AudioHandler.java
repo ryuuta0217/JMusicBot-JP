@@ -278,7 +278,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
 
             if(track instanceof YoutubeAudioTrack && manager.getBot().getConfig().useNPImages())
             {
-                eb.setThumbnail("https://img.youtube.com/vi/"+track.getIdentifier()+"/maxdefault.jpg");
+                eb.setThumbnail("https://img.youtube.com/vi/"+track.getIdentifier()+"/maxresdefault.jpg");
             }
             
             if(track.getInfo().author != null && !track.getInfo().author.isEmpty())
