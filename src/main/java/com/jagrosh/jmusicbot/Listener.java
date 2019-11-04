@@ -15,11 +15,16 @@
  */
 package com.jagrosh.jmusicbot;
 
+import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ShutdownEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
@@ -85,6 +90,83 @@ public class Listener extends ListenerAdapter
     public void onGuildMessageDelete(GuildMessageDeleteEvent event) 
     {
         bot.getNowplayingHandler().onMessageDelete(event.getGuild(), event.getMessageIdLong());
+    }
+
+    @Override
+    public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
+        if(!bot.getConfig().getNoUserPause() || !bot.getConfig().getNoUserStop()) return;
+
+        Member botMember = event.getGuild().getSelfMember();
+        //ボイチャにいる人数が1人、botがボイチャにいるか
+        if(event.getChannelLeft().getMembers().size() == 1 && event.getChannelLeft().getMembers().contains(botMember)) {
+            AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+
+            // config.txtの nouserpause が true の場合
+            if(bot.getConfig().getNoUserPause()) {
+                //⏸
+
+                // プレイヤーを一時停止する
+                handler.getPlayer().setPaused(true);
+
+                if(bot.getConfig().getChangeNickName()) {
+                    // botのニックネーム変更
+
+                    // botにニックネームがつけられていないとき
+                    if(botMember.getNickname() == null || botMember.getNickname().isEmpty()) {
+                        // ニックネームの変更権限があるかどうか
+                        if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                        // ニックネームを変更
+                        event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getUser().getName()).complete();
+
+                        // botにニックネームがつけられているとき
+                    } else {
+                        // ニックネームの変更権限があるかどうか
+                        if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                        // ニックネームを変更
+                        event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getNickname().replaceAll("^[⏯⏹] ", "")).complete();
+                    }
+                }
+                return;
+            }
+
+            if(bot.getConfig().getNoUserStop()) {
+                //⏹
+                handler.stopAndClear();
+                event.getGuild().getAudioManager().closeAudioConnection();
+            }
+        }
+    }
+
+    @Override
+    public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
+        if(!bot.getConfig().getResumeJoined()) return;
+        //▶
+        Member botMember = event.getGuild().getSelfMember();
+        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+
+        //ボイチャにいる人数が1人以上、botがボイチャにいるか、再生が一時停止されているか
+        if((event.getChannelJoined().getMembers().size() > 1 && event.getChannelJoined().getMembers().contains(botMember)) && handler.getPlayer().isPaused()) {
+            handler.getPlayer().setPaused(false);
+
+            if(bot.getConfig().getChangeNickName()) {
+                // botのニックネーム変更
+
+                // botにニックネームがつけられていないとき
+                if(botMember.getNickname() == null || botMember.getNickname().isEmpty()) {
+                    // ニックネームの変更権限があるかどうか
+                    if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                    // ニックネームを変更
+                    event.getGuild().getController().setNickname(botMember, "⏯ " + botMember.getUser().getName()).complete();
+
+                    // botにニックネームがつけられているとき
+                } else {
+                    // ニックネームの変更権限があるかどうか
+                    if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
+                    // ニックネームを変更
+                    event.getGuild().getController().setNickname(botMember, "⏯ " + botMember.getNickname().replaceAll("^[⏸⏹] ", "")).complete();
+                }
+            }
+        }
     }
     
     @Override
