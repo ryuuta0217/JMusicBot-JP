@@ -93,14 +93,14 @@ public class PlayCmd extends MusicCommand
                             // ニックネームの変更権限があるかどうか
                             if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
                             // ニックネームを変更
-                            event.getGuild().getController().setNickname(botMember, "▶ " + botMember.getUser().getName()).complete();
+                            event.getGuild().getController().setNickname(botMember, "⏯ " + botMember.getUser().getName()).complete();
 
                             // botにニックネームがつけられているとき
                         } else {
                             // ニックネームの変更権限があるかどうか
                             if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
                             // ニックネームを変更
-                            event.getGuild().getController().setNickname(botMember, "▶ " + botMember.getNickname().replaceAll("^[⏸⏹] ", "")).complete();
+                            event.getGuild().getController().setNickname(botMember, "⏯ " + botMember.getNickname().replaceAll("^[⏸⏹] ", "")).complete();
                         }
                     }
                 }
@@ -117,7 +117,7 @@ public class PlayCmd extends MusicCommand
         String args = event.getArgs().startsWith("<") && event.getArgs().endsWith(">") 
                 ? event.getArgs().substring(1,event.getArgs().length()-1) 
                 : event.getArgs().isEmpty() ? event.getMessage().getAttachments().get(0).getUrl() : event.getArgs();
-        event.reply(loadingEmoji+"`["+args+"]`をロード中です…", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m,event,false)));
+        event.reply(loadingEmoji+"`["+args+"]`を読み込み中です…", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m,event,false)));
     }
     
     private class ResultHandler implements AudioLoadResultHandler

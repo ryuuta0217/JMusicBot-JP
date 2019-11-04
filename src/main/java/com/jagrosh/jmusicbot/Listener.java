@@ -123,7 +123,7 @@ public class Listener extends ListenerAdapter
                         // ニックネームの変更権限があるかどうか
                         if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
                         // ニックネームを変更
-                        event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getNickname().replaceAll("^[▶⏹] ", "")).complete();
+                        event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getNickname().replaceAll("^[⏯⏹] ", "")).complete();
                     }
                 }
                 return;
@@ -156,14 +156,14 @@ public class Listener extends ListenerAdapter
                     // ニックネームの変更権限があるかどうか
                     if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
                     // ニックネームを変更
-                    event.getGuild().getController().setNickname(botMember, "▶ " + botMember.getUser().getName()).complete();
+                    event.getGuild().getController().setNickname(botMember, "⏯ " + botMember.getUser().getName()).complete();
 
                     // botにニックネームがつけられているとき
                 } else {
                     // ニックネームの変更権限があるかどうか
                     if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
                     // ニックネームを変更
-                    event.getGuild().getController().setNickname(botMember, "▶ " + botMember.getNickname().replaceAll("^[⏸⏹] ", "")).complete();
+                    event.getGuild().getController().setNickname(botMember, "⏯ " + botMember.getNickname().replaceAll("^[⏸⏹] ", "")).complete();
                 }
             }
         }

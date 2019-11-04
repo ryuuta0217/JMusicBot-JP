@@ -116,7 +116,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
                 // ニックネームの変更権限があるかどうか
                 if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
                 // ニックネームを変更
-                guild.getController().setNickname(botMember, "⏹ " + botMember.getNickname().replaceAll("^[▶⏸] ", "")).complete();
+                guild.getController().setNickname(botMember, "⏹ " + botMember.getNickname().replaceAll("^[⏯⏸] ", "")).complete();
             }
         }
     }
@@ -205,7 +205,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
                         // ニックネームの変更権限があるかどうか
                         if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
                         // ニックネームを変更
-                        guild.getController().setNickname(botMember, "⏹ " + botMember.getNickname().replaceAll("^[▶⏸] ", "")).complete();
+                        guild.getController().setNickname(botMember, "⏹ " + botMember.getNickname().replaceAll("^[⏯⏸] ", "")).complete();
                     }
                 }
             }
@@ -234,14 +234,14 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
                 // ニックネームの変更権限があるかどうか
                 if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
                 // ニックネームを変更
-                guild.getController().setNickname(botMember, "▶ " + botMember.getUser().getName()).complete();
+                guild.getController().setNickname(botMember, "⏯ " + botMember.getUser().getName()).complete();
 
                 // botにニックネームがつけられているとき
             } else {
                 // ニックネームの変更権限があるかどうか
                 if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
                 // ニックネームを変更
-                guild.getController().setNickname(botMember, "▶ " + botMember.getNickname().replaceAll("^[⏸⏹] ", "")).complete();
+                guild.getController().setNickname(botMember, "⏯ " + botMember.getNickname().replaceAll("^[⏸⏹] ", "")).complete();
             }
         }
     }
