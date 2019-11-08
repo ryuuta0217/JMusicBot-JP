@@ -17,7 +17,6 @@ package com.jagrosh.jmusicbot;
 
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -33,51 +32,41 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
  * @author Cosgy Dev (info@cosgy.jp)
  */
-public class Listener extends ListenerAdapter
-{
+public class Listener extends ListenerAdapter {
     private final Bot bot;
-    
-    public Listener(Bot bot)
-    {
+
+    public Listener(Bot bot) {
         this.bot = bot;
     }
-    
+
     @Override
-    public void onReady(ReadyEvent event) 
-    {
-        if(event.getJDA().getGuilds().isEmpty())
-        {
+    public void onReady(ReadyEvent event) {
+        if (event.getJDA().getGuilds().isEmpty()) {
             Logger log = LoggerFactory.getLogger("MusicBot");
             log.warn("このボットはグループに入っていません！ボットをあなたのグループに追加するには、以下のリンクを使用してください。");
             log.warn(event.getJDA().asBot().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
         }
-        event.getJDA().getGuilds().forEach((guild) -> 
+        event.getJDA().getGuilds().forEach((guild) ->
         {
-            try
-            {
+            try {
                 String defpl = bot.getSettingsManager().getSettings(guild).getDefaultPlaylist();
                 VoiceChannel vc = bot.getSettingsManager().getSettings(guild).getVoiceChannel(guild);
-                if(defpl!=null && vc!=null && bot.getPlayerManager().setUpHandler(guild).playFromDefault())
-                {
+                if (defpl != null && vc != null && bot.getPlayerManager().setUpHandler(guild).playFromDefault()) {
                     guild.getAudioManager().openAudioConnection(vc);
                 }
+            } catch (Exception ignore) {
             }
-            catch(Exception ignore) {}
         });
-        if(bot.getConfig().useUpdateAlerts())
-        {
-            bot.getThreadpool().scheduleWithFixedDelay(() -> 
+        if (bot.getConfig().useUpdateAlerts()) {
+            bot.getThreadpool().scheduleWithFixedDelay(() ->
             {
                 User owner = bot.getJDA().getUserById(bot.getConfig().getOwnerId());
-                if(owner!=null)
-                {
+                if (owner != null) {
                     String currentVersion = OtherUtil.getCurrentVersion();
                     String latestVersion = OtherUtil.getLatestVersion();
-                    if(latestVersion!=null && !currentVersion.equalsIgnoreCase(latestVersion))
-                    {
+                    if (latestVersion != null && !currentVersion.equalsIgnoreCase(latestVersion)) {
                         String msg = String.format(OtherUtil.NEW_VERSION_AVAILABLE, currentVersion, latestVersion);
                         owner.openPrivateChannel().queue(pc -> pc.sendMessage(msg).queue());
                     }
@@ -85,51 +74,37 @@ public class Listener extends ListenerAdapter
             }, 0, 24, TimeUnit.HOURS);
         }
     }
-    
+
     @Override
-    public void onGuildMessageDelete(GuildMessageDeleteEvent event) 
-    {
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
         bot.getNowplayingHandler().onMessageDelete(event.getGuild(), event.getMessageIdLong());
     }
 
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
-        if(!bot.getConfig().getNoUserPause() || !bot.getConfig().getNoUserStop()) return;
+        //NUP = false -> NUS = false -> return
+        //NUP = false -> NUS = true -> GO
+        //NUP = true -> GO
+        if (!bot.getConfig().getNoUserPause())
+            if (!bot.getConfig().getNoUserStop()) return;
 
         Member botMember = event.getGuild().getSelfMember();
         //ボイチャにいる人数が1人、botがボイチャにいるか
-        if(event.getChannelLeft().getMembers().size() == 1 && event.getChannelLeft().getMembers().contains(botMember)) {
-            AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+        if (event.getChannelLeft().getMembers().size() == 1 && event.getChannelLeft().getMembers().contains(botMember)) {
+            AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
 
             // config.txtの nouserpause が true の場合
-            if(bot.getConfig().getNoUserPause()) {
+            if (bot.getConfig().getNoUserPause()) {
                 //⏸
 
                 // プレイヤーを一時停止する
                 handler.getPlayer().setPaused(true);
 
-                if(bot.getConfig().getChangeNickName()) {
-                    // botのニックネーム変更
-
-                    // botにニックネームがつけられていないとき
-                    if(botMember.getNickname() == null || botMember.getNickname().isEmpty()) {
-                        // ニックネームの変更権限があるかどうか
-                        if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
-                        // ニックネームを変更
-                        event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getUser().getName()).complete();
-
-                        // botにニックネームがつけられているとき
-                    } else {
-                        // ニックネームの変更権限があるかどうか
-                        if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
-                        // ニックネームを変更
-                        event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getNickname().replaceAll("^[⏯⏹] ", "")).complete();
-                    }
-                }
+                Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PAUSED);
                 return;
             }
 
-            if(bot.getConfig().getNoUserStop()) {
+            if (bot.getConfig().getNoUserStop()) {
                 //⏹
                 handler.stopAndClear();
                 event.getGuild().getAudioManager().closeAudioConnection();
@@ -139,39 +114,21 @@ public class Listener extends ListenerAdapter
 
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        if(!bot.getConfig().getResumeJoined()) return;
+        if (!bot.getConfig().getResumeJoined()) return;
         //▶
         Member botMember = event.getGuild().getSelfMember();
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
 
         //ボイチャにいる人数が1人以上、botがボイチャにいるか、再生が一時停止されているか
-        if((event.getChannelJoined().getMembers().size() > 1 && event.getChannelJoined().getMembers().contains(botMember)) && handler.getPlayer().isPaused()) {
+        if ((event.getChannelJoined().getMembers().size() > 1 && event.getChannelJoined().getMembers().contains(botMember)) && handler.getPlayer().isPaused()) {
             handler.getPlayer().setPaused(false);
 
-            if(bot.getConfig().getChangeNickName()) {
-                // botのニックネーム変更
-
-                // botにニックネームがつけられていないとき
-                if(botMember.getNickname() == null || botMember.getNickname().isEmpty()) {
-                    // ニックネームの変更権限があるかどうか
-                    if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
-                    // ニックネームを変更
-                    event.getGuild().getController().setNickname(botMember, "⏯ " + botMember.getUser().getName()).complete();
-
-                    // botにニックネームがつけられているとき
-                } else {
-                    // ニックネームの変更権限があるかどうか
-                    if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
-                    // ニックネームを変更
-                    event.getGuild().getController().setNickname(botMember, "⏯ " + botMember.getNickname().replaceAll("^[⏸⏹] ", "")).complete();
-                }
-            }
+            Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PLAYING);
         }
     }
-    
+
     @Override
-    public void onShutdown(ShutdownEvent event) 
-    {
+    public void onShutdown(ShutdownEvent event) {
         bot.shutdown();
     }
 }

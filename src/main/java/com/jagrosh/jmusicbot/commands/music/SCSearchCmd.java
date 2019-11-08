@@ -18,13 +18,10 @@ package com.jagrosh.jmusicbot.commands.music;
 import com.jagrosh.jmusicbot.Bot;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SCSearchCmd extends SearchCmd 
-{
-    public SCSearchCmd(Bot bot, String searchingEmoji)
-    {
+public class SCSearchCmd extends SearchCmd {
+    public SCSearchCmd(Bot bot, String searchingEmoji) {
         super(bot, searchingEmoji);
         this.searchPrefix = "scsearch:";
         this.name = "scsearch";

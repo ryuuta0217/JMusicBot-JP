@@ -25,45 +25,36 @@ import net.dv8tion.jda.core.entities.Role;
 import java.util.List;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SetdjCmd extends AdminCommand
-{
-    public SetdjCmd()
-    {
+public class SetdjCmd extends AdminCommand {
+    public SetdjCmd() {
         this.name = "setdj";
         this.help = "ボットコマンドを使用できる役割DJを設定します。";
         this.arguments = "<役割名|NONE|なし>";
     }
-    
+
     @Override
-    protected void execute(CommandEvent event) 
-    {
-        if(event.getArgs().isEmpty())
-        {
-            event.reply(event.getClient().getError()+"役割の名前、またはNONEなどを付けてください");
+    protected void execute(CommandEvent event) {
+        if (event.getArgs().isEmpty()) {
+            event.reply(event.getClient().getError() + "役割の名前、またはNONEなどを付けてください");
             return;
         }
         Settings s = event.getClient().getSettingsFor(event.getGuild());
-        if(event.getArgs().toLowerCase().matches("(none|なし)"))
-        {
+        if (event.getArgs().toLowerCase().matches("(none|なし)")) {
             s.setDJRole(null);
-            event.reply(event.getClient().getSuccess()+"DJの役割はリセットされました。管理者だけがDJコマンドを使用できます。");
-        }
-        else
-        {
+            event.reply(event.getClient().getSuccess() + "DJの役割はリセットされました。管理者だけがDJコマンドを使用できます。");
+        } else {
             List<Role> list = FinderUtil.findRoles(event.getArgs(), event.getGuild());
-            if(list.isEmpty())
-                event.reply(event.getClient().getWarning()+"役割が見つかりませんでした \""+event.getArgs()+"\"");
-            else if (list.size()>1)
-                event.reply(event.getClient().getWarning()+FormatUtil.listOfRoles(list, event.getArgs()));
-            else
-            {
+            if (list.isEmpty())
+                event.reply(event.getClient().getWarning() + "役割が見つかりませんでした \"" + event.getArgs() + "\"");
+            else if (list.size() > 1)
+                event.reply(event.getClient().getWarning() + FormatUtil.listOfRoles(list, event.getArgs()));
+            else {
                 s.setDJRole(list.get(0));
-                event.reply(event.getClient().getSuccess()+"DJコマンドは役割が、**"+list.get(0).getName()+"**のユーザーが使用することができます");
+                event.reply(event.getClient().getSuccess() + "DJコマンドは役割が、**" + list.get(0).getName() + "**のユーザーが使用することができます");
             }
         }
     }
-    
+
 }

@@ -22,128 +22,102 @@ import javax.swing.*;
 import java.util.Scanner;
 
 /**
- *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
-public class Prompt
-{
+public class Prompt {
     private final String title;
     private final String noguiMessage;
-    
+
     private boolean nogui;
     private Scanner scanner;
-    
-    public Prompt(String title)
-    {
+
+    public Prompt(String title) {
         this(title, null);
     }
-    
-    public Prompt(String title, String noguiMessage)
-    {
+
+    public Prompt(String title, String noguiMessage) {
         this(title, noguiMessage, "true".equalsIgnoreCase(System.getProperty("nogui")));
     }
-    
-    public Prompt(String title, String noguiMessage, boolean nogui)
-    {
+
+    public Prompt(String title, String noguiMessage, boolean nogui) {
         this.title = title;
         this.noguiMessage = noguiMessage == null ? "noguiモードに切り替えます。 -nogui=trueフラグを含めることで、手動でnoguiモードで起動できます。" : noguiMessage;
         this.nogui = nogui;
     }
-    
-    public boolean isNoGUI()
-    {
+
+    public boolean isNoGUI() {
         return nogui;
     }
-    
-    public void alert(Level level, String context, String message)
-    {
-        if(nogui)
-        {
+
+    public void alert(Level level, String context, String message) {
+        if (nogui) {
             Logger log = LoggerFactory.getLogger(context);
-            switch(level)
-            {
-                case INFO: 
-                    log.info(message); 
+            switch (level) {
+                case INFO:
+                    log.info(message);
                     break;
-                case WARNING: 
-                    log.warn(message); 
+                case WARNING:
+                    log.warn(message);
                     break;
-                case ERROR: 
-                    log.error(message); 
+                case ERROR:
+                    log.error(message);
                     break;
-                default: 
-                    log.info(message); 
+                default:
+                    log.info(message);
                     break;
             }
-        }
-        else
-        {
-            try 
-            {
+        } else {
+            try {
                 int option = 0;
-                switch(level)
-                {
-                    case INFO: 
-                        option = JOptionPane.INFORMATION_MESSAGE; 
+                switch (level) {
+                    case INFO:
+                        option = JOptionPane.INFORMATION_MESSAGE;
                         break;
-                    case WARNING: 
-                        option = JOptionPane.WARNING_MESSAGE; 
+                    case WARNING:
+                        option = JOptionPane.WARNING_MESSAGE;
                         break;
-                    case ERROR: 
-                        option = JOptionPane.ERROR_MESSAGE; 
+                    case ERROR:
+                        option = JOptionPane.ERROR_MESSAGE;
                         break;
                     default:
                         option = JOptionPane.PLAIN_MESSAGE;
                         break;
                 }
-                JOptionPane.showMessageDialog(null, "<html><body><p style='width: 400px;'>"+message, title, option);
-            }
-            catch(Exception e) 
-            {
+                JOptionPane.showMessageDialog(null, "<html><body><p style='width: 400px;'>" + message, title, option);
+            } catch (Exception e) {
                 nogui = true;
                 alert(Level.WARNING, context, noguiMessage);
                 alert(level, context, message);
             }
         }
     }
-    
-    public String prompt(String content)
-    {
-        if(nogui)
-        {
-            if(scanner==null)
+
+    public String prompt(String content) {
+        if (nogui) {
+            if (scanner == null)
                 scanner = new Scanner(System.in);
-            try
-            {
+            try {
                 System.out.println(content);
-                if(scanner.hasNextLine())
+                if (scanner.hasNextLine())
                     return scanner.nextLine();
                 return null;
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 alert(Level.ERROR, title, "コマンドラインから入力を読み込めません。");
                 e.printStackTrace();
                 return null;
             }
-        }
-        else
-        {
-            try 
-            {
+        } else {
+            try {
                 return JOptionPane.showInputDialog(null, content, title, JOptionPane.QUESTION_MESSAGE);
-            }
-            catch(Exception e) 
-            {
+            } catch (Exception e) {
                 nogui = true;
                 alert(Level.WARNING, title, noguiMessage);
                 return prompt(content);
             }
         }
     }
-    
-    public static enum Level
-    {
-        INFO, WARNING, ERROR;
+
+    public enum Level {
+        INFO, WARNING, ERROR
     }
 }

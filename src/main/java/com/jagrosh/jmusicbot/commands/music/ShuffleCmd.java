@@ -21,13 +21,10 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class ShuffleCmd extends MusicCommand 
-{
-    public ShuffleCmd(Bot bot)
-    {
+public class ShuffleCmd extends MusicCommand {
+    public ShuffleCmd(Bot bot) {
         super(bot);
         this.name = "shuffle";
         this.help = "追加した曲をシャッフル";
@@ -36,12 +33,10 @@ public class ShuffleCmd extends MusicCommand
     }
 
     @Override
-    public void doCommand(CommandEvent event) 
-    {
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+    public void doCommand(CommandEvent event) {
+        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
         int s = handler.getQueue().shuffle(event.getAuthor().getIdLong());
-        switch (s) 
-        {
+        switch (s) {
             case 0:
                 event.replyError("再生待ちに曲がありません!");
                 break;
@@ -49,9 +44,9 @@ public class ShuffleCmd extends MusicCommand
                 event.replyWarning("再生待ちには現在1曲しかありません!");
                 break;
             default:
-                event.replySuccess(""+s+"曲をシャッフルしました。");
+                event.replySuccess("" + s + "曲をシャッフルしました。");
                 break;
         }
     }
-    
+
 }
