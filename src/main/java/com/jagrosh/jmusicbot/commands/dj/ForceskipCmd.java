@@ -22,13 +22,10 @@ import com.jagrosh.jmusicbot.commands.DJCommand;
 import net.dv8tion.jda.core.entities.User;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class ForceskipCmd extends DJCommand 
-{
-    public ForceskipCmd(Bot bot)
-    {
+public class ForceskipCmd extends DJCommand {
+    public ForceskipCmd(Bot bot) {
         super(bot);
         this.name = "forceskip";
         this.help = "現在の曲をスキップします";
@@ -37,12 +34,11 @@ public class ForceskipCmd extends DJCommand
     }
 
     @Override
-    public void doCommand(CommandEvent event) 
-    {
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+    public void doCommand(CommandEvent event) {
+        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
         User u = event.getJDA().getUserById(handler.getRequester());
-        event.reply(event.getClient().getSuccess()+"**"+handler.getPlayer().getPlayingTrack().getInfo().title
-                +"** をスキップしました\n("+(u==null ? "誰かがリクエストしました。" : "**"+u.getName()+"さんがリクエストしました。**")+")");
+        event.reply(event.getClient().getSuccess() + "**" + handler.getPlayer().getPlayingTrack().getInfo().title
+                + "** をスキップしました\n(" + (u == null ? "誰かがリクエストしました。" : "**" + u.getName() + "さんがリクエストしました。**") + ")");
         handler.getPlayer().stopTrack();
     }
 }

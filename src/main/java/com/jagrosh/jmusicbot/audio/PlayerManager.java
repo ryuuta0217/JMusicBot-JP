@@ -27,22 +27,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author Cosgy Dev (info@cosgy.jp)
  */
-public class PlayerManager extends DefaultAudioPlayerManager
-{
+public class PlayerManager extends DefaultAudioPlayerManager {
     private final Bot bot;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    
-    public PlayerManager(Bot bot)
-    {
+
+    public PlayerManager(Bot bot) {
         this.bot = bot;
     }
-    
-    public void init()
-    {
-        if(bot.getConfig().isNicoNicoEnabled()) {
+
+    public void init() {
+        if (bot.getConfig().isNicoNicoEnabled()) {
             registerSourceManager(
                     new NicoAudioSourceManager(
                             bot.getConfig().getNicoNicoEmailAddress(),
@@ -54,39 +50,34 @@ public class PlayerManager extends DefaultAudioPlayerManager
         AudioSourceManagers.registerLocalSource(this);
         source(YoutubeAudioSourceManager.class).setPlaylistPageCount(10);
 
-        if(getConfiguration().getOpusEncodingQuality() != 10) {
+        if (getConfiguration().getOpusEncodingQuality() != 10) {
             logger.debug("OpusEncodingQuality is " + getConfiguration().getOpusEncodingQuality() + "(< 10)" + ", Setting Quality to 10.");
             getConfiguration().setOpusEncodingQuality(10);
         }
 
-        if(getConfiguration().getResamplingQuality() != AudioConfiguration.ResamplingQuality.HIGH) {
+        if (getConfiguration().getResamplingQuality() != AudioConfiguration.ResamplingQuality.HIGH) {
             logger.debug("ResamplingQuality is " + getConfiguration().getResamplingQuality().name() + "(not HIGH), Setting Quality to HIGH");
             getConfiguration().setResamplingQuality(AudioConfiguration.ResamplingQuality.HIGH);
         }
     }
-    
-    public Bot getBot()
-    {
+
+    public Bot getBot() {
         return bot;
     }
-    
-    public boolean hasHandler(Guild guild)
-    {
-        return guild.getAudioManager().getSendingHandler()!=null;
+
+    public boolean hasHandler(Guild guild) {
+        return guild.getAudioManager().getSendingHandler() != null;
     }
-    
-    public AudioHandler setUpHandler(Guild guild)
-    {
+
+    public AudioHandler setUpHandler(Guild guild) {
         AudioHandler handler;
-        if(guild.getAudioManager().getSendingHandler()==null)
-        {
+        if (guild.getAudioManager().getSendingHandler() == null) {
             AudioPlayer player = createPlayer();
             player.setVolume(bot.getSettingsManager().getSettings(guild).getVolume());
             handler = new AudioHandler(this, guild, player);
             player.addListener(handler);
             guild.getAudioManager().setSendingHandler(handler);
-        }
-        else
+        } else
             handler = (AudioHandler) guild.getAudioManager().getSendingHandler();
         return handler;
     }

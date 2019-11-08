@@ -24,43 +24,36 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SetavatarCmd extends OwnerCommand 
-{
-    public SetavatarCmd()
-    {
+public class SetavatarCmd extends OwnerCommand {
+    public SetavatarCmd() {
         this.name = "setavatar";
         this.help = "ボットのアバターを設定します";
         this.arguments = "<url>";
         this.guildOnly = false;
     }
-    
+
     @Override
-    protected void execute(CommandEvent event) 
-    {
+    protected void execute(CommandEvent event) {
         String url;
-        if(event.getArgs().isEmpty())
-            if(!event.getMessage().getAttachments().isEmpty() && event.getMessage().getAttachments().get(0).isImage())
+        if (event.getArgs().isEmpty())
+            if (!event.getMessage().getAttachments().isEmpty() && event.getMessage().getAttachments().get(0).isImage())
                 url = event.getMessage().getAttachments().get(0).getUrl();
             else
                 url = null;
         else
             url = event.getArgs();
         InputStream s = OtherUtil.imageFromUrl(url);
-        if(s==null)
-        {
-            event.reply(event.getClient().getError()+" 無効または見つからないURL");
-        }
-        else
-        {
+        if (s == null) {
+            event.reply(event.getClient().getError() + " 無効または見つからないURL");
+        } else {
             try {
-            event.getSelfUser().getManager().setAvatar(Icon.from(s)).queue(
-                    v -> event.reply(event.getClient().getSuccess()+" Successfully changed avatar."), 
-                    t -> event.reply(event.getClient().getError()+"アバターを設定できませんでした。"));
-            } catch(IOException e) {
-                event.reply(event.getClient().getError()+" 提供されたURLから読み込めませんでした。");
+                event.getSelfUser().getManager().setAvatar(Icon.from(s)).queue(
+                        v -> event.reply(event.getClient().getSuccess() + " Successfully changed avatar."),
+                        t -> event.reply(event.getClient().getError() + "アバターを設定できませんでした。"));
+            } catch (IOException e) {
+                event.reply(event.getClient().getError() + " 提供されたURLから読み込めませんでした。");
             }
         }
     }

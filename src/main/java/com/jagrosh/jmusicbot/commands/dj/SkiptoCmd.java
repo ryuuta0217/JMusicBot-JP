@@ -21,13 +21,10 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.DJCommand;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SkiptoCmd extends DJCommand 
-{
-    public SkiptoCmd(Bot bot)
-    {
+public class SkiptoCmd extends DJCommand {
+    public SkiptoCmd(Bot bot) {
         super(bot);
         this.name = "skipto";
         this.help = "指定された曲にスキップします";
@@ -37,26 +34,21 @@ public class SkiptoCmd extends DJCommand
     }
 
     @Override
-    public void doCommand(CommandEvent event) 
-    {
+    public void doCommand(CommandEvent event) {
         int index = 0;
-        try
-        {
+        try {
             index = Integer.parseInt(event.getArgs());
-        }
-        catch(NumberFormatException e)
-        {
-            event.reply(event.getClient().getError()+" `"+event.getArgs()+"` 有効な整数ではありません。");
+        } catch (NumberFormatException e) {
+            event.reply(event.getClient().getError() + " `" + event.getArgs() + "` 有効な整数ではありません。");
             return;
         }
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
-        if(index<1 || index>handler.getQueue().size())
-        {
-            event.reply(event.getClient().getError()+" 1から"+handler.getQueue().size()+"の間の有効な整数でないといけません!");
+        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+        if (index < 1 || index > handler.getQueue().size()) {
+            event.reply(event.getClient().getError() + " 1から" + handler.getQueue().size() + "の間の有効な整数でないといけません!");
             return;
         }
-        handler.getQueue().skip(index-1);
-        event.reply(event.getClient().getSuccess()+" **"+handler.getQueue().get(0).getTrack().getInfo().title+"にスキップしました。**");
+        handler.getQueue().skip(index - 1);
+        event.reply(event.getClient().getSuccess() + " **" + handler.getQueue().get(0).getTrack().getInfo().title + "にスキップしました。**");
         handler.getPlayer().stopTrack();
     }
 }

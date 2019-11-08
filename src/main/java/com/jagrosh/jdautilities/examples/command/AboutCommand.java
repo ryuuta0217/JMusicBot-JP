@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 
 /**
- *
  * @author John Grosh (jagrosh)
  */
 @CommandInfo(
@@ -47,8 +46,7 @@ public class AboutCommand extends Command {
     private String oauthLink;
     private final String[] features;
 
-    public AboutCommand(Color color, String description, String[] features, Permission... perms)
-    {
+    public AboutCommand(Color color, String description, String[] features, Permission... perms) {
         this.color = color;
         this.description = description;
         this.features = features;
@@ -59,13 +57,11 @@ public class AboutCommand extends Command {
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
     }
 
-    public void setIsAuthor(boolean value)
-    {
+    public void setIsAuthor(boolean value) {
         this.IS_AUTHOR = value;
     }
 
-    public void setReplacementCharacter(String value)
-    {
+    public void setReplacementCharacter(String value) {
         this.REPLACEMENT_ICON = value;
     }
 
@@ -88,7 +84,7 @@ public class AboutCommand extends Command {
         boolean inv = !oauthLink.isEmpty();
         String invline = "\n" + (join ? "公式Discordチャンネルは [`こちら`](" + event.getClient().getServerInvite() + ")" : (inv ? "からお願いします " : ""))
                 + (inv ? (join ? ", または " : "") + "あなたのサーバーに[`招待リンク`](" + oauthLink + ") " : "で招待することができます。") + "!";
-        String author = event.getJDA().getUserById(event.getClient().getOwnerId())==null ? "<@" + event.getClient().getOwnerId()+">"
+        String author = event.getJDA().getUserById(event.getClient().getOwnerId()) == null ? "<@" + event.getClient().getOwnerId() + ">"
                 : event.getJDA().getUserById(event.getClient().getOwnerId()).getName();
         StringBuilder descr = new StringBuilder().append("こんにちは！ 私は **").append(event.getSelfUser().getName()).append("**です。 ")
                 .append(description).append("\n私は").append(JDAUtilitiesInfo.AUTHOR + "の[コマンド拡張](" + JDAUtilitiesInfo.GITHUB + ") (")
@@ -100,14 +96,11 @@ public class AboutCommand extends Command {
             descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append(feature);
         descr.append(" ```");
         builder.setDescription(descr);
-        if (event.getJDA().getShardInfo() == null)
-        {
+        if (event.getJDA().getShardInfo() == null) {
             builder.addField("統計", event.getJDA().getGuilds().size() + " サーバー\n1 シャード", true);
             builder.addField("ユーザー", event.getJDA().getUsers().size() + " ユニーク\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers().size()).sum() + " トータル", true);
             builder.addField("チャンネル", event.getJDA().getTextChannels().size() + " テキスト\n" + event.getJDA().getVoiceChannels().size() + " ボイス", true);
-        }
-        else
-        {
+        } else {
             builder.addField("ステータス", (event.getClient()).getTotalGuilds() + " サーバー\nシャード " + (event.getJDA().getShardInfo().getShardId() + 1)
                     + "/" + event.getJDA().getShardInfo().getShardTotal(), true);
             builder.addField("", event.getJDA().getUsers().size() + " ユーザーのシャード\n" + event.getJDA().getGuilds().size() + " サーバー", true);

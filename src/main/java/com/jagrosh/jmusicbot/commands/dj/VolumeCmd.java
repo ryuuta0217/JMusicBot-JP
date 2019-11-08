@@ -23,13 +23,10 @@ import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class VolumeCmd extends DJCommand
-{
-    public VolumeCmd(Bot bot)
-    {
+public class VolumeCmd extends DJCommand {
+    public VolumeCmd(Bot bot) {
         super(bot);
         this.name = "volume";
         this.aliases = new String[]{"vol"};
@@ -38,32 +35,27 @@ public class VolumeCmd extends DJCommand
     }
 
     @Override
-    public void doCommand(CommandEvent event)
-    {
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+    public void doCommand(CommandEvent event) {
+        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
         Settings settings = event.getClient().getSettingsFor(event.getGuild());
         int volume = handler.getPlayer().getVolume();
-        if(event.getArgs().isEmpty())
-        {
-            event.reply(FormatUtil.volumeIcon(volume)+" 現在の音量は `"+volume+"です  `");
-        }
-        else
-        {
+        if (event.getArgs().isEmpty()) {
+            event.reply(FormatUtil.volumeIcon(volume) + " 現在の音量は `" + volume + "です  `");
+        } else {
             int nvolume;
-            try{
+            try {
                 nvolume = Integer.parseInt(event.getArgs());
-            }catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 nvolume = -1;
             }
-            if(nvolume<0 || nvolume>150)
-                event.reply(event.getClient().getError()+" 音量は0から150までの有効な整数でないといけません。");
-            else
-            {
+            if (nvolume < 0 || nvolume > 150)
+                event.reply(event.getClient().getError() + " 音量は0から150までの有効な整数でないといけません。");
+            else {
                 handler.getPlayer().setVolume(nvolume);
                 settings.setVolume(nvolume);
-                event.reply(FormatUtil.volumeIcon(nvolume)+" 音量を`"+volume+"`から`"+nvolume+"`に変更しました。");
+                event.reply(FormatUtil.volumeIcon(nvolume) + " 音量を`" + volume + "`から`" + nvolume + "`に変更しました。");
             }
         }
     }
-    
+
 }

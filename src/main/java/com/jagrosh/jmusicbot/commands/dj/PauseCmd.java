@@ -17,19 +17,15 @@ package com.jagrosh.jmusicbot.commands.dj;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
+import com.jagrosh.jmusicbot.PlayStatus;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.DJCommand;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Member;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class PauseCmd extends DJCommand 
-{
-    public PauseCmd(Bot bot)
-    {
+public class PauseCmd extends DJCommand {
+    public PauseCmd(Bot bot) {
         super(bot);
         this.name = "pause";
         this.help = "現在の曲を一時停止します";
@@ -37,35 +33,15 @@ public class PauseCmd extends DJCommand
     }
 
     @Override
-    public void doCommand(CommandEvent event) 
-    {
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
-        if(handler.getPlayer().isPaused())
-        {
-            event.replyWarning("曲はすでに一時停止しています。 `"+event.getClient().getPrefix()+" play` を使用して一時停止を解除する事ができます。");
+    public void doCommand(CommandEvent event) {
+        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+        if (handler.getPlayer().isPaused()) {
+            event.replyWarning("曲はすでに一時停止しています。 `" + event.getClient().getPrefix() + " play` を使用して一時停止を解除する事ができます。");
             return;
         }
         handler.getPlayer().setPaused(true);
-        event.replySuccess("**"+handler.getPlayer().getPlayingTrack().getInfo().title+"**を一時停止にしました。 `"+event.getClient().getPrefix()+" play` を使用すると一時停止を解除できます。");
+        event.replySuccess("**" + handler.getPlayer().getPlayingTrack().getInfo().title + "**を一時停止にしました。 `" + event.getClient().getPrefix() + " play` を使用すると一時停止を解除できます。");
 
-        if(bot.getConfig().getChangeNickName()) {
-            Member botMember = event.getGuild().getSelfMember();
-            // botのニックネーム変更
-
-            // botにニックネームがつけられていないとき
-            if(botMember.getNickname() == null || botMember.getNickname().isEmpty()) {
-                // ニックネームの変更権限があるかどうか
-                if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
-                // ニックネームを変更
-                event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getUser().getName()).complete();
-
-                // botにニックネームがつけられているとき
-            } else {
-                // ニックネームの変更権限があるかどうか
-                if(!botMember.hasPermission(Permission.NICKNAME_CHANGE)) return;
-                // ニックネームを変更
-                event.getGuild().getController().setNickname(botMember, "⏸ " + botMember.getNickname().replaceAll("^[⏯⏹] ", "")).complete();
-            }
-        }
+        Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PAUSED);
     }
 }

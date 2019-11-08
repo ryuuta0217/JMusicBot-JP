@@ -19,16 +19,16 @@ public class AboutJPCmd extends Command {
     public void execute(CommandEvent event) {
         EmbedBuilder builder = new EmbedBuilder();
         event.getTextChannel().sendMessage(new EmbedBuilder()
-        .setTitle("JMusicBot JP", null)
-        .setColor(Color.blue)
-        .setDescription("2019/08/31更新")
-        .addField("ボットバージョン", "0.1.0", false)
-        .addField("ライセンス", "Apache License 2.0", false)
-        .addField("著作権","Copyright 2017 John Grosh", false)
-        .addField("日本語化","Cosgy Dev", false)
-        .addField("CosgyDevスタッフ","Kosugi_kun\nrito_528",false)
-        .setAuthor("JMusicBot JP", null, "https://avatars1.githubusercontent.com/u/42630152?s=400&u=3bc25d4a1d13b627f715829ab66ee82cc48a93f9&v=4")
-        .setFooter("Cosgy-Dev/JMusicBot-JP", "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png")
+                .setTitle("JMusicBot JP", null)
+                .setColor(Color.blue)
+                .setDescription("2019/08/31更新")
+                .addField("ボットバージョン", "0.1.0", false)
+                .addField("ライセンス", "Apache License 2.0", false)
+                .addField("著作権", "Copyright 2017 John Grosh", false)
+                .addField("日本語化", "Cosgy Dev", false)
+                .addField("CosgyDevスタッフ", "Kosugi_kun\nrito_528", false)
+                .setAuthor("JMusicBot JP", null, "https://avatars1.githubusercontent.com/u/42630152?s=400&u=3bc25d4a1d13b627f715829ab66ee82cc48a93f9&v=4")
+                .setFooter("Cosgy-Dev/JMusicBot-JP", "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png")
 
 /*
         .setDescription("**MusicBot-JP**\n" +
@@ -43,8 +43,7 @@ public class AboutJPCmd extends Command {
         "`Copyright 2017 John Grosh`")
         .setColor(Color.CYAN)
 */
-        .build()).queue();
-
+                .build()).queue();
 
 
     }
