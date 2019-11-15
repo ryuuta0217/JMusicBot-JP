@@ -82,16 +82,17 @@ public class AboutCommand extends Command {
         builder.setAuthor("" + event.getSelfUser().getName() + "について!", null, event.getSelfUser().getAvatarUrl());
         boolean join = !(event.getClient().getServerInvite() == null || event.getClient().getServerInvite().isEmpty());
         boolean inv = !oauthLink.isEmpty();
-        String invline = "\n" + (join ? "公式Discordチャンネルは [`こちら`](" + event.getClient().getServerInvite() + ")" : (inv ? "からお願いします " : ""))
-                + (inv ? (join ? ", または " : "") + "あなたのサーバーに[`招待リンク`](" + oauthLink + ") " : "で招待することができます。") + "!";
+       /* String invline = "\n" + (join ? "Cosgy Dev公式チャンネルは [`こちら`](" + event.getClient().getServerInvite() + ")" : (inv ? "からお願いします " : ""))
+                + (inv ? (join ? ", または " : "") + "あなたのサーバーに[`招待リンク`](" + oauthLink + ") " : "で招待することができます。") + "!"*/
         String author = event.getJDA().getUserById(event.getClient().getOwnerId()) == null ? "<@" + event.getClient().getOwnerId() + ">"
                 : event.getJDA().getUserById(event.getClient().getOwnerId()).getName();
-        StringBuilder descr = new StringBuilder().append("こんにちは！ 私は **").append(event.getSelfUser().getName()).append("**です。 ")
-                .append(description).append("\n私は").append(JDAUtilitiesInfo.AUTHOR + "の[コマンド拡張](" + JDAUtilitiesInfo.GITHUB + ") (")
+        StringBuilder descr = new StringBuilder().append("こんにちは！ **").append(event.getSelfUser().getName()).append("**です。 ")
+                .append(description).append("は、").append(JDAUtilitiesInfo.AUTHOR + "の[コマンド拡張](" + JDAUtilitiesInfo.GITHUB + ") (")
                 .append(JDAUtilitiesInfo.VERSION).append(")と[JDAライブラリ](https://github.com/DV8FromTheWorld/JDA) (")
-                .append(JDAInfo.VERSION).append(")を使用しており、私は、").append(author).append(IS_AUTHOR ? "にJava言語で作られました。" : "が所有しています。")
+                .append(JDAInfo.VERSION).append(")を使用しており、").append(author).append(IS_AUTHOR ? "にJava言語で作られました。" : "が所有しています。")
+                .append("\n").append(event.getSelfUser().getName()).append("はCosgy Devが、開発しています。")
                 .append("\n`").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
-                .append("`でコマンドを確認することができます。").append(join || inv ? invline : "").append("\n\n機能の特徴： ```css");
+                .append("`でコマンドを確認することができます。")/*.append(join || inv ? invline : "")*/.append("\n\n機能の特徴： ```css");
         for (String feature : features)
             descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append(feature);
         descr.append(" ```");
