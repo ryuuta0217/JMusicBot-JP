@@ -1,4 +1,4 @@
-<img align="right" src="https://i.imgur.com/iVIWEfH_d.jpg" height="200" width="200">
+<img align="right" src="https://i.imgur.com/zrE80HY.png" height="200" width="200">
 
 [![Downloads](https://img.shields.io/github/downloads/Cosgy-Dev/MusicBot-JP-java/total.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest)
 [![Stars](https://img.shields.io/github/stars/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/stargazers)
