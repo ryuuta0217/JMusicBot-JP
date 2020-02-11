@@ -1,18 +1,3 @@
-/*
- * Copyright 2019 John Grosh <john.a.grosh@gmail.com>.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.jagrosh.jmusicbot.commands.dj;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
@@ -30,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  *
- * @author Michaili K.
+ * @author kosugi_kun (info@cosgy.jp)
  */
 public class ForceRemoveCmd extends DJCommand
 {
@@ -38,8 +23,8 @@ public class ForceRemoveCmd extends DJCommand
     {
         super(bot);
         this.name = "forceremove";
-        this.help = "removes all entries by a user from the queue";
-        this.arguments = "<user>";
+        this.help = "指定したユーザーのエントリーを再生待ちから削除します";
+        this.arguments = "<ユーザー>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = false;
         this.bePlaying = true;
@@ -51,14 +36,14 @@ public class ForceRemoveCmd extends DJCommand
     {
         if (event.getArgs().isEmpty())
         {
-            event.replyError("You need to mention a user!");
+            event.replyError("ユーザーに言及する必要があります！");
             return;
         }
 
         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
         if (handler.getQueue().isEmpty())
         {
-            event.replyError("There is nothing in the queue!");
+            event.replyError("再生待ちには何もありません！");
             return;
         }
 
@@ -68,7 +53,7 @@ public class ForceRemoveCmd extends DJCommand
 
         if(found.isEmpty())
         {
-            event.replyError("Unable to find the user!");
+            event.replyError("ユーザーが見つかりません！");
             return;
         }
         else if(found.size()>1)
@@ -81,17 +66,17 @@ public class ForceRemoveCmd extends DJCommand
             }
 
             builder
-            .setSelection((msg, i) -> removeAllEntries(found.get(i-1).getUser(), event))
-            .setText("Found multiple users:")
-            .setColor(event.getSelfMember().getColor())
-            .useNumbers()
-            .setUsers(event.getAuthor())
-            .useCancelButton(true)
-            .setCancel((msg) -> {})
-            .setEventWaiter(bot.getWaiter())
-            .setTimeout(1, TimeUnit.MINUTES)
+                    .setSelection((msg, i) -> removeAllEntries(found.get(i-1).getUser(), event))
+                    .setText("複数のユーザーが見つかりました:")
+                    .setColor(event.getSelfMember().getColor())
+                    .useNumbers()
+                    .setUsers(event.getAuthor())
+                    .useCancelButton(true)
+                    .setCancel((msg) -> {})
+                    .setEventWaiter(bot.getWaiter())
+                    .setTimeout(1, TimeUnit.MINUTES)
 
-            .build().display(event.getChannel());
+                    .build().display(event.getChannel());
 
             return;
         }
@@ -109,11 +94,11 @@ public class ForceRemoveCmd extends DJCommand
         int count = ((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).getQueue().removeAll(target.getIdLong());
         if (count == 0)
         {
-            event.replyWarning("**"+target.getName()+"** doesn't have any songs in the queue!");
+            event.replyWarning("**"+target.getName()+"** の再生待ちに曲がありません！");
         }
         else
         {
-            event.replySuccess("Successfully removed `"+count+"` entries from **"+target.getName()+"**#"+target.getDiscriminator()+".");
+            event.replySuccess(target.getName()+"**#"+target.getDiscriminator()+ "から`"+count+"`曲削除しました。");
         }
     }
 }

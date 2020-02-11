@@ -1,17 +1,17 @@
 /*
- * Copyright 2018 Cosgy Dev (info@cosgy.jp)
+ * Copyright 2018-2020 Cosgy Dev
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package com.jagrosh.jmusicbot;
 
@@ -46,6 +46,7 @@ public class BotConfig {
     private long owner, maxSeconds;
     private OnlineStatus status;
     private Game game;
+    private Config aliases;
 
     private boolean valid = false;
 
@@ -90,6 +91,7 @@ public class BotConfig {
             useEval = config.getBoolean("eval");
             maxSeconds = config.getLong("maxtime");
             playlistsFolder = config.getString("playlistsfolder");
+            aliases = config.getConfig("aliases");
             dbots = owner == 113156185389092864L;
 
             // [JMusicBot-JP] new function: support niconico play
@@ -115,7 +117,7 @@ public class BotConfig {
                         + "\nhttps://github.com/jagrosh/MusicBot/wiki/Getting-a-Bot-Token."
                         + "\nBOTトークン: ");
                 if (token == null) {
-                    prompt.alert(Prompt.Level.WARNING, CONTEXT, "No token provided! Exiting.\n\nConfig Location: " + path.toAbsolutePath().toString());
+                    prompt.alert(Prompt.Level.WARNING, CONTEXT, "トークンが入力されていません！終了します。\n\n設定ファイルの場所: " + path.toAbsolutePath().toString());
                     return;
                 } else {
                     write = true;
@@ -275,6 +277,18 @@ public class BotConfig {
         if (maxSeconds <= 0)
             return false;
         return Math.round(track.getDuration() / 1000.0) > maxSeconds;
+    }
+
+    public String[] getAliases(String command)
+    {
+        try
+        {
+            return aliases.getStringList(command).toArray(new String[0]);
+        }
+        catch(NullPointerException | ConfigException.Missing e)
+        {
+            return new String[0];
+        }
     }
 
     // [JMusicBot-JP] new function: support niconico play
