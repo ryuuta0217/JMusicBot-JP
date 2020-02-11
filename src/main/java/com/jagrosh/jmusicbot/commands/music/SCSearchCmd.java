@@ -18,17 +18,14 @@ package com.jagrosh.jmusicbot.commands.music;
 import com.jagrosh.jmusicbot.Bot;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SCSearchCmd extends SearchCmd 
-{
-    public SCSearchCmd(Bot bot)
-    {
-        super(bot);
+public class SCSearchCmd extends SearchCmd {
+    public SCSearchCmd(Bot bot, String searchingEmoji) {
+        super(bot, searchingEmoji);
         this.searchPrefix = "scsearch:";
         this.name = "scsearch";
-        this.help = "searches Soundcloud for a provided query";
-        this.aliases = bot.getConfig().getAliases(this.name);
+        this.help = "SoundCloudで提供されたクエリを検索します。";
+        this.aliases = new String[]{};
     }
 }

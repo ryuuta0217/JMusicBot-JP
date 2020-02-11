@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 John Grosh <john.a.grosh@gmail.com>.
+ * Copyright 2018 Cosgy Dev <info@cosgy.jp>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,67 +15,58 @@
  */
 package com.jagrosh.jmusicbot;
 
+import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
-import java.util.concurrent.TimeUnit;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ShutdownEvent;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeUnit;
+
 /**
- *
- * @author John Grosh (john.a.grosh@gmail.com)
+ * @author Cosgy Dev (info@cosgy.jp)
  */
-public class Listener extends ListenerAdapter
-{
+public class Listener extends ListenerAdapter {
     private final Bot bot;
-    
-    public Listener(Bot bot)
-    {
+
+    public Listener(Bot bot) {
         this.bot = bot;
     }
-    
+
     @Override
-    public void onReady(ReadyEvent event) 
-    {
-        if(event.getJDA().getGuilds().isEmpty())
-        {
+    public void onReady(ReadyEvent event) {
+        if (event.getJDA().getGuilds().isEmpty()) {
             Logger log = LoggerFactory.getLogger("MusicBot");
-            log.warn("This bot is not on any guilds! Use the following link to add the bot to your guilds!");
+            log.warn("このボットはグループに入っていません！ボットをあなたのグループに追加するには、以下のリンクを使用してください。");
             log.warn(event.getJDA().asBot().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
         }
-        credit(event.getJDA());
-        event.getJDA().getGuilds().forEach((guild) -> 
+        event.getJDA().getGuilds().forEach((guild) ->
         {
-            try
-            {
+            try {
                 String defpl = bot.getSettingsManager().getSettings(guild).getDefaultPlaylist();
                 VoiceChannel vc = bot.getSettingsManager().getSettings(guild).getVoiceChannel(guild);
-                if(defpl!=null && vc!=null && bot.getPlayerManager().setUpHandler(guild).playFromDefault())
-                {
+                if (defpl != null && vc != null && bot.getPlayerManager().setUpHandler(guild).playFromDefault()) {
                     guild.getAudioManager().openAudioConnection(vc);
                 }
+            } catch (Exception ignore) {
             }
-            catch(Exception ignore) {}
         });
-        if(bot.getConfig().useUpdateAlerts())
-        {
-            bot.getThreadpool().scheduleWithFixedDelay(() -> 
+        if (bot.getConfig().useUpdateAlerts()) {
+            bot.getThreadpool().scheduleWithFixedDelay(() ->
             {
                 User owner = bot.getJDA().getUserById(bot.getConfig().getOwnerId());
-                if(owner!=null)
-                {
+                if (owner != null) {
                     String currentVersion = OtherUtil.getCurrentVersion();
                     String latestVersion = OtherUtil.getLatestVersion();
-                    if(latestVersion!=null && !currentVersion.equalsIgnoreCase(latestVersion))
-                    {
+                    if (latestVersion != null && !currentVersion.equalsIgnoreCase(latestVersion)) {
                         String msg = String.format(OtherUtil.NEW_VERSION_AVAILABLE, currentVersion, latestVersion);
                         owner.openPrivateChannel().queue(pc -> pc.sendMessage(msg).queue());
                     }
@@ -83,35 +74,61 @@ public class Listener extends ListenerAdapter
             }, 0, 24, TimeUnit.HOURS);
         }
     }
-    
+
     @Override
-    public void onGuildMessageDelete(GuildMessageDeleteEvent event) 
-    {
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
         bot.getNowplayingHandler().onMessageDelete(event.getGuild(), event.getMessageIdLong());
-    }
-    
-    @Override
-    public void onShutdown(ShutdownEvent event) 
-    {
-        bot.shutdown();
     }
 
     @Override
-    public void onGuildJoin(GuildJoinEvent event) 
-    {
-        credit(event.getJDA());
+    public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
+        //NUP = false -> NUS = false -> return
+        //NUP = false -> NUS = true -> GO
+        //NUP = true -> GO
+        if (!bot.getConfig().getNoUserPause())
+            if (!bot.getConfig().getNoUserStop()) return;
+
+        Member botMember = event.getGuild().getSelfMember();
+        //ボイチャにいる人数が1人、botがボイチャにいるか
+        if (event.getChannelLeft().getMembers().size() == 1 && event.getChannelLeft().getMembers().contains(botMember)) {
+            AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+
+            // config.txtの nouserpause が true の場合
+            if (bot.getConfig().getNoUserPause()) {
+                //⏸
+
+                // プレイヤーを一時停止する
+                handler.getPlayer().setPaused(true);
+
+                Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PAUSED);
+                return;
+            }
+
+            if (bot.getConfig().getNoUserStop()) {
+                //⏹
+                handler.stopAndClear();
+                event.getGuild().getAudioManager().closeAudioConnection();
+            }
+        }
     }
-    
-    // make sure people aren't adding clones to dbots
-    private void credit(JDA jda)
-    {
-        Guild dbots = jda.getGuildById(110373943822540800L);
-        if(dbots==null)
-            return;
-        if(bot.getConfig().getDBots())
-            return;
-        jda.getTextChannelById(119222314964353025L)
-                .sendMessage("This account is running JMusicBot. Please do not list bot clones on this server, <@"+bot.getConfig().getOwnerId()+">.").complete();
-        dbots.leave().queue();
+
+    @Override
+    public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
+        if (!bot.getConfig().getResumeJoined()) return;
+        //▶
+        Member botMember = event.getGuild().getSelfMember();
+        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+
+        //ボイチャにいる人数が1人以上、botがボイチャにいるか、再生が一時停止されているか
+        if ((event.getChannelJoined().getMembers().size() > 1 && event.getChannelJoined().getMembers().contains(botMember)) && handler.getPlayer().isPaused()) {
+            handler.getPlayer().setPaused(false);
+
+            Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PLAYING);
+        }
+    }
+
+    @Override
+    public void onShutdown(ShutdownEvent event) {
+        bot.shutdown();
     }
 }

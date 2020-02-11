@@ -23,32 +23,25 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class NowplayingCmd extends MusicCommand 
-{
-    public NowplayingCmd(Bot bot)
-    {
+public class NowplayingCmd extends MusicCommand {
+    public NowplayingCmd(Bot bot) {
         super(bot);
         this.name = "nowplaying";
-        this.help = "shows the song that is currently playing";
-        this.aliases = bot.getConfig().getAliases(this.name);
+        this.help = "現在再生中の曲を表示します";
+        this.aliases = new String[]{"np", "current"};
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
     }
 
     @Override
-    public void doCommand(CommandEvent event) 
-    {
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+    public void doCommand(CommandEvent event) {
+        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
         Message m = handler.getNowPlaying(event.getJDA());
-        if(m==null)
-        {
+        if (m == null) {
             event.reply(handler.getNoMusicPlaying(event.getJDA()));
             bot.getNowplayingHandler().clearLastNPMessage(event.getGuild());
-        }
-        else
-        {
+        } else {
             event.reply(m, msg -> bot.getNowplayingHandler().setLastNPMessage(msg));
         }
     }

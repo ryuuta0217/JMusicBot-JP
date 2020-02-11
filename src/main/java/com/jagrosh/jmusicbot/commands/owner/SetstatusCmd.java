@@ -16,41 +16,32 @@
 package com.jagrosh.jmusicbot.commands.owner;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import net.dv8tion.jda.core.OnlineStatus;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SetstatusCmd extends OwnerCommand
-{
-    public SetstatusCmd(Bot bot)
-    {
+public class SetstatusCmd extends OwnerCommand {
+    public SetstatusCmd() {
         this.name = "setstatus";
-        this.help = "sets the status the bot displays";
+        this.help = "ボットが表示するステータスを設定します";
         this.arguments = "<status>";
-        this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = false;
     }
-    
+
     @Override
-    protected void execute(CommandEvent event) 
-    {
+    protected void execute(CommandEvent event) {
         try {
             OnlineStatus status = OnlineStatus.fromKey(event.getArgs());
-            if(status==OnlineStatus.UNKNOWN)
-            {
-                event.replyError("Please include one of the following statuses: `ONLINE`, `IDLE`, `DND`, `INVISIBLE`");
-            }
-            else
-            {
+            if (status == OnlineStatus.UNKNOWN) {
+                event.replyError("次のいずれかのステータスを含めてください。 :`ONLINE`, `IDLE`, `DND`, `INVISIBLE`");
+            } else {
                 event.getJDA().getPresence().setStatus(status);
-                event.replySuccess("Set the status to `"+status.getKey().toUpperCase()+"`");
+                event.replySuccess("ステータスを`" + status.getKey().toUpperCase() + "`に設定しました。");
             }
-        } catch(Exception e) {
-            event.reply(event.getClient().getError()+" The status could not be set!");
+        } catch (Exception e) {
+            event.reply(event.getClient().getError() + " ステータスを設定できませんでした。");
         }
     }
 }

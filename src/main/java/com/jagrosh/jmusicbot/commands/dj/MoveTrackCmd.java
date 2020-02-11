@@ -9,64 +9,54 @@ import com.jagrosh.jmusicbot.commands.DJCommand;
 import com.jagrosh.jmusicbot.queue.FairQueue;
 
 /**
- * Command that provides users the ability to move a track in the playlist.
+ * ユーザーが再生リスト内のトラックを移動できるようにするコマンドです。
  */
-public class MoveTrackCmd extends DJCommand
-{
+public class MoveTrackCmd extends DJCommand {
 
-    public MoveTrackCmd(Bot bot)
-    {
+    public MoveTrackCmd(Bot bot) {
         super(bot);
         this.name = "movetrack";
-        this.help = "move a track in the current queue to a different position";
+        this.help = "再生待ちの曲の再生順を移動させます。";
         this.arguments = "<from> <to>";
-        this.aliases = bot.getConfig().getAliases(this.name);
+        this.aliases = new String[]{"move"};
         this.bePlaying = true;
     }
 
     @Override
-    public void doCommand(CommandEvent event)
-    {
+    public void doCommand(CommandEvent event) {
         int from;
         int to;
 
         String[] parts = event.getArgs().split("\\s+", 2);
-        if(parts.length < 2)
-        {
-            event.replyError("Please include two valid indexes.");
+        if (parts.length < 2) {
+            event.replyError("2つの有効な数字を含んでください。");
             return;
         }
 
-        try
-        {
+        try {
             // Validate the args
             from = Integer.parseInt(parts[0]);
             to = Integer.parseInt(parts[1]);
-        }
-        catch (NumberFormatException e)
-        {
-            event.replyError("Please provide two valid indexes.");
+        } catch (NumberFormatException e) {
+            event.replyError("2つの有効な数字を含んでください。");
             return;
         }
 
-        if (from == to)
-        {
-            event.replyError("Can't move a track to the same position.");
+        if (from == to) {
+            event.replyError("同じ位置に移動することはできません。");
             return;
         }
 
         // Validate that from and to are available
         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
         FairQueue<QueuedTrack> queue = handler.getQueue();
-        if (isUnavailablePosition(queue, from))
-        {
-            String reply = String.format("`%d` is not a valid position in the queue!", from);
+        if (isUnavailablePosition(queue, from)) {
+            String reply = String.format("`%d` は再生待ちに存在しない位置です。", from);
             event.replyError(reply);
             return;
         }
-        if (isUnavailablePosition(queue, to))
-        {
-            String reply = String.format("`%d` is not a valid position in the queue!", to);
+        if (isUnavailablePosition(queue, to)) {
+            String reply = String.format("`%d` 再生待ちに存在しない位置です。", to);
             event.replyError(reply);
             return;
         }
@@ -74,12 +64,11 @@ public class MoveTrackCmd extends DJCommand
         // Move the track
         QueuedTrack track = queue.moveItem(from - 1, to - 1);
         String trackTitle = track.getTrack().getInfo().title;
-        String reply = String.format("Moved **%s** from position `%d` to `%d`.", trackTitle, from, to);
+        String reply = String.format("トラックを移動させました。\n**%s** から `%d` へ `%d`.", trackTitle, from, to);
         event.replySuccess(reply);
     }
 
-    private static boolean isUnavailablePosition(FairQueue<QueuedTrack> queue, int position)
-    {
+    private static boolean isUnavailablePosition(FairQueue<QueuedTrack> queue, int position) {
         return (position < 1 || position > queue.size());
     }
 }
