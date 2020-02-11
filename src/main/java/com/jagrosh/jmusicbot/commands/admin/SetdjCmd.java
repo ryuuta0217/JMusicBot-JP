@@ -1,17 +1,17 @@
 /*
- * Copyright 2018 John Grosh <john.a.grosh@gmail.com>.
+ * Copyright 2018-2020 Cosgy Dev
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package com.jagrosh.jmusicbot.commands.admin;
 
@@ -21,6 +21,8 @@ import com.jagrosh.jmusicbot.commands.AdminCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 import net.dv8tion.jda.core.entities.Role;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class SetdjCmd extends AdminCommand {
 
     @Override
     protected void execute(CommandEvent event) {
+        Logger log = LoggerFactory.getLogger("SetdjCmd");
         if (event.getArgs().isEmpty()) {
             event.reply(event.getClient().getError() + "役割の名前、またはNONEなどを付けてください");
             return;
@@ -52,6 +55,7 @@ public class SetdjCmd extends AdminCommand {
                 event.reply(event.getClient().getWarning() + FormatUtil.listOfRoles(list, event.getArgs()));
             else {
                 s.setDJRole(list.get(0));
+                log.info("DJコマンドを使える役割が追加されました。("+ list.get(0).getName() +")");
                 event.reply(event.getClient().getSuccess() + "DJコマンドは役割が、**" + list.get(0).getName() + "**のユーザーが使用することができます");
             }
         }

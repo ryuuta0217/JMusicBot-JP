@@ -1,3 +1,19 @@
+/*
+ * Copyright 2018-2020 Cosgy Dev
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+
 package com.jagrosh.jmusicbot.commands.dj;
 
 
@@ -7,6 +23,8 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.audio.QueuedTrack;
 import com.jagrosh.jmusicbot.commands.DJCommand;
 import com.jagrosh.jmusicbot.queue.FairQueue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ユーザーが再生リスト内のトラックを移動できるようにするコマンドです。
@@ -24,6 +42,7 @@ public class MoveTrackCmd extends DJCommand {
 
     @Override
     public void doCommand(CommandEvent event) {
+        Logger log = LoggerFactory.getLogger("MoveTrack");
         int from;
         int to;
 
@@ -64,7 +83,8 @@ public class MoveTrackCmd extends DJCommand {
         // Move the track
         QueuedTrack track = queue.moveItem(from - 1, to - 1);
         String trackTitle = track.getTrack().getInfo().title;
-        String reply = String.format("トラックを移動させました。\n**%s** から `%d` へ `%d`.", trackTitle, from, to);
+        String reply = String.format("**%s** を `%d` から `%d`に移動しました。", trackTitle, from, to);
+        log.info(event.getGuild().getName() + "で %s を %d から %d に移動しました。", trackTitle, from, to);
         event.replySuccess(reply);
     }
 
