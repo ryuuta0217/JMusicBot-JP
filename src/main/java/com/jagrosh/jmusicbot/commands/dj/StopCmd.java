@@ -21,21 +21,26 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.DJCommand;
 
 /**
+ *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class StopCmd extends DJCommand {
-    public StopCmd(Bot bot) {
+public class StopCmd extends DJCommand 
+{
+    public StopCmd(Bot bot)
+    {
         super(bot);
         this.name = "stop";
-        this.help = "現在の曲を停止して再生待ちを削除します";
+        this.help = "stops the current song and clears the queue";
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = false;
     }
 
     @Override
-    public void doCommand(CommandEvent event) {
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+    public void doCommand(CommandEvent event) 
+    {
+        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         handler.stopAndClear();
         event.getGuild().getAudioManager().closeAudioConnection();
-        event.reply(event.getClient().getSuccess() + " 再生が停止され、再生待ちは削除されました。");
+        event.reply(event.getClient().getSuccess()+" The player has stopped and the queue has been cleared.");
     }
 }

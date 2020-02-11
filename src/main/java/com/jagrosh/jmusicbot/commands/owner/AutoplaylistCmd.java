@@ -21,39 +21,48 @@ import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 
 /**
+ *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class AutoplaylistCmd extends OwnerCommand {
+public class AutoplaylistCmd extends OwnerCommand
+{
     private final Bot bot;
-
-    public AutoplaylistCmd(Bot bot) {
+    
+    public AutoplaylistCmd(Bot bot)
+    {
         this.bot = bot;
         this.guildOnly = true;
         this.name = "autoplaylist";
-        this.arguments = "<name|NONE|なし>";
-        this.help = "サーバーのデフォルトの再生リストを設定します。";
+        this.arguments = "<name|NONE>";
+        this.help = "sets the default playlist for the server";
+        this.aliases = bot.getConfig().getAliases(this.name);
     }
 
     @Override
-    public void execute(CommandEvent event) {
-        if (event.getArgs().isEmpty()) {
-            event.reply(event.getClient().getError() + " 再生リスト名またはNONEを含めてください");
+    public void execute(CommandEvent event) 
+    {
+        if(event.getArgs().isEmpty())
+        {
+            event.reply(event.getClient().getError()+" Please include a playlist name or NONE");
             return;
         }
-        if (event.getArgs().toLowerCase().matches("(none|なし)")) {
+        if(event.getArgs().equalsIgnoreCase("none"))
+        {
             Settings settings = event.getClient().getSettingsFor(event.getGuild());
             settings.setDefaultPlaylist(null);
-            event.reply(event.getClient().getSuccess() + " サーバー **" + event.getGuild().getName() + "** の規定の再生リストを削除しました");
+            event.reply(event.getClient().getSuccess()+" Cleared the default playlist for **"+event.getGuild().getName()+"**");
             return;
         }
         String pname = event.getArgs().replaceAll("\\s+", "_");
-        if (bot.getPlaylistLoader().getPlaylist(pname) == null) {
-            event.reply(event.getClient().getError() + "`" + pname + ".txt`を見つけることができませんでした!");
-        } else {
+        if(bot.getPlaylistLoader().getPlaylist(pname)==null)
+        {
+            event.reply(event.getClient().getError()+" Could not find `"+pname+".txt`!");
+        }
+        else
+        {
             Settings settings = event.getClient().getSettingsFor(event.getGuild());
             settings.setDefaultPlaylist(pname);
-            event.reply(event.getClient().getSuccess() + " サーバー **" + event.getGuild().getName() + "** の規定の再生リストを`" + pname + "`に設定しました。\n"
-                    + "再生待ちに曲がないときは、再生リストから曲が再生されます。");
+            event.reply(event.getClient().getSuccess()+" The default playlist for **"+event.getGuild().getName()+"** is now `"+pname+"`");
         }
     }
 }

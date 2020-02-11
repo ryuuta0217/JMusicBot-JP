@@ -17,7 +17,9 @@ package com.jagrosh.jmusicbot.commands.general;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.settings.Settings;
+import com.jagrosh.jmusicbot.utils.FormatUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Role;
@@ -25,40 +27,45 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 /**
+ *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SettingsCmd extends Command {
+public class SettingsCmd extends Command 
+{
     private final static String EMOJI = "\uD83C\uDFA7"; // 🎧
-
-    public SettingsCmd() {
+    
+    public SettingsCmd(Bot bot)
+    {
         this.name = "settings";
-        this.help = "ボット設定を表示します";
-        this.aliases = new String[]{"status"};
+        this.help = "shows the bots settings";
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = true;
     }
-
+    
     @Override
-    protected void execute(CommandEvent event) {
+    protected void execute(CommandEvent event) 
+    {
         Settings s = event.getClient().getSettingsFor(event.getGuild());
         MessageBuilder builder = new MessageBuilder()
                 .append(EMOJI + " **")
-                .append(event.getSelfUser().getName())
-                .append("** 設定:");
+                .append(FormatUtil.filter(event.getSelfUser().getName()))
+                .append("** settings:");
         TextChannel tchan = s.getTextChannel(event.getGuild());
         VoiceChannel vchan = s.getVoiceChannel(event.getGuild());
         Role role = s.getRole(event.getGuild());
         EmbedBuilder ebuilder = new EmbedBuilder()
                 .setColor(event.getSelfMember().getColor())
-                .setDescription("テキストチャンネル: " + (tchan == null ? "Any" : "**#" + tchan.getName() + "**")
-                        + "\nボイスチャンネル: " + (vchan == null ? "Any" : "**" + vchan.getName() + "**")
-                        + "\nDJ 権限: " + (role == null ? "None" : "**" + role.getName() + "**")
-                        + "\nリピートモード: **" + (s.getRepeatMode() ? "On" : "Off") + "**"
-                        + "\nデフォルトプレイリスト: " + (s.getDefaultPlaylist() == null ? "None" : "**" + s.getDefaultPlaylist() + "**")
-                )
-                .setFooter(event.getJDA().getGuilds().size() + " サーバー | "
+                .setDescription("Text Channel: " + (tchan == null ? "Any" : "**#" + tchan.getName() + "**")
+                        + "\nVoice Channel: " + (vchan == null ? "Any" : "**" + vchan.getName() + "**")
+                        + "\nDJ Role: " + (role == null ? "None" : "**" + role.getName() + "**")
+                        + "\nCustom Prefix: " + (s.getPrefix() == null ? "None" : "`" + s.getPrefix() + "`")
+                        + "\nRepeat Mode: **" + (s.getRepeatMode() ? "On" : "Off") + "**"
+                        + "\nDefault Playlist: " + (s.getDefaultPlaylist() == null ? "None" : "**" + s.getDefaultPlaylist() + "**")
+                        )
+                .setFooter(event.getJDA().getGuilds().size() + " servers | "
                         + event.getJDA().getGuilds().stream().filter(g -> g.getSelfMember().getVoiceState().inVoiceChannel()).count()
-                        + " オーディオ接続", null);
+                        + " audio connections", null);
         event.getChannel().sendMessage(builder.setEmbed(ebuilder.build()).build()).queue();
     }
-
+    
 }
