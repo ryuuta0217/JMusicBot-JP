@@ -60,6 +60,7 @@ public class QueueCmd extends MusicCommand {
                 .waitOnSinglePage(false)
                 .useNumberedItems(true)
                 .showPageNumbers(true)
+                .wrapPageEnds(true)
                 .setEventWaiter(bot.getWaiter())
                 .setTimeout(1, TimeUnit.MINUTES);
     }

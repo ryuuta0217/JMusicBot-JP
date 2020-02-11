@@ -150,6 +150,8 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
                 manager.getBot().getNowplayingHandler().onTrackUpdate(guildId, null, this);
                 if (!manager.getBot().getConfig().getStay()) manager.getBot().closeAudioConnection(guildId);
 
+                player.setPaused(false);
+
                 Guild guild = guild(manager.getBot().getJDA());
                 Bot.updatePlayStatus(guild, guild.getSelfMember(), PlayStatus.STOPPED);
             }

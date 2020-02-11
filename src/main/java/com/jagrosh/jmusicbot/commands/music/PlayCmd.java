@@ -22,6 +22,7 @@ import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.PlayStatus;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.audio.QueuedTrack;
+import com.jagrosh.jmusicbot.commands.DJCommand;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
 import com.jagrosh.jmusicbot.settings.Settings;
@@ -47,9 +48,9 @@ public class PlayCmd extends MusicCommand {
 
     private final String loadingEmoji;
 
-    public PlayCmd(Bot bot, String loadingEmoji) {
+    public PlayCmd(Bot bot) {
         super(bot);
-        this.loadingEmoji = loadingEmoji;
+        this.loadingEmoji = bot.getConfig().getLoading();
         this.name = "play";
         this.arguments = "<title|URL|subcommand>";
         this.help = "指定された曲を再生します";
@@ -64,21 +65,14 @@ public class PlayCmd extends MusicCommand {
         if (event.getArgs().isEmpty() && event.getMessage().getAttachments().isEmpty()) {
             AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
             if (handler.getPlayer().getPlayingTrack() != null && handler.getPlayer().isPaused()) {
-                boolean isDJ = event.getMember().hasPermission(Permission.MANAGE_SERVER);
-                if (!isDJ)
-                    isDJ = event.isOwner();
-                Settings settings = event.getClient().getSettingsFor(event.getGuild());
-                Role dj = settings.getRole(event.getGuild());
-                if (!isDJ && dj != null)
-                    isDJ = event.getMember().getRoles().contains(dj);
-                if (!isDJ)
-                    event.replyError("DJだけが一時停止を解除できます。");
-                else {
+                if(DJCommand.checkDJPermission(event)){
                     handler.getPlayer().setPaused(false);
                     event.replySuccess("**" + handler.getPlayer().getPlayingTrack().getInfo().title + "**の再生を再開しました。");
 
                     Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PLAYING);
                 }
+                else
+                    event.replyError("プレーヤーの一時停止を解除できるのはDJだけです！");
                 return;
             }
             StringBuilder builder = new StringBuilder(event.getClient().getWarning() + " Play コマンド:\n");

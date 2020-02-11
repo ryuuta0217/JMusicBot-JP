@@ -108,12 +108,12 @@ public class JMusicBot {
 
                         new LyricsCmd(bot),
                         new NowplayingCmd(bot),
-                        new PlayCmd(bot, config.getLoading()),
+                        new PlayCmd(bot),
                         new PlaylistsCmd(bot),
                         new QueueCmd(bot),
                         new RemoveCmd(bot),
-                        new SearchCmd(bot, config.getSearching()),
-                        new SCSearchCmd(bot, config.getSearching()),
+                        new SearchCmd(bot),
+                        new SCSearchCmd(bot),
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
 
@@ -121,7 +121,7 @@ public class JMusicBot {
                         new ForceskipCmd(bot),
                         new MoveTrackCmd(bot),
                         new PauseCmd(bot),
-                        new PlaynextCmd(bot, config.getLoading()),
+                        new PlaynextCmd(bot),
                         new RepeatCmd(bot),
                         new SkiptoCmd(bot),
                         new StopCmd(bot),
@@ -177,8 +177,9 @@ public class JMusicBot {
                     .setToken(config.getToken())
                     .setAudioEnabled(true)
                     .setGame(nogame ? null : Game.playing("ロード中..."))
-                    .setStatus(config.getStatus() == OnlineStatus.INVISIBLE || config.getStatus() == OnlineStatus.OFFLINE ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
-                    .addEventListener(client, waiter, new Listener(bot))
+                    .setGame(nogame ? null : Game.playing("loading..."))
+                    .setStatus(config.getStatus()==OnlineStatus.INVISIBLE || config.getStatus()==OnlineStatus.OFFLINE
+                            ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
                     .setBulkDeleteSplittingEnabled(true)
                     .build();
             bot.setJDA(jda);
