@@ -28,6 +28,7 @@ public class ShuffleCmd extends MusicCommand {
         super(bot);
         this.name = "shuffle";
         this.help = "追加した曲をシャッフル";
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = true;
     }

@@ -33,7 +33,7 @@ public class RemoveCmd extends MusicCommand {
         this.name = "remove";
         this.help = "再生待ちから曲を削除します";
         this.arguments = "<キュー番号|すべて|ALL>";
-        this.aliases = new String[]{"delete"};
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = true;
     }

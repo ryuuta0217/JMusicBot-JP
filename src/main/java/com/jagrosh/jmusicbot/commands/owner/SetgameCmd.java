@@ -16,6 +16,7 @@
 package com.jagrosh.jmusicbot.commands.owner;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import net.dv8tion.jda.core.entities.Game;
 
@@ -23,10 +24,11 @@ import net.dv8tion.jda.core.entities.Game;
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class SetgameCmd extends OwnerCommand {
-    public SetgameCmd() {
+    public SetgameCmd(Bot bot) {
         this.name = "setgame";
         this.help = "ボットがプレイしているゲームを設定します";
         this.arguments = "[action] [game]";
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = false;
         this.children = new OwnerCommand[]{
                 new SetlistenCmd(),

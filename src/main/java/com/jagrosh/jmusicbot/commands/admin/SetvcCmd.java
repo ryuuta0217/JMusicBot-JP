@@ -17,6 +17,7 @@ package com.jagrosh.jmusicbot.commands.admin;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
+import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.AdminCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
@@ -30,10 +31,11 @@ import java.util.List;
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class SetvcCmd extends AdminCommand {
-    public SetvcCmd() {
+    public SetvcCmd(Bot bot) {
         this.name = "setvc";
         this.help = "再生に使用する音声チャンネルを固定します。";
         this.arguments = "<チャンネル名|NONE|なし>";
+        this.aliases = bot.getConfig().getAliases(this.name);
     }
 
     @Override

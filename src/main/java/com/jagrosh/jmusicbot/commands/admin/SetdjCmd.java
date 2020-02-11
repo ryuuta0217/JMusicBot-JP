@@ -17,6 +17,7 @@ package com.jagrosh.jmusicbot.commands.admin;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
+import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.AdminCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
@@ -30,10 +31,11 @@ import java.util.List;
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class SetdjCmd extends AdminCommand {
-    public SetdjCmd() {
+    public SetdjCmd(Bot bot) {
         this.name = "setdj";
         this.help = "ボットコマンドを使用できる役割DJを設定します。";
         this.arguments = "<役割名|NONE|なし>";
+        this.aliases = bot.getConfig().getAliases(this.name);
     }
 
     @Override

@@ -45,7 +45,7 @@ public class QueueCmd extends MusicCommand {
         this.name = "queue";
         this.help = "再生待ちの楽曲一覧を表示します";
         this.arguments = "[ページ]";
-        this.aliases = new String[]{"list"};
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = true;
         this.botPermissions = new Permission[]{Permission.MESSAGE_ADD_REACTION, Permission.MESSAGE_EMBED_LINKS};
         builder = new Paginator.Builder()

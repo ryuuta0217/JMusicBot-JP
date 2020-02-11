@@ -44,7 +44,7 @@ public class SearchCmd extends MusicCommand {
         super(bot);
         this.searchingEmoji = searchingEmoji;
         this.name = "search";
-        this.aliases = new String[]{"ytsearch"};
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.arguments = "<query>";
         this.help = "指定した文字列を使用してYouTube上の動画を検索します。";
         this.beListening = true;

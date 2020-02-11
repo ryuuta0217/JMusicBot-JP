@@ -35,6 +35,7 @@ public class LyricsCmd extends MusicCommand {
         this.arguments = "[song name]";
         this.help = "現在再生中の曲の歌詞を表示します";
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = true;
     }
 
@@ -49,7 +50,8 @@ public class LyricsCmd extends MusicCommand {
         client.getLyrics(title).thenAccept(lyrics ->
         {
             if (lyrics == null) {
-                event.replyError("`" + title + "` の歌詞は見つかりませんでした。");
+                //TODO 未翻訳（LINE 54）
+                event.replyError("`" + title + "` の歌詞は見つかりませんでした。" + (event.getArgs().isEmpty() ? " Try entering the song name manually (`lyrics [song name]`)" : ""));
                 return;
             }
 

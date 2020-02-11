@@ -16,8 +16,10 @@
 package com.jagrosh.jmusicbot.commands.owner;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
+
 import net.dv8tion.jda.core.entities.Icon;
 
 import java.io.IOException;
@@ -27,11 +29,13 @@ import java.io.InputStream;
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class SetavatarCmd extends OwnerCommand {
-    public SetavatarCmd() {
+    public SetavatarCmd(Bot bot) {
         this.name = "setavatar";
         this.help = "ボットのアバターを設定します";
         this.arguments = "<url>";
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = false;
+
     }
 
     @Override

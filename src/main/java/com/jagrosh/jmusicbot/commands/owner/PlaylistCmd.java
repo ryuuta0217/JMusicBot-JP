@@ -36,6 +36,7 @@ public class PlaylistCmd extends OwnerCommand {
         this.name = "playlist";
         this.arguments = "<append|delete|make|setdefault>";
         this.help = "再生リスト管理";
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.children = new OwnerCommand[]{
                 new ListCmd(),
                 new AppendlistCmd(),

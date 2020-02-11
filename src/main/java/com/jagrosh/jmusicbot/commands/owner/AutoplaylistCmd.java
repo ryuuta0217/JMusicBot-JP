@@ -31,6 +31,7 @@ public class AutoplaylistCmd extends OwnerCommand {
         this.guildOnly = true;
         this.name = "autoplaylist";
         this.arguments = "<name|NONE|なし>";
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.help = "サーバーのデフォルトの再生リストを設定します。";
     }
 

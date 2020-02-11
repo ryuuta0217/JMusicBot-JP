@@ -29,7 +29,7 @@ public class PlaylistsCmd extends MusicCommand {
         super(bot);
         this.name = "playlists";
         this.help = "利用可能な再生リストを表示します";
-        this.aliases = new String[]{"pls"};
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = true;
         this.beListening = false;
         this.beListening = false;

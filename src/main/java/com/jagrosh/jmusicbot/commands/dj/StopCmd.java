@@ -31,6 +31,7 @@ public class StopCmd extends DJCommand {
         super(bot);
         this.name = "stop";
         this.help = "現在の曲を停止して再生待ちを削除します";
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = false;
     }
 
