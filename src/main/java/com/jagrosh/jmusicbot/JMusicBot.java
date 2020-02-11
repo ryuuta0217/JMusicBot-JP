@@ -177,9 +177,9 @@ public class JMusicBot {
                     .setToken(config.getToken())
                     .setAudioEnabled(true)
                     .setGame(nogame ? null : Game.playing("ロード中..."))
-                    .setGame(nogame ? null : Game.playing("loading..."))
                     .setStatus(config.getStatus()==OnlineStatus.INVISIBLE || config.getStatus()==OnlineStatus.OFFLINE
                             ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
+                    .addEventListener(cb.build(), waiter, new Listener(bot))
                     .setBulkDeleteSplittingEnabled(true)
                     .build();
             bot.setJDA(jda);
