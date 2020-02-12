@@ -71,7 +71,7 @@ public class Bot {
                 break;
         }
 
-        guild.getController().setNickname(selfMember, name).complete();
+        guild.getController().setNickname(selfMember, name).queue();
     }
 
     public Bot(EventWaiter waiter, BotConfig config, SettingsManager settings) {

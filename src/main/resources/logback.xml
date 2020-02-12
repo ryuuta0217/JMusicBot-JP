@@ -29,5 +29,8 @@
     <root level="INFO">
         <appender-ref ref="Simple"/>
     </root>
+    <!--<root level="DEBUG">
+        <appender-ref ref="Simple"/>
+    </root>-->
 
 </configuration>

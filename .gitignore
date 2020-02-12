@@ -8,3 +8,4 @@ nb*.xml
 .idea/**
 *.iml
 config.txt
+*.jar
