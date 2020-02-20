@@ -108,8 +108,12 @@ public class PlayCmd extends MusicCommand {
             }
             AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor())) + 1;
+
+            // Output MSG ex:
+            // <タイトル><(長さ)> を追加しました。
+            // <タイトル><(長さ)> を再生待ちの<再生待ち番号>番目に追加しました。
             String addMsg = FormatUtil.filter(event.getClient().getSuccess() + " **" + track.getInfo().title
-                    + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "を追加しました。" : "を" + pos + "番目の再生待ちに追加しました。 "));
+                    + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "を追加しました。" : "を再生待ちの" + pos + "番目に追加しました。 "));
             if (playlist == null || !event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION))
                 m.editMessage(addMsg).queue();
             else {

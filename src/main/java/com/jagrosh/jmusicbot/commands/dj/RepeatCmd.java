@@ -53,7 +53,7 @@ public class RepeatCmd extends DJCommand {
         }
         settings.setRepeatMode(value);
         log.info(event.getGuild().getName() + "でリピートコマンドを実行し、設定を" + (value ? "ON" : "OFF") + "に設定しました。");
-        event.replySuccess("リピートモードを、 `" + (value ? "ON" : "OFF") + "に設定しました。`");
+        event.replySuccess("リピートを `" + (value ? "有効" : "無効") + "` にしました。");
     }
 
     @Override
