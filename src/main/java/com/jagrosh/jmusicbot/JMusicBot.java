@@ -1,17 +1,17 @@
 /*
- * Copyright 2016 John Grosh (jagrosh).
+ * Copyright 2018-2020 Cosgy Dev
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package com.jagrosh.jmusicbot;
 
@@ -20,11 +20,11 @@ import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jdautilities.examples.command.AboutCommand;
 import com.jagrosh.jdautilities.examples.command.PingCommand;
+import com.jagrosh.jmusicbot.commands.admin.PrefixCmd;
 import com.jagrosh.jmusicbot.commands.admin.SetdjCmd;
 import com.jagrosh.jmusicbot.commands.admin.SettcCmd;
 import com.jagrosh.jmusicbot.commands.admin.SetvcCmd;
 import com.jagrosh.jmusicbot.commands.dj.*;
-import com.jagrosh.jmusicbot.commands.general.AboutJPCmd;
 import com.jagrosh.jmusicbot.commands.general.SettingsCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
@@ -104,39 +104,41 @@ public class JMusicBot {
                 .setGuildSettingsManager(settings)
                 .addCommands(aboutCommand,
                         new PingCommand(),
-                        new SettingsCmd(),
-                        new AboutJPCmd(),
+                        new SettingsCmd(bot),
 
                         new LyricsCmd(bot),
                         new NowplayingCmd(bot),
-                        new PlayCmd(bot, config.getLoading()),
+                        new PlayCmd(bot),
                         new PlaylistsCmd(bot),
                         new QueueCmd(bot),
                         new RemoveCmd(bot),
-                        new SearchCmd(bot, config.getSearching()),
-                        new SCSearchCmd(bot, config.getSearching()),
+                        new SearchCmd(bot),
+                        new SCSearchCmd(bot),
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
 
+                        new ForceRemoveCmd(bot),
                         new ForceskipCmd(bot),
                         new MoveTrackCmd(bot),
                         new PauseCmd(bot),
-                        new PlaynextCmd(bot, config.getLoading()),
+                        new PlaynextCmd(bot),
                         new RepeatCmd(bot),
                         new SkiptoCmd(bot),
                         new StopCmd(bot),
                         new VolumeCmd(bot),
 
-                        new SetdjCmd(),
-                        new SettcCmd(),
-                        new SetvcCmd(),
+                        new PrefixCmd(bot),
+                        new SetdjCmd(bot),
+                        new SettcCmd(bot),
+                        new SetvcCmd(bot),
 
                         new AutoplaylistCmd(bot),
+                        new DebugCmd(bot),
                         new PlaylistCmd(bot),
-                        new SetavatarCmd(),
-                        new SetgameCmd(),
-                        new SetnameCmd(),
-                        new SetstatusCmd(),
+                        new SetavatarCmd(bot),
+                        new SetgameCmd(bot),
+                        new SetnameCmd(bot),
+                        new SetstatusCmd(bot),
                         new ShutdownCmd(bot)
                 );
         if (config.useEval())
@@ -175,8 +177,9 @@ public class JMusicBot {
                     .setToken(config.getToken())
                     .setAudioEnabled(true)
                     .setGame(nogame ? null : Game.playing("ロード中..."))
-                    .setStatus(config.getStatus() == OnlineStatus.INVISIBLE || config.getStatus() == OnlineStatus.OFFLINE ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
-                    .addEventListener(client, waiter, new Listener(bot))
+                    .setStatus(config.getStatus()==OnlineStatus.INVISIBLE || config.getStatus()==OnlineStatus.OFFLINE
+                            ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
+                    .addEventListener(cb.build(), waiter, new Listener(bot))
                     .setBulkDeleteSplittingEnabled(true)
                     .build();
             bot.setJDA(jda);

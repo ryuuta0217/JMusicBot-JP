@@ -1,17 +1,17 @@
 /*
- * Copyright 2016 John Grosh <john.a.grosh@gmail.com>.
+ * Copyright 2018-2020 Cosgy Dev
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package com.jagrosh.jmusicbot.commands.music;
 
@@ -22,6 +22,7 @@ import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.PlayStatus;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.audio.QueuedTrack;
+import com.jagrosh.jmusicbot.commands.DJCommand;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
 import com.jagrosh.jmusicbot.settings.Settings;
@@ -47,13 +48,13 @@ public class PlayCmd extends MusicCommand {
 
     private final String loadingEmoji;
 
-    public PlayCmd(Bot bot, String loadingEmoji) {
+    public PlayCmd(Bot bot) {
         super(bot);
-        this.loadingEmoji = loadingEmoji;
+        this.loadingEmoji = bot.getConfig().getLoading();
         this.name = "play";
         this.arguments = "<title|URL|subcommand>";
         this.help = "指定された曲を再生します";
-        this.aliases = new String[]{"p"};
+        this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = false;
         this.children = new Command[]{new PlaylistCmd(bot)};
@@ -64,21 +65,14 @@ public class PlayCmd extends MusicCommand {
         if (event.getArgs().isEmpty() && event.getMessage().getAttachments().isEmpty()) {
             AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
             if (handler.getPlayer().getPlayingTrack() != null && handler.getPlayer().isPaused()) {
-                boolean isDJ = event.getMember().hasPermission(Permission.MANAGE_SERVER);
-                if (!isDJ)
-                    isDJ = event.isOwner();
-                Settings settings = event.getClient().getSettingsFor(event.getGuild());
-                Role dj = settings.getRole(event.getGuild());
-                if (!isDJ && dj != null)
-                    isDJ = event.getMember().getRoles().contains(dj);
-                if (!isDJ)
-                    event.replyError("DJだけが一時停止を解除できます。");
-                else {
+                if(DJCommand.checkDJPermission(event)){
                     handler.getPlayer().setPaused(false);
                     event.replySuccess("**" + handler.getPlayer().getPlayingTrack().getInfo().title + "**の再生を再開しました。");
 
                     Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PLAYING);
                 }
+                else
+                    event.replyError("プレーヤーの一時停止を解除できるのはDJだけです！");
                 return;
             }
             StringBuilder builder = new StringBuilder(event.getClient().getWarning() + " Play コマンド:\n");
@@ -114,8 +108,12 @@ public class PlayCmd extends MusicCommand {
             }
             AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor())) + 1;
+
+            // Output MSG ex:
+            // <タイトル><(長さ)> を追加しました。
+            // <タイトル><(長さ)> を再生待ちの<再生待ち番号>番目に追加しました。
             String addMsg = FormatUtil.filter(event.getClient().getSuccess() + " **" + track.getInfo().title
-                    + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "を追加しました。" : "を" + pos + "番目の再生待ちに追加しました。 "));
+                    + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "を追加しました。" : "を再生待ちの" + pos + "番目に追加しました。 "));
             if (playlist == null || !event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION))
                 m.editMessage(addMsg).queue();
             else {

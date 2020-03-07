@@ -1,17 +1,17 @@
 /*
- * Copyright 2018 John Grosh <john.a.grosh@gmail.com>.
+ * Copyright 2018-2020 Cosgy Dev
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package com.jagrosh.jmusicbot.settings;
 
@@ -44,7 +44,8 @@ public class SettingsManager implements GuildSettingsManager {
                         o.has("dj_role_id") ? o.getString("dj_role_id") : null,
                         o.has("volume") ? o.getInt("volume") : 100,
                         o.has("default_playlist") ? o.getString("default_playlist") : null,
-                        o.has("repeat") && o.getBoolean("repeat")));
+                        o.has("repeat")          ? o.getBoolean("repeat")         : false,
+                        o.has("prefix")          ? o.getString("prefix")          : null));
             });
         } catch (IOException | JSONException e) {
             LoggerFactory.getLogger("Settings").warn("サーバー設定を読み込めませんでした(まだ設定がない場合は正常です): " + e);
@@ -67,7 +68,7 @@ public class SettingsManager implements GuildSettingsManager {
     }
 
     private Settings createDefaultSettings() {
-        return new Settings(this, 0, 0, 0, 100, null, false);
+        return new Settings(this, 0, 0, 0, 100, null, false, null);
     }
 
     protected void writeSettings() {
@@ -87,6 +88,8 @@ public class SettingsManager implements GuildSettingsManager {
                 o.put("default_playlist", s.getDefaultPlaylist());
             if (s.getRepeatMode())
                 o.put("repeat", true);
+            if(s.getPrefix() != null)
+                o.put("prefix", s.getPrefix());
             obj.put(Long.toString(key), o);
         });
         try {
