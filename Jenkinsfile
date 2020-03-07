@@ -1,19 +1,33 @@
-node {
-   def mvnHome
-   stage('準備') {
-      git 'https://github.com/Cosgy-Dev/JMusicBot-JP.git'         
-      mvnHome = tool 'Maven 3.6.0'
-   }
-   stage('ビルド') {
-      withEnv(["MVN_HOME=$mvnHome"]) {
-         if (isUnix()) {
-            sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore -Dfile.encoding=UTF-8 clean package'
-         } else {
-            bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore -Dfile.encoding=UTF-8 clean package/)
-         }
-      }
-   }
-   stage('成果物の保存') {
-      archiveArtifacts 'target/*.jar'
-   }
+pipeline {
+    agent {
+        docker {
+            image 'maven:3-alpine'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        stage('Deliver') { 
+            steps {
+                sh './jenkins/scripts/deliver.sh' 
+            }
+        }
+    }
 }
