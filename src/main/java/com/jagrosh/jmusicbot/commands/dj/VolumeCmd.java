@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
  */
 public class VolumeCmd extends DJCommand {
     Logger log = LoggerFactory.getLogger("Volume");
+
     public VolumeCmd(Bot bot) {
         super(bot);
         this.name = "volume";
@@ -45,7 +46,7 @@ public class VolumeCmd extends DJCommand {
         int volume = handler.getPlayer().getVolume();
         if (event.getArgs().isEmpty()) {
             event.reply(FormatUtil.volumeIcon(volume) + " 現在の音量は `" + volume + "です  `");
-            log.info(event.getGuild().getName()+"でボリュームコマンドを実行しました。");
+            log.info(event.getGuild().getName() + "でボリュームコマンドを実行しました。");
         } else {
             int nvolume;
             try {

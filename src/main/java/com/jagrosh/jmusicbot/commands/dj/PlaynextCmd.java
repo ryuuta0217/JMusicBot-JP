@@ -33,8 +33,8 @@ import org.slf4j.LoggerFactory;
  * @author John Grosh (john.a.grosh@gmail.com)
  */
 public class PlaynextCmd extends DJCommand {
-    Logger log = LoggerFactory.getLogger("Playnext");
     private final String loadingEmoji;
+    Logger log = LoggerFactory.getLogger("Playnext");
 
     public PlaynextCmd(Bot bot) {
         super(bot);
@@ -119,7 +119,7 @@ public class PlaynextCmd extends DJCommand {
                 m.editMessage(event.getClient().getError() + " 読み込みエラー: " + throwable.getMessage()).queue();
             else
                 m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。").queue();
-                log.info(event.getGuild().getName() + "で読み込みエラーが発生しました。");
+            log.info(event.getGuild().getName() + "で読み込みエラーが発生しました。");
         }
     }
 }

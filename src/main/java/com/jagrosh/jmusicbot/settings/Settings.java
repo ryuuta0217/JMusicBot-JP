@@ -16,12 +16,13 @@
 package com.jagrosh.jmusicbot.settings;
 
 import com.jagrosh.jdautilities.command.GuildSettingsProvider;
-import java.util.Collection;
-import java.util.Collections;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author John Grosh <john.a.grosh@gmail.com>
@@ -88,18 +89,40 @@ public class Settings implements GuildSettingsProvider {
         return volume;
     }
 
+    public void setVolume(int volume) {
+        this.volume = volume;
+        this.manager.writeSettings();
+    }
+
     public String getDefaultPlaylist() {
         return defaultPlaylist;
+    }
+
+    public void setDefaultPlaylist(String defaultPlaylist) {
+        this.defaultPlaylist = defaultPlaylist;
+        this.manager.writeSettings();
     }
 
     public boolean getRepeatMode() {
         return repeatMode;
     }
 
-    public String getPrefix(){ return  prefix; }
+    public void setRepeatMode(boolean mode) {
+        this.repeatMode = mode;
+        this.manager.writeSettings();
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+        this.manager.writeSettings();
+    }
 
     @Override
-    public Collection<String> getPrefixes(){
+    public Collection<String> getPrefixes() {
         return prefix == null ? Collections.EMPTY_SET : Collections.singleton(prefix);
     }
 
@@ -116,26 +139,6 @@ public class Settings implements GuildSettingsProvider {
 
     public void setDJRole(Role role) {
         this.roleId = role == null ? 0 : role.getIdLong();
-        this.manager.writeSettings();
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
-        this.manager.writeSettings();
-    }
-
-    public void setDefaultPlaylist(String defaultPlaylist) {
-        this.defaultPlaylist = defaultPlaylist;
-        this.manager.writeSettings();
-    }
-
-    public void setRepeatMode(boolean mode) {
-        this.repeatMode = mode;
-        this.manager.writeSettings();
-    }
-
-    public void setPrefix(String prefix){
-        this.prefix = prefix;
         this.manager.writeSettings();
     }
 }

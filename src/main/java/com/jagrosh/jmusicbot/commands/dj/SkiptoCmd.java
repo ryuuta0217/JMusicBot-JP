@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SkiptoCmd extends DJCommand {
     Logger log = LoggerFactory.getLogger("Skip");
+
     public SkiptoCmd(Bot bot) {
         super(bot);
         this.name = "skipto";

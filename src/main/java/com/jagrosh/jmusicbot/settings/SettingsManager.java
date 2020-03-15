@@ -42,10 +42,10 @@ public class SettingsManager implements GuildSettingsManager {
                         o.has("text_channel_id") ? o.getString("text_channel_id") : null,
                         o.has("voice_channel_id") ? o.getString("voice_channel_id") : null,
                         o.has("dj_role_id") ? o.getString("dj_role_id") : null,
-                        o.has("volume") ? o.getInt("volume") : 100,
+                        o.has("volume") ? o.getInt("volume") : 50,
                         o.has("default_playlist") ? o.getString("default_playlist") : null,
-                        o.has("repeat")          ? o.getBoolean("repeat")         : false,
-                        o.has("prefix")          ? o.getString("prefix")          : null));
+                        o.has("repeat") && o.getBoolean("repeat"),
+                        o.has("prefix") ? o.getString("prefix") : null));
             });
         } catch (IOException | JSONException e) {
             LoggerFactory.getLogger("Settings").warn("サーバー設定を読み込めませんでした(まだ設定がない場合は正常です): " + e);
@@ -68,7 +68,7 @@ public class SettingsManager implements GuildSettingsManager {
     }
 
     private Settings createDefaultSettings() {
-        return new Settings(this, 0, 0, 0, 100, null, false, null);
+        return new Settings(this, 0, 0, 0, 50, null, false, null);
     }
 
     protected void writeSettings() {
@@ -82,13 +82,13 @@ public class SettingsManager implements GuildSettingsManager {
                 o.put("voice_channel_id", Long.toString(s.voiceId));
             if (s.roleId != 0)
                 o.put("dj_role_id", Long.toString(s.roleId));
-            if (s.getVolume() != 100)
+            if (s.getVolume() != 50)
                 o.put("volume", s.getVolume());
             if (s.getDefaultPlaylist() != null)
                 o.put("default_playlist", s.getDefaultPlaylist());
             if (s.getRepeatMode())
                 o.put("repeat", true);
-            if(s.getPrefix() != null)
+            if (s.getPrefix() != null)
                 o.put("prefix", s.getPrefix());
             obj.put(Long.toString(key), o);
         });

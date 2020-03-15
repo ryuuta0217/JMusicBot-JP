@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class RepeatCmd extends DJCommand {
     Logger log = LoggerFactory.getLogger("Repeat");
+
     public RepeatCmd(Bot bot) {
         super(bot);
         this.name = "repeat";

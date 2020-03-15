@@ -14,13 +14,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
  * @author kosugi_kun (info@cosgy.jp)
  */
-public class ForceRemoveCmd extends DJCommand
-{
-    public ForceRemoveCmd(Bot bot)
-    {
+public class ForceRemoveCmd extends DJCommand {
+    public ForceRemoveCmd(Bot bot) {
         super(bot);
         this.name = "forceremove";
         this.help = "指定したユーザーのエントリーを再生待ちから削除します";
@@ -32,17 +29,14 @@ public class ForceRemoveCmd extends DJCommand
     }
 
     @Override
-    public void doCommand(CommandEvent event)
-    {
-        if (event.getArgs().isEmpty())
-        {
+    public void doCommand(CommandEvent event) {
+        if (event.getArgs().isEmpty()) {
             event.replyError("ユーザーに言及する必要があります！");
             return;
         }
 
         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        if (handler.getQueue().isEmpty())
-        {
+        if (handler.getQueue().isEmpty()) {
             event.replyError("再生待ちには何もありません！");
             return;
         }
@@ -51,37 +45,32 @@ public class ForceRemoveCmd extends DJCommand
         User target;
         List<Member> found = FinderUtil.findMembers(event.getArgs(), event.getGuild());
 
-        if(found.isEmpty())
-        {
+        if (found.isEmpty()) {
             event.replyError("ユーザーが見つかりません！");
             return;
-        }
-        else if(found.size()>1)
-        {
+        } else if (found.size() > 1) {
             OrderedMenu.Builder builder = new OrderedMenu.Builder();
-            for(int i=0; i<found.size() && i<4; i++)
-            {
+            for (int i = 0; i < found.size() && i < 4; i++) {
                 Member member = found.get(i);
-                builder.addChoice("**"+member.getUser().getName()+"**#"+member.getUser().getDiscriminator());
+                builder.addChoice("**" + member.getUser().getName() + "**#" + member.getUser().getDiscriminator());
             }
 
             builder
-                    .setSelection((msg, i) -> removeAllEntries(found.get(i-1).getUser(), event))
+                    .setSelection((msg, i) -> removeAllEntries(found.get(i - 1).getUser(), event))
                     .setText("複数のユーザーが見つかりました:")
                     .setColor(event.getSelfMember().getColor())
                     .useNumbers()
                     .setUsers(event.getAuthor())
                     .useCancelButton(true)
-                    .setCancel((msg) -> {})
+                    .setCancel((msg) -> {
+                    })
                     .setEventWaiter(bot.getWaiter())
                     .setTimeout(1, TimeUnit.MINUTES)
 
                     .build().display(event.getChannel());
 
             return;
-        }
-        else
-        {
+        } else {
             target = found.get(0).getUser();
         }
 
@@ -89,16 +78,12 @@ public class ForceRemoveCmd extends DJCommand
 
     }
 
-    private void removeAllEntries(User target, CommandEvent event)
-    {
+    private void removeAllEntries(User target, CommandEvent event) {
         int count = ((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).getQueue().removeAll(target.getIdLong());
-        if (count == 0)
-        {
-            event.replyWarning("**"+target.getName()+"** の再生待ちに曲がありません！");
-        }
-        else
-        {
-            event.replySuccess(target.getName()+"**#"+target.getDiscriminator()+ "から`"+count+"`曲削除しました。");
+        if (count == 0) {
+            event.replyWarning("**" + target.getName() + "** の再生待ちに曲がありません！");
+        } else {
+            event.replySuccess(target.getName() + "**#" + target.getDiscriminator() + "から`" + count + "`曲削除しました。");
         }
     }
 }

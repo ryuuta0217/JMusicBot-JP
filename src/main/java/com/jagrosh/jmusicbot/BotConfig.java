@@ -32,11 +32,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class BotConfig {
-    private final Prompt prompt;
     private final static String CONTEXT = "Config";
     private final static String START_TOKEN = "/// START OF JMUSICBOT-JP CONFIG ///";
     private final static String END_TOKEN = "/// END OF JMUSICBOT-JP CONFIG ///";
-
+    private final Prompt prompt;
     private Path path = null;
     // [JMusicBot-JP] added nicoEmail, nicoPass
     private String token, prefix, altprefix, helpWord, playlistsFolder,
@@ -279,14 +278,10 @@ public class BotConfig {
         return Math.round(track.getDuration() / 1000.0) > maxSeconds;
     }
 
-    public String[] getAliases(String command)
-    {
-        try
-        {
+    public String[] getAliases(String command) {
+        try {
             return aliases.getStringList(command).toArray(new String[0]);
-        }
-        catch(NullPointerException | ConfigException.Missing e)
-        {
+        } catch (NullPointerException | ConfigException.Missing e) {
             return new String[0];
         }
     }

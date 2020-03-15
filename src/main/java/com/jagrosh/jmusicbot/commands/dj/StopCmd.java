@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class StopCmd extends DJCommand {
     Logger log = LoggerFactory.getLogger("Stop");
+
     public StopCmd(Bot bot) {
         super(bot);
         this.name = "stop";

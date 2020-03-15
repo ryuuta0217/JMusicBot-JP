@@ -32,6 +32,8 @@ import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
+import dev.cosgy.JMusicBot.commands.general.ServerInfo;
+import dev.cosgy.JMusicBot.commands.general.UserInfo;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import org.slf4j.Logger;
@@ -139,7 +141,10 @@ public class JMusicBot {
                         new SetgameCmd(bot),
                         new SetnameCmd(bot),
                         new SetstatusCmd(bot),
-                        new ShutdownCmd(bot)
+                        new ShutdownCmd(bot),
+
+                        new ServerInfo(),
+                        new UserInfo()
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
@@ -177,7 +182,7 @@ public class JMusicBot {
                     .setToken(config.getToken())
                     .setAudioEnabled(true)
                     .setGame(nogame ? null : Game.playing("ロード中..."))
-                    .setStatus(config.getStatus()==OnlineStatus.INVISIBLE || config.getStatus()==OnlineStatus.OFFLINE
+                    .setStatus(config.getStatus() == OnlineStatus.INVISIBLE || config.getStatus() == OnlineStatus.OFFLINE
                             ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
                     .addEventListener(cb.build(), waiter, new Listener(bot))
                     .setBulkDeleteSplittingEnabled(true)

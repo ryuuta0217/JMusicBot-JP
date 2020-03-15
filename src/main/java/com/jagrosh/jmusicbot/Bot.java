@@ -51,6 +51,18 @@ public class Bot {
     private JDA jda;
     private GUI gui;
 
+    public Bot(EventWaiter waiter, BotConfig config, SettingsManager settings) {
+        this.waiter = waiter;
+        this.config = config;
+        this.settings = settings;
+        this.playlists = new PlaylistLoader(config);
+        this.threadpool = Executors.newSingleThreadScheduledExecutor();
+        this.players = new PlayerManager(this);
+        this.players.init();
+        this.nowplaying = new NowplayingHandler(this);
+        this.nowplaying.init();
+    }
+
     public static void updatePlayStatus(@Nonnull Guild guild, @Nonnull Member selfMember, @Nonnull PlayStatus status) {
         if (!INSTANCE.getConfig().getChangeNickName()) return;
         if (!selfMember.hasPermission(Permission.NICKNAME_CHANGE)) {
@@ -72,18 +84,6 @@ public class Bot {
         }
 
         guild.getController().setNickname(selfMember, name).queue();
-    }
-
-    public Bot(EventWaiter waiter, BotConfig config, SettingsManager settings) {
-        this.waiter = waiter;
-        this.config = config;
-        this.settings = settings;
-        this.playlists = new PlaylistLoader(config);
-        this.threadpool = Executors.newSingleThreadScheduledExecutor();
-        this.players = new PlayerManager(this);
-        this.players.init();
-        this.nowplaying = new NowplayingHandler(this);
-        this.nowplaying.init();
     }
 
     public BotConfig getConfig() {
@@ -116,6 +116,10 @@ public class Bot {
 
     public JDA getJDA() {
         return jda;
+    }
+
+    public void setJDA(JDA jda) {
+        this.jda = jda;
     }
 
     public void closeAudioConnection(long guildId) {
@@ -151,10 +155,6 @@ public class Bot {
         if (gui != null)
             gui.dispose();
         System.exit(0);
-    }
-
-    public void setJDA(JDA jda) {
-        this.jda = jda;
     }
 
     public void setGUI(GUI gui) {

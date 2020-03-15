@@ -36,9 +36,9 @@ import java.util.concurrent.TimeUnit;
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class SearchCmd extends MusicCommand {
-    protected String searchPrefix = "ytsearch:";
     private final OrderedMenu.Builder builder;
     private final String searchingEmoji;
+    protected String searchPrefix = "ytsearch:";
 
     public SearchCmd(Bot bot) {
         super(bot);

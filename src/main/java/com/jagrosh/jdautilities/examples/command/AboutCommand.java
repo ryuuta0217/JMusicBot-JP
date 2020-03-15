@@ -38,13 +38,13 @@ import java.awt.*;
 )
 @Author("John Grosh (jagrosh)")
 public class AboutCommand extends Command {
-    private boolean IS_AUTHOR = true;
-    private String REPLACEMENT_ICON = "+";
     private final Color color;
     private final String description;
     private final Permission[] perms;
-    private String oauthLink;
     private final String[] features;
+    private boolean IS_AUTHOR = true;
+    private String REPLACEMENT_ICON = "+";
+    private String oauthLink;
 
     public AboutCommand(Color color, String description, String[] features, Permission... perms) {
         this.color = color;

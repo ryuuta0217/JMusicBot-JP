@@ -172,14 +172,18 @@ public class CommandClientImpl implements CommandClient, EventListener {
         }
     }
 
-    @Override
-    public void setListener(CommandListener listener) {
-        this.listener = listener;
+    private static String[] splitOnPrefixLength(String rawContent, int length) {
+        return Arrays.copyOf(rawContent.substring(length).trim().split("\\s+", 2), 2);
     }
 
     @Override
     public CommandListener getListener() {
         return listener;
+    }
+
+    @Override
+    public void setListener(CommandListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -597,10 +601,6 @@ public class CommandClientImpl implements CommandClient, EventListener {
             return (GuildSettingsProvider) settings;
         else
             return null;
-    }
-
-    private static String[] splitOnPrefixLength(String rawContent, int length) {
-        return Arrays.copyOf(rawContent.substring(length).trim().split("\\s+", 2), 2);
     }
 
     /**
