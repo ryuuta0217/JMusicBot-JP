@@ -25,7 +25,7 @@ public class NicoSearchCmd extends Command {
     public NicoSearchCmd() {
         this.name = "niconicosearch";
         this.aliases = Bot.INSTANCE.getConfig().getAliases(this.name);
-        this.arguments = "<query>";
+        this.arguments = "<検索語句>";
         this.help = "指定した文字列を使用してニコニコ動画上の動画を検索します。";
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
     }
@@ -33,9 +33,9 @@ public class NicoSearchCmd extends Command {
     @Override
     public void execute(CommandEvent event) {
         if(event.getArgs().isEmpty()) {
-            event.reply("使用法: **`" + event.getClient().getPrefix() + "ncsearch <検索語句>`**");
+            event.reply("使用法: **`" + event.getClient().getPrefix() + this.name + " " + this.arguments + "`**");
         } else {
-            Message m = event.getChannel().sendMessage("<a:processingRing:533493912225054750> ニコニコ動画で " + event.getArgs() + " を検索しています\n" +
+            Message m = event.getChannel().sendMessage(Bot.INSTANCE.getConfig().getSearching() + " ニコニコ動画で " + event.getArgs() + " を検索しています\n" +
                     "**(注: 一部再生できない動画があります。)**").complete();
             LinkedList<nicoVideoSearchResult> results = niconicoAPI.searchVideo(event.getArgs(), 5, true);
             if(results.size() == 0) {
