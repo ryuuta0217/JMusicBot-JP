@@ -34,6 +34,7 @@ import com.jagrosh.jmusicbot.settings.SettingsManager;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 import dev.cosgy.JMusicBot.commands.general.ServerInfo;
 import dev.cosgy.JMusicBot.commands.general.UserInfo;
+import dev.cosgy.JMusicBot.commands.music.NicoSearchCmd;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import org.slf4j.Logger;
@@ -116,6 +117,7 @@ public class JMusicBot {
                         new RemoveCmd(bot),
                         new SearchCmd(bot),
                         new SCSearchCmd(bot),
+                        new NicoSearchCmd(),
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
 
