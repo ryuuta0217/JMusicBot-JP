@@ -2,15 +2,6 @@ package dev.cosgy.niconicoSearchAPI;
 
 import java.util.List;
 
-/**
- * このソースコードはクリエイティブ・コモンズ
- * 表示 - 非営利 - 改変禁止 4.0 国際
- * ライセンスの下に提供されています。
- * <p>
- * 詳しくは、 https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja をご覧下さい。
- *
- * @author Ryuuta Iwakura (ryuuta0217)
- */
 public class Sample {
     public static void main(String[] args) {
         nicoSearchAPI ns = new nicoSearchAPI(true, 5);

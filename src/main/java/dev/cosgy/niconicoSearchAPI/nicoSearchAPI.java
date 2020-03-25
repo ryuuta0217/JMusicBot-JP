@@ -11,15 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-/**
- * このソースコードはクリエイティブ・コモンズ
- * 表示 - 非営利 - 改変禁止 4.0 国際
- * ライセンスの下に提供されています。
- * <p>
- * 詳しくは、 https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja をご覧下さい。
- *
- * @author Ryuuta Iwakura (ryuuta0217)
- */
 public class nicoSearchAPI {
     private final boolean cacheEnabled;
     private final int maxCacheSize;
