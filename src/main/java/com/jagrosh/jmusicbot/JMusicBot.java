@@ -117,7 +117,7 @@ public class JMusicBot {
                         new RemoveCmd(bot),
                         new SearchCmd(bot),
                         new SCSearchCmd(bot),
-                        new NicoSearchCmd(),
+                        new NicoSearchCmd(bot),
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
 
