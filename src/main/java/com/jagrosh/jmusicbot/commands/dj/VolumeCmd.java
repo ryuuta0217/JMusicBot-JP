@@ -46,7 +46,6 @@ public class VolumeCmd extends DJCommand {
         int volume = handler.getPlayer().getVolume();
         if (event.getArgs().isEmpty()) {
             event.reply(FormatUtil.volumeIcon(volume) + " 現在の音量は `" + volume + "です  `");
-            log.info(event.getGuild().getName() + "でボリュームコマンドを実行しました。");
         } else {
             int nvolume;
             try {
@@ -55,7 +54,7 @@ public class VolumeCmd extends DJCommand {
                 nvolume = -1;
             }
             if (nvolume < 0 || nvolume > 150)
-                event.reply(event.getClient().getError() + " 音量は0から150までの有効な整数でないといけません。");
+                event.reply(event.getClient().getError() + " 音量は0から150までの整数でないといけません。");
             else {
                 handler.getPlayer().setVolume(nvolume);
                 settings.setVolume(nvolume);

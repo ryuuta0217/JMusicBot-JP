@@ -28,7 +28,7 @@ public class SkipCmd extends MusicCommand {
     public SkipCmd(Bot bot) {
         super(bot);
         this.name = "skip";
-        this.help = "現在流れている曲をスキップするリクエストをする";
+        this.help = "現在流れている曲のスキップをリクエスト";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = true;
@@ -45,7 +45,7 @@ public class SkipCmd extends MusicCommand {
                     .filter(m -> !m.getUser().isBot() && !m.getVoiceState().isDeafened()).count();
             String msg;
             if (handler.getVotes().contains(event.getAuthor().getId()))
-                msg = event.getClient().getWarning() + " 再生中の曲のスキップリクエスト済みです。 `[";
+                msg = event.getClient().getWarning() + " 再生中の曲はスキップリクエスト済みです。 `[";
             else {
                 msg = event.getClient().getSuccess() + "現在の曲をスキップリクエストしました。`[";
                 handler.getVotes().add(event.getAuthor().getId());

@@ -48,12 +48,12 @@ public abstract class MusicCommand extends Command {
                 event.getMessage().delete().queue();
             } catch (PermissionException ignore) {
             }
-            event.replyInDm(event.getClient().getError() + " そのコマンドを使用できるのは" + tchannel.getAsMention() + "です!");
+            event.replyInDm(event.getClient().getError() + " このコマンドを使用できるのは" + tchannel.getAsMention() + "です!");
             return;
         }
         bot.getPlayerManager().setUpHandler(event.getGuild()); // no point constantly checking for this later
         if (bePlaying && !((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).isMusicPlaying(event.getJDA())) {
-            event.reply(event.getClient().getError() + "それを使うには音楽が流れていないといけません！");
+            event.reply(event.getClient().getError() + "このコマンドを使うには音楽が流れていないといけません！");
             return;
         }
         if (beListening) {
@@ -62,7 +62,7 @@ public abstract class MusicCommand extends Command {
                 current = settings.getVoiceChannel(event.getGuild());
             GuildVoiceState userState = event.getMember().getVoiceState();
             if (!userState.inVoiceChannel() || userState.isDeafened() || (current != null && !userState.getChannel().equals(current))) {
-                event.replyError("これを使うには " + (current == null ? "音声チャンネル" : "**" + current.getName() + "**") + " で聴いている必要があります。");
+                event.replyError("このコマンドを使うには " + (current == null ? "音声チャンネル" : "**" + current.getName() + "**") + " に接続している必要があります。");
                 return;
             }
             if (!event.getGuild().getSelfMember().getVoiceState().inVoiceChannel()) {

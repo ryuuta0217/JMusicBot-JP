@@ -57,7 +57,6 @@ public class SettingsCmd extends Command {
                         + "\nリピートモード: **" + (s.getRepeatMode() ? "On" : "Off") + "**"
                         + "\nデフォルトプレイリスト: " + (s.getDefaultPlaylist() == null ? "None" : "**" + s.getDefaultPlaylist() + "**")
                 )
-                //TODO ここの日本語訳を変更する予定
                 .setFooter(event.getJDA().getGuilds().size() + " サーバー | "
                         + event.getJDA().getGuilds().stream().filter(g -> g.getSelfMember().getVoiceState().inVoiceChannel()).count()
                         + " オーディオ接続", null);
