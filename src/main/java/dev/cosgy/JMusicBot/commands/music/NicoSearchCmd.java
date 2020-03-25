@@ -25,7 +25,7 @@ public class NicoSearchCmd extends MusicCommand {
 
     public NicoSearchCmd(Bot bot) {
         super(bot);
-        this.name = "niconicosearch";
+        this.name = "ncsearch";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = false;
@@ -36,6 +36,13 @@ public class NicoSearchCmd extends MusicCommand {
 
     @Override
     public void doCommand(CommandEvent event) {
+        boolean isOwner = event.getAuthor().getIdLong() == bot.getConfig().getOwnerId();
+        if(!bot.getConfig().isNicoNicoEnabled()) {
+            event.reply("ニコニコ動画の機能が有効になっていません。\n" +
+                   (isOwner ? "" : "Botの作成者に") + "config.txtの`useniconico = false`を`useniconico = true`に変更" + (isOwner ? "してください" : "するよう頼んでください") + "。");
+            return;
+        }
+
         if(event.getArgs().isEmpty()) {
             event.reply("使用法: **`" + event.getClient().getPrefix() + this.name + " " + this.arguments + "`**");
         } else {
