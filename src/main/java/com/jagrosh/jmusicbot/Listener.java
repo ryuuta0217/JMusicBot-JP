@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Cosgy Dev (info@cosgy.jp)
+ * @author Cosgy Dev (info@cosgy.tokyo)
  */
 public class Listener extends ListenerAdapter {
     private final Bot bot;

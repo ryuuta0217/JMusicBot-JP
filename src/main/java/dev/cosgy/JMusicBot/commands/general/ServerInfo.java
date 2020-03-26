@@ -5,7 +5,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 
 import java.time.format.DateTimeFormatter;
-//TODO コマンド一覧で GeneralをMusicの上にしてくれたら嬉しい
+
 public class ServerInfo extends Command {
     public ServerInfo() {
         this.name = "serverinfo";
