@@ -90,7 +90,7 @@ public class AboutCommand extends Command {
                 .append(description).append("は、").append(JDAUtilitiesInfo.AUTHOR + "の[コマンド拡張](" + JDAUtilitiesInfo.GITHUB + ") (")
                 .append(JDAUtilitiesInfo.VERSION).append(")と[JDAライブラリ](https://github.com/DV8FromTheWorld/JDA) (")
                 .append(JDAInfo.VERSION).append(")を使用しており、").append(author).append("が所有しています。")
-                .append(event.getSelfUser().getName()).append("についての質問などは[`Cosgy Dev公式チャンネル`](https://discord.gg/RBpkHxf)へお願いします。")
+                .append(event.getSelfUser().getName()).append("についての質問などは[Cosgy Dev公式チャンネル](https://discord.gg/RBpkHxf)へお願いします。")
                 .append("\nこのボットの使用方法は`").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
                 .append("`で確認することができます。").append("\n\n機能の特徴： ```css");
         for (String feature : features)
