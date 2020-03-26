@@ -42,7 +42,7 @@ public class AboutCommand extends Command {
     private final String description;
     private final Permission[] perms;
     private final String[] features;
-    //private boolean IS_AUTHOR = true;
+    private boolean IS_AUTHOR = true;
     private String REPLACEMENT_ICON = "+";
     private String oauthLink;
 
@@ -57,9 +57,9 @@ public class AboutCommand extends Command {
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
     }
 
-    /*public void setIsAuthor(boolean value) {
+    public void setIsAuthor(boolean value) {
         this.IS_AUTHOR = value;
-    }*/
+    }
 
     public void setReplacementCharacter(String value) {
         this.REPLACEMENT_ICON = value;
@@ -80,6 +80,7 @@ public class AboutCommand extends Command {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(event.getGuild() == null ? color : event.getGuild().getSelfMember().getColor());
         builder.setAuthor("" + event.getSelfUser().getName() + "について!", null, event.getSelfUser().getAvatarUrl());
+        String CosgyOwner = "Cosgy Devが運営、開発をしています。";
         /*boolean join = !(event.getClient().getServerInvite() == null || event.getClient().getServerInvite().isEmpty());
         boolean inv = !oauthLink.isEmpty();
         String invline = "\n"+ (join ? "Cosgy Dev公式チャンネル [`こちら`](https://discord.gg/RBpkHxf)" : (inv ? "へお願いします。 " : ""));
@@ -89,7 +90,7 @@ public class AboutCommand extends Command {
         StringBuilder descr = new StringBuilder().append("こんにちは！ **").append(event.getSelfUser().getName()).append("**です。 ")
                 .append(description).append("は、").append(JDAUtilitiesInfo.AUTHOR + "の[コマンド拡張](" + JDAUtilitiesInfo.GITHUB + ") (")
                 .append(JDAUtilitiesInfo.VERSION).append(")と[JDAライブラリ](https://github.com/DV8FromTheWorld/JDA) (")
-                .append(JDAInfo.VERSION).append(")を使用しており、").append(author).append("が所有しています。")
+                .append(JDAInfo.VERSION).append(")を使用しており、").append((IS_AUTHOR ? CosgyOwner : author + "が所有しています。"))
                 .append(event.getSelfUser().getName()).append("についての質問などは[Cosgy Dev公式チャンネル](https://discord.gg/RBpkHxf)へお願いします。")
                 .append("\nこのボットの使用方法は`").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
                 .append("`で確認することができます。").append("\n\n機能の特徴： ```css");
