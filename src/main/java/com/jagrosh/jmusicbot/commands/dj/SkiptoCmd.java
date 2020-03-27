@@ -43,7 +43,7 @@ public class SkiptoCmd extends DJCommand {
         try {
             index = Integer.parseInt(event.getArgs());
         } catch (NumberFormatException e) {
-            event.reply(event.getClient().getError() + " `" + event.getArgs() + "` 有効な整数ではありません。");
+            event.reply(event.getClient().getError() + " `" + event.getArgs() + "` は有効な整数ではありません。");
             return;
         }
         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();

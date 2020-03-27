@@ -34,7 +34,7 @@ public class MoveTrackCmd extends DJCommand {
     public MoveTrackCmd(Bot bot) {
         super(bot);
         this.name = "movetrack";
-        this.help = "再生待ちの曲の再生順を移動させます。";
+        this.help = "再生待ちの曲の再生順を変更します";
         this.arguments = "<from> <to>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = true;
