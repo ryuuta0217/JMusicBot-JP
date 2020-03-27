@@ -422,7 +422,7 @@ public class CommandClientImpl implements CommandClient, EventListener {
         }
         textPrefix = prefix.equals(DEFAULT_PREFIX) ? "@" + event.getJDA().getSelfUser().getName() + " " : prefix;
         event.getJDA().getPresence().setPresence(status == null ? OnlineStatus.ONLINE : status,
-                game == null ? null : "default".equals(game.getName()) ? Game.playing("Type " + textPrefix + helpWord) : game);
+                game == null ? null : "default".equals(game.getName()) ? Game.playing(textPrefix + helpWord + "でヘルプを確認") : game);
 
         // Start SettingsManager if necessary
         GuildSettingsManager<?> manager = getSettingsManager();

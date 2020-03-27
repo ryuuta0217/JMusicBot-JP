@@ -33,7 +33,7 @@ public class LyricsCmd extends MusicCommand {
         super(bot);
         this.name = "lyrics";
         this.arguments = "[曲名]";
-        this.help = "現在再生中の曲の歌詞を表示します";
+        this.help = "現在再生中の曲または指定した曲名の歌詞を表示します";
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
         this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = true;

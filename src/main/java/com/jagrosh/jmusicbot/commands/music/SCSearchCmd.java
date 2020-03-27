@@ -10,7 +10,7 @@ public class SCSearchCmd extends SearchCmd {
         super(bot);
         this.searchPrefix = "scsearch:";
         this.name = "scsearch";
-        this.help = "指定されたクエリをSoundcloudで検索します";
+        this.help = "指定した文字列を使用してSoundcloudで検索します";
         this.aliases = bot.getConfig().getAliases(this.name);
     }
 }
