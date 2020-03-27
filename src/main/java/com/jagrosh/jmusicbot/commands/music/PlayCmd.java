@@ -35,6 +35,8 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -185,10 +187,24 @@ public class PlayCmd extends MusicCommand {
 
         @Override
         public void loadFailed(FriendlyException throwable) {
-            if (throwable.severity == Severity.COMMON)
+            if (throwable.severity == Severity.COMMON) {
                 m.editMessage(event.getClient().getError() + " 読み込み中にエラーが発生しました: " + throwable.getMessage()).queue();
-            else
-                m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。").queue();
+            } else {
+                if (m.getAuthor().getIdLong() == bot.getConfig().getOwnerId()) {
+                    StringWriter writer = new StringWriter();
+                    PrintWriter pWriter = new PrintWriter(writer);
+                    throwable.printStackTrace(pWriter);
+                    pWriter.flush();
+                    String stacktrace = writer.toString();
+                    m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。\n" +
+                            "**エラーの内容: " + throwable.getLocalizedMessage() + "**\n" +
+                            "```\n" +
+                            (stacktrace.length() > 2000 ? stacktrace.substring(0, 1997) + "..." : stacktrace) + "\n" +
+                            "```").queue();
+                } else {
+                    m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。").queue();
+                }
+            }
         }
     }
 
