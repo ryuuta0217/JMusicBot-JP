@@ -42,6 +42,12 @@
             <artifactId>lavaplayer-natives-extra</artifactId>
             <version>LATEST</version>
         </dependency>
+        <!-- YouTube IP Addresses rotator -->
+        <dependency>
+            <groupId>com.sedmelluq</groupId>
+            <artifactId>lavaplayer-ext-youtube-rotator</artifactId>
+            <version>LATEST</version>
+        </dependency>
         <dependency>
             <groupId>com.jagrosh</groupId>
             <artifactId>jda-utilities</artifactId>
