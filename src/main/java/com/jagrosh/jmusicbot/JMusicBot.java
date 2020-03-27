@@ -109,6 +109,9 @@ public class JMusicBot {
                         new PingCommand(),
                         new SettingsCmd(bot),
 
+                        new ServerInfo(),
+                        new UserInfo(),
+
                         new LyricsCmd(bot),
                         new NowplayingCmd(bot),
                         new PlayCmd(bot),
@@ -143,10 +146,9 @@ public class JMusicBot {
                         new SetgameCmd(bot),
                         new SetnameCmd(bot),
                         new SetstatusCmd(bot),
-                        new ShutdownCmd(bot),
+                        new ShutdownCmd(bot)
 
-                        new ServerInfo(),
-                        new UserInfo()
+
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
