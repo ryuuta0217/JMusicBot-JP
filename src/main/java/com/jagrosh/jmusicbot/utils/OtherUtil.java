@@ -110,7 +110,7 @@ public class OtherUtil {
         // Check for new version
         String latestVersion = getLatestVersion();
 
-        if (latestVersion != null && !latestVersion.equals(version)) {
+        if (latestVersion != null && !latestVersion.equals(version) && JMusicBot.CHECK_UPDATE) {
             prompt.alert(Prompt.Level.WARNING, "Version", String.format(NEW_VERSION_AVAILABLE, version, latestVersion));
         }
 

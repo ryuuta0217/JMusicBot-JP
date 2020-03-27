@@ -30,16 +30,17 @@
             <artifactId>JDA</artifactId> 
             <version>3.8.3_464</version>
         </dependency>
-        <!-- 32bit support for opus lib connector -->
         <dependency>
             <groupId>com.sedmelluq</groupId>
             <artifactId>lavaplayer</artifactId>
             <version>LATEST</version>
         </dependency>
+        <!-- Opus connector lib for [linux x86(32bit), linux arm, linux armhf, linux aarch32, linux aarch64] -->
+        <!-- Warning, this dependencies is **not** contains win x86 opus connector! -->
         <dependency>
             <groupId>com.sedmelluq</groupId>
             <artifactId>lavaplayer-natives-extra</artifactId>
-            <version>1.3.13</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>com.jagrosh</groupId>

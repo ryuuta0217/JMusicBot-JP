@@ -155,9 +155,9 @@ public class CommandClientImpl implements CommandClient, EventListener {
             }
             User owner = event.getJDA().getUserById(ownerId);
             if (owner != null) {
-                builder.append("\n\n追加のヘルプについては、お問い合わせください **").append(owner.getName()).append("**#").append(owner.getDiscriminator());
+                builder.append("\n\nほかのコマンドや使い方は **").append(owner.getName()).append("**#").append(owner.getDiscriminator() + " までお知らせ下さい");
                 if (serverInvite != null)
-                    builder.append(" または参加する ").append(serverInvite);
+                    builder.append(" または公式サーバーに参加することもできます: ").append(serverInvite);
             }
             event.replyInDm(builder.toString(), unused ->
             {

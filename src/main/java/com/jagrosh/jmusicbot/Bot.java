@@ -70,7 +70,7 @@ public class Bot {
             return;
         }
 
-        String name = selfMember.getEffectiveName().replaceAll("^[⏯⏸⏹] ", "");
+        String name = selfMember.getEffectiveName().replaceAll("[⏯⏸⏹] ", "");
         switch (status) {
             case PLAYING:
                 name = "⏯ " + name;

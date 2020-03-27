@@ -18,8 +18,8 @@ package com.jagrosh.jmusicbot;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import com.jagrosh.jdautilities.examples.command.AboutCommand;
-import com.jagrosh.jdautilities.examples.command.PingCommand;
+import dev.cosgy.JMusicBot.commands.examples.AboutCommand;
+import dev.cosgy.JMusicBot.commands.examples.PingCommand;
 import com.jagrosh.jmusicbot.commands.admin.PrefixCmd;
 import com.jagrosh.jmusicbot.commands.admin.SetdjCmd;
 import com.jagrosh.jmusicbot.commands.admin.SettcCmd;
@@ -48,6 +48,7 @@ import java.io.IOException;
  * @author John Grosh (jagrosh)
  */
 public class JMusicBot {
+    public static boolean CHECK_UPDATE = true;
     public final static String PLAY_EMOJI = "\u25B6"; // ▶
     public final static String PAUSE_EMOJI = "\u23F8"; // ⏸
     public final static String STOP_EMOJI = "\u23F9"; // ⏹
@@ -72,6 +73,9 @@ public class JMusicBot {
                 prompt.alert(Prompt.Level.WARNING, "GUI", "-noguiフラグは廃止予定です。 "
                         + "jarの名前の前に-Dnogui = trueフラグを使用してください。 例：java -jar -Dnogui=true JMusicBot.jar");
                 break;
+            } else if ("-nocheckupdates".equalsIgnoreCase(arg)) {
+                CHECK_UPDATE = false;
+                prompt.alert(Prompt.Level.INFO, "GUI", "アップデートチェックを無効にしました。");
             }
 
         // get and check latest version
