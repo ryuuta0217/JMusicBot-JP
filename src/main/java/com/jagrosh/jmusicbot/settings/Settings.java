@@ -36,9 +36,10 @@ public class Settings implements GuildSettingsProvider {
     private String defaultPlaylist;
     private boolean repeatMode;
     private String prefix;
+    private boolean bitrateWarningReaded;
 
 
-    public Settings(SettingsManager manager, String textId, String voiceId, String roleId, int volume, String defaultPlaylist, boolean repeatMode, String prefix) {
+    public Settings(SettingsManager manager, String textId, String voiceId, String roleId, int volume, String defaultPlaylist, boolean repeatMode, String prefix, boolean bitrateWarningReaded) {
         this.manager = manager;
         try {
             this.textId = Long.parseLong(textId);
@@ -59,9 +60,10 @@ public class Settings implements GuildSettingsProvider {
         this.defaultPlaylist = defaultPlaylist;
         this.repeatMode = repeatMode;
         this.prefix = prefix;
+        this.bitrateWarningReaded = bitrateWarningReaded;
     }
 
-    public Settings(SettingsManager manager, long textId, long voiceId, long roleId, int volume, String defaultPlaylist, boolean repeatMode, String prefix) {
+    public Settings(SettingsManager manager, long textId, long voiceId, long roleId, int volume, String defaultPlaylist, boolean repeatMode, String prefix, boolean bitrateWarningReaded) {
         this.manager = manager;
         this.textId = textId;
         this.voiceId = voiceId;
@@ -70,6 +72,7 @@ public class Settings implements GuildSettingsProvider {
         this.defaultPlaylist = defaultPlaylist;
         this.repeatMode = repeatMode;
         this.prefix = prefix;
+        this.bitrateWarningReaded = bitrateWarningReaded;
     }
 
     // Getters
@@ -119,6 +122,14 @@ public class Settings implements GuildSettingsProvider {
     public void setPrefix(String prefix) {
         this.prefix = prefix;
         this.manager.writeSettings();
+    }
+
+    public boolean isBitrateWarningReaded() {
+        return bitrateWarningReaded;
+    }
+
+    public void setBitrateWarning(boolean readied) {
+        this.bitrateWarningReaded = readied;
     }
 
     @Override

@@ -38,6 +38,7 @@ public class SettingsManager implements GuildSettingsManager {
             JSONObject loadedSettings = new JSONObject(new String(Files.readAllBytes(Paths.get("serversettings.json"))));
             loadedSettings.keySet().forEach((id) -> {
                 JSONObject o = loadedSettings.getJSONObject(id);
+
                 settings.put(Long.parseLong(id), new Settings(this,
                         o.has("text_channel_id") ? o.getString("text_channel_id") : null,
                         o.has("voice_channel_id") ? o.getString("voice_channel_id") : null,
@@ -45,7 +46,8 @@ public class SettingsManager implements GuildSettingsManager {
                         o.has("volume") ? o.getInt("volume") : 50,
                         o.has("default_playlist") ? o.getString("default_playlist") : null,
                         o.has("repeat") && o.getBoolean("repeat"),
-                        o.has("prefix") ? o.getString("prefix") : null));
+                        o.has("prefix") ? o.getString("prefix") : null,
+                        o.has("bitrate_warnings_readied") && o.getBoolean("bitrate_warnings_readied")));
             });
         } catch (IOException | JSONException e) {
             LoggerFactory.getLogger("Settings").warn("サーバー設定を読み込めませんでした(まだ設定がない場合は正常です): " + e);
@@ -68,7 +70,7 @@ public class SettingsManager implements GuildSettingsManager {
     }
 
     private Settings createDefaultSettings() {
-        return new Settings(this, 0, 0, 0, 50, null, false, null);
+        return new Settings(this, 0, 0, 0, 50, null, false, null, false);
     }
 
     protected void writeSettings() {
