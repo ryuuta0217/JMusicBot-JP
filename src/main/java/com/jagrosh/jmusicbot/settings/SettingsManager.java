@@ -16,6 +16,7 @@
 package com.jagrosh.jmusicbot.settings;
 
 import com.jagrosh.jdautilities.command.GuildSettingsManager;
+import com.jagrosh.jmusicbot.utils.OtherUtil;
 import net.dv8tion.jda.core.entities.Guild;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ public class SettingsManager implements GuildSettingsManager {
     public SettingsManager() {
         this.settings = new HashMap<>();
         try {
-            JSONObject loadedSettings = new JSONObject(new String(Files.readAllBytes(Paths.get("serversettings.json"))));
+            JSONObject loadedSettings = new JSONObject(new String(Files.readAllBytes(OtherUtil.getPath("serversettings.json"))));
             loadedSettings.keySet().forEach((id) -> {
                 JSONObject o = loadedSettings.getJSONObject(id);
 
@@ -95,7 +96,7 @@ public class SettingsManager implements GuildSettingsManager {
             obj.put(Long.toString(key), o);
         });
         try {
-            Files.write(Paths.get("serversettings.json"), obj.toString(4).getBytes());
+            Files.write(OtherUtil.getPath("serversettings.json"), obj.toString(4).getBytes());
         } catch (IOException ex) {
             LoggerFactory.getLogger("Settings").warn("ファイルへの書き込みに失敗しました： " + ex);
         }
