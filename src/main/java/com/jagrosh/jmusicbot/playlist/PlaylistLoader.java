@@ -1,6 +1,7 @@
 package com.jagrosh.jmusicbot.playlist;
 
 import com.jagrosh.jmusicbot.BotConfig;
+import com.jagrosh.jmusicbot.utils.OtherUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -47,25 +48,25 @@ public class PlaylistLoader {
 
     public void createFolder() {
         try {
-            Files.createDirectory(Paths.get(config.getPlaylistsFolder()));
+            Files.createDirectory(OtherUtil.getPath(config.getPlaylistsFolder()));
         } catch (IOException ignore) {
         }
     }
 
     public boolean folderExists() {
-        return Files.exists(Paths.get(config.getPlaylistsFolder()));
+        return Files.exists(OtherUtil.getPath(config.getPlaylistsFolder()));
     }
 
     public void createPlaylist(String name) throws IOException {
-        Files.createFile(Paths.get(config.getPlaylistsFolder() + File.separator + name + ".txt"));
+        Files.createFile(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt"));
     }
 
     public void deletePlaylist(String name) throws IOException {
-        Files.delete(Paths.get(config.getPlaylistsFolder() + File.separator + name + ".txt"));
+        Files.delete(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt"));
     }
 
     public void writePlaylist(String name, String text) throws IOException {
-        Files.write(Paths.get(config.getPlaylistsFolder() + File.separator + name + ".txt"), text.trim().getBytes());
+        Files.write(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt"), text.trim().getBytes());
     }
 
     public Playlist getPlaylist(String name) {
@@ -75,7 +76,7 @@ public class PlaylistLoader {
             if (folderExists()) {
                 boolean[] shuffle = {false};
                 List<String> list = new ArrayList<>();
-                Files.readAllLines(Paths.get(config.getPlaylistsFolder() + File.separator + name + ".txt")).forEach(str ->
+                Files.readAllLines(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt")).forEach(str ->
                 {
                     String s = str.trim();
                     if (s.isEmpty())
