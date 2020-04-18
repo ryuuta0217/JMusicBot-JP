@@ -67,6 +67,7 @@ public class OtherUtil {
         }
         return Paths.get(path);
     }
+
     /**
      * Loads a resource from the jar as a string
      *
@@ -74,7 +75,6 @@ public class OtherUtil {
      * @param name name of resource
      * @return string containing the contents of the resource
      */
-
     public static String loadResource(Object clazz, String name) {
         try {
             return readString(clazz.getClass().getResourceAsStream(name));
@@ -93,6 +93,12 @@ public class OtherUtil {
         return new String(into.toByteArray(), StandardCharsets.UTF_8);
     }
 
+    /**
+     * Loads image data from a URL
+     *
+     * @param url url of image
+     * @return inputstream of url
+     */
     public static InputStream imageFromUrl(String url) {
         if (url == null)
             return null;
@@ -106,6 +112,12 @@ public class OtherUtil {
         return null;
     }
 
+    /**
+     * Parses an activity from a string
+     *
+     * @param game the game, including the action such as 'playing' or 'watching'
+     * @return the parsed activity
+     */
     public static Game parseGame(String game) {
         if (game == null || game.trim().isEmpty() || game.trim().equalsIgnoreCase("default"))
             return null;

@@ -17,6 +17,7 @@ package com.jagrosh.jmusicbot.settings;
 
 import com.jagrosh.jdautilities.command.GuildSettingsManager;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
+import dev.cosgy.JMusicBot.settings.RepeatMode;
 import net.dv8tion.jda.core.entities.Guild;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,14 +41,24 @@ public class SettingsManager implements GuildSettingsManager {
             loadedSettings.keySet().forEach((id) -> {
                 JSONObject o = loadedSettings.getJSONObject(id);
 
+                // 以前の(boolean型)バージョンをサポートするための
+                try
+                {
+                    if(o.getBoolean("repeat")) {
+                        o.put("repeat", RepeatMode.ALL);
+                    } else {
+                        o.put("repeat", RepeatMode.OFF);
+                    }
+                } catch(JSONException ignored) { /* ignored */ }
+
                 settings.put(Long.parseLong(id), new Settings(this,
-                        o.has("text_channel_id") ? o.getString("text_channel_id") : null,
+                        o.has("text_channel_id")  ? o.getString("text_channel_id") : null,
                         o.has("voice_channel_id") ? o.getString("voice_channel_id") : null,
-                        o.has("dj_role_id") ? o.getString("dj_role_id") : null,
-                        o.has("volume") ? o.getInt("volume") : 50,
+                        o.has("dj_role_id")       ? o.getString("dj_role_id") : null,
+                        o.has("volume")           ? o.getInt("volume") : 50,
                         o.has("default_playlist") ? o.getString("default_playlist") : null,
-                        o.has("repeat") && o.getBoolean("repeat"),
-                        o.has("prefix") ? o.getString("prefix") : null,
+                        o.has("repeat")           ? o.getEnum(RepeatMode.class, "repeat"): RepeatMode.OFF,
+                        o.has("prefix")           ? o.getString("prefix") : null,
                         o.has("bitrate_warnings_readied") && o.getBoolean("bitrate_warnings_readied")));
             });
         } catch (IOException | JSONException e) {
@@ -71,7 +82,7 @@ public class SettingsManager implements GuildSettingsManager {
     }
 
     private Settings createDefaultSettings() {
-        return new Settings(this, 0, 0, 0, 50, null, false, null, false);
+        return new Settings(this, 0, 0, 0, 50, null, RepeatMode.OFF, null, false);
     }
 
     protected void writeSettings() {
@@ -89,8 +100,8 @@ public class SettingsManager implements GuildSettingsManager {
                 o.put("volume", s.getVolume());
             if (s.getDefaultPlaylist() != null)
                 o.put("default_playlist", s.getDefaultPlaylist());
-            if (s.getRepeatMode())
-                o.put("repeat", true);
+            if(s.getRepeatMode() != RepeatMode.OFF)
+                o.put("repeat", s.getRepeatMode());
             if (s.getPrefix() != null)
                 o.put("prefix", s.getPrefix());
             obj.put(Long.toString(key), o);

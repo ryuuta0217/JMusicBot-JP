@@ -20,6 +20,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
+import dev.cosgy.JMusicBot.util.StackTraceUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,10 +45,13 @@ public class PlaylistCmd extends OwnerCommand {
                 new MakelistCmd(),
                 new DefaultlistCmd(bot)
         };
+        this.ownerCommand = false;
     }
 
     @Override
     public void execute(CommandEvent event) {
+        if(!event.isOwner() || !event.getMember().isOwner()) return;
+
         StringBuilder builder = new StringBuilder(event.getClient().getWarning() + " 再生リスト管理コマンド:\n");
         for (Command cmd : this.children)
             builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" ").append(cmd.getName())
@@ -59,19 +63,35 @@ public class PlaylistCmd extends OwnerCommand {
         public MakelistCmd() {
             this.name = "make";
             this.aliases = new String[]{"create"};
-            this.help = "新しい再生リストを作る";
+            this.help = "再生リストを新規作成する";
             this.arguments = "<name>";
-            this.guildOnly = false;
+            this.guildOnly = true;
+            this.ownerCommand = false;
         }
 
         @Override
         protected void execute(CommandEvent event) {
+            if(!event.isOwner() || !event.getMember().isOwner()) return;
+
             String pname = event.getArgs().replaceAll("\\s+", "_");
             if (bot.getPlaylistLoader().getPlaylist(pname) == null) {
                 try {
-                    bot.getPlaylistLoader().createPlaylist(pname);
-                    event.reply(event.getClient().getSuccess() + " `" + pname + "`という名前で再生リストを作成しました!");
+                    if(!pname.isEmpty()) {
+                        bot.getPlaylistLoader().createPlaylist(pname);
+                        event.reply(event.getClient().getSuccess() + " `" + pname + "`という名前で再生リストを作成しました!");
+                    } else {
+                        event.replyError("プレイリスト名を指定してください。");
+                    }
                 } catch (IOException e) {
+                    if(event.getAuthor().getIdLong() == event.getClient().getOwnerIdLong() || event.getMember().isOwner()) {
+                        event.replyError("曲の読み込み中にエラーが発生しました。\n" +
+                                "**エラーの内容: " + e.getLocalizedMessage() + "**\n" +
+                                "```\n" +
+                                StackTraceUtil.getStackTrace(e) + "\n" +
+                                "```");
+                        return;
+                    }
+
                     event.reply(event.getClient().getError() + " 再生リストを作成できませんでした。:" + e.getLocalizedMessage());
                 }
             } else
@@ -85,11 +105,14 @@ public class PlaylistCmd extends OwnerCommand {
             this.aliases = new String[]{"remove"};
             this.help = "既存の再生リストを削除します";
             this.arguments = "<name>";
-            this.guildOnly = false;
+            this.guildOnly = true;
+            this.ownerCommand = false;
         }
 
         @Override
         protected void execute(CommandEvent event) {
+            if(!event.isOwner() || !event.getMember().isOwner()) return;
+
             String pname = event.getArgs().replaceAll("\\s+", "_");
             if (bot.getPlaylistLoader().getPlaylist(pname) == null)
                 event.reply(event.getClient().getError() + " 再生リスト `" + pname + "` は存在しません!");
@@ -110,11 +133,14 @@ public class PlaylistCmd extends OwnerCommand {
             this.aliases = new String[]{"add"};
             this.help = "既存の再生リストに曲を追加します";
             this.arguments = "<name> <URL> | <URL> | ...";
-            this.guildOnly = false;
+            this.guildOnly = true;
+            this.ownerCommand = false;
         }
 
         @Override
         protected void execute(CommandEvent event) {
+            if(!event.isOwner() || !event.getMember().isOwner()) return;
+
             String[] parts = event.getArgs().split("\\s+", 2);
             if (parts.length < 2) {
                 event.reply(event.getClient().getError() + " 追加先の再生リスト名とURLを含めてください。");
@@ -151,6 +177,7 @@ public class PlaylistCmd extends OwnerCommand {
             this.aliases = new String[]{"default"};
             this.arguments = "<playlistname|NONE>";
             this.guildOnly = true;
+            this.ownerCommand = false;
         }
     }
 
@@ -160,10 +187,13 @@ public class PlaylistCmd extends OwnerCommand {
             this.aliases = new String[]{"available", "list"};
             this.help = "利用可能なすべての再生リストを表示します。";
             this.guildOnly = true;
+            this.ownerCommand = false;
         }
 
         @Override
         protected void execute(CommandEvent event) {
+            if(!event.isOwner() || !event.getMember().isOwner()) return;
+
             if (!bot.getPlaylistLoader().folderExists())
                 bot.getPlaylistLoader().createFolder();
             if (!bot.getPlaylistLoader().folderExists()) {

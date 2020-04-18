@@ -33,10 +33,13 @@ public class AutoplaylistCmd extends OwnerCommand {
         this.arguments = "<name|NONE|なし>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.help = "サーバーのデフォルトの再生リストを設定します。";
+        this.ownerCommand = false;
     }
 
     @Override
     public void execute(CommandEvent event) {
+        if(!event.isOwner() || !event.getMember().isOwner()) return;
+
         if (event.getArgs().isEmpty()) {
             event.reply(event.getClient().getError() + " 再生リスト名またはNONEを含めてください");
             return;

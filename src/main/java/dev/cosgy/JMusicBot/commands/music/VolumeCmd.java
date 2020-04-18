@@ -13,22 +13,22 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.dj;
+package dev.cosgy.JMusicBot.commands.music;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.DJCommand;
+import com.jagrosh.jmusicbot.commands.MusicCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author John Grosh <john.a.grosh@gmail.com>
+ * @author John Grosh <john.a.grosh@gmail.com> | edit: ryuuta0217
  */
-@Deprecated
-public class VolumeCmd extends DJCommand {
+public class VolumeCmd extends MusicCommand {
     Logger log = LoggerFactory.getLogger("Volume");
 
     public VolumeCmd(Bot bot) {

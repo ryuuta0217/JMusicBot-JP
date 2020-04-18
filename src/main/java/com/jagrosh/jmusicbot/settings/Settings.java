@@ -16,6 +16,7 @@
 package com.jagrosh.jmusicbot.settings;
 
 import com.jagrosh.jdautilities.command.GuildSettingsProvider;
+import dev.cosgy.JMusicBot.settings.RepeatMode;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -34,12 +35,12 @@ public class Settings implements GuildSettingsProvider {
     protected long roleId;
     private int volume;
     private String defaultPlaylist;
-    private boolean repeatMode;
+    private RepeatMode repeatMode;
     private String prefix;
     private boolean bitrateWarningReaded;
 
 
-    public Settings(SettingsManager manager, String textId, String voiceId, String roleId, int volume, String defaultPlaylist, boolean repeatMode, String prefix, boolean bitrateWarningReaded) {
+    public Settings(SettingsManager manager, String textId, String voiceId, String roleId, int volume, String defaultPlaylist, RepeatMode repeatMode, String prefix, boolean bitrateWarningReaded) {
         this.manager = manager;
         try {
             this.textId = Long.parseLong(textId);
@@ -63,7 +64,7 @@ public class Settings implements GuildSettingsProvider {
         this.bitrateWarningReaded = bitrateWarningReaded;
     }
 
-    public Settings(SettingsManager manager, long textId, long voiceId, long roleId, int volume, String defaultPlaylist, boolean repeatMode, String prefix, boolean bitrateWarningReaded) {
+    public Settings(SettingsManager manager, long textId, long voiceId, long roleId, int volume, String defaultPlaylist, RepeatMode repeatMode, String prefix, boolean bitrateWarningReaded) {
         this.manager = manager;
         this.textId = textId;
         this.voiceId = voiceId;
@@ -106,11 +107,11 @@ public class Settings implements GuildSettingsProvider {
         this.manager.writeSettings();
     }
 
-    public boolean getRepeatMode() {
+    public RepeatMode getRepeatMode() {
         return repeatMode;
     }
 
-    public void setRepeatMode(boolean mode) {
+    public void setRepeatMode(RepeatMode mode) {
         this.repeatMode = mode;
         this.manager.writeSettings();
     }

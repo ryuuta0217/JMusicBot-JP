@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.music;
+package dev.cosgy.JMusicBot.commands.music;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.menu.Paginator;
@@ -24,6 +24,7 @@ import com.jagrosh.jmusicbot.audio.QueuedTrack;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
+import dev.cosgy.JMusicBot.settings.RepeatMode;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
@@ -35,9 +36,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-@Deprecated
 public class QueueCmd extends MusicCommand {
-    private final static String REPEAT = "\uD83D\uDD01"; // 🔁
+    private final static String REPEAT_ALL = "\uD83D\uDD01"; // 🔁
+    private final static String REPEAT_SINGLE = "\uD83D\uDD02"; // 🔂
 
     private final Paginator.Builder builder;
 
@@ -96,16 +97,15 @@ public class QueueCmd extends MusicCommand {
         }
         Settings settings = event.getClient().getSettingsFor(event.getGuild());
         long fintotal = total;
-        //コンパイルエラー回避
-        /*builder.setText((i1, i2) -> getQueueTitle(ah, event.getClient().getSuccess(), songs.length, fintotal, settings.getRepeatMode()))
+        builder.setText((i1, i2) -> getQueueTitle(ah, event.getClient().getSuccess(), songs.length, fintotal, settings.getRepeatMode()))
                 .setItems(songs)
                 .setUsers(event.getAuthor())
                 .setColor(event.getSelfMember().getColor())
-        ;*/
+        ;
         builder.build().paginate(event.getChannel(), pagenum);
     }
 
-    private String getQueueTitle(AudioHandler ah, String success, int songslength, long total, boolean repeatmode) {
+    private String getQueueTitle(AudioHandler ah, String success, int songslength, long total, RepeatMode repeatmode) {
         StringBuilder sb = new StringBuilder();
         if (ah.getPlayer().getPlayingTrack() != null) {
             sb.append(ah.getPlayer().isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI).append(" **")
@@ -113,6 +113,9 @@ public class QueueCmd extends MusicCommand {
         }
         return FormatUtil.filter(sb.append(success).append(" 再生待ち楽曲一覧 | ").append(songslength)
                 .append(" エントリー | `").append(FormatUtil.formatTime(total)).append("` ")
-                .append(repeatmode ? "| " + REPEAT : "").toString());
+                // RepeatMode.OFF - ""
+                // RepeatMode.ALL - QueueCmd.REPEAT_ALL
+                // RepeatMode.SINGLE = QueueCmd.REPEAT_SINGLE
+                .append(repeatmode!=RepeatMode.OFF ? "| "+(repeatmode==RepeatMode.ALL ? REPEAT_ALL : REPEAT_SINGLE) : "").toString());
     }
 }

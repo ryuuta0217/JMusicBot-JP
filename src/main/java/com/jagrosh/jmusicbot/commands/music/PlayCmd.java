@@ -31,6 +31,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException.Severity;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import dev.cosgy.JMusicBot.util.StackTraceUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -139,7 +140,7 @@ public class PlayCmd extends MusicCommand {
 
         private int loadPlaylist(AudioPlaylist playlist, AudioTrack exclude) {
             int[] count = {0};
-            playlist.getTracks().stream().forEach((track) -> {
+            playlist.getTracks().forEach((track) -> {
                 if (!bot.getConfig().isTooLong(track) && !track.equals(exclude)) {
                     AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
                     handler.addTrack(new QueuedTrack(track, event.getAuthor()));
@@ -190,16 +191,11 @@ public class PlayCmd extends MusicCommand {
             if (throwable.severity == Severity.COMMON) {
                 m.editMessage(event.getClient().getError() + " 読み込み中にエラーが発生しました: " + throwable.getMessage()).queue();
             } else {
-                if (m.getAuthor().getIdLong() == bot.getConfig().getOwnerId()) {
-                    StringWriter writer = new StringWriter();
-                    PrintWriter pWriter = new PrintWriter(writer);
-                    throwable.printStackTrace(pWriter);
-                    pWriter.flush();
-                    String stacktrace = writer.toString();
+                if (m.getAuthor().getIdLong() == bot.getConfig().getOwnerId() || m.getMember().isOwner()) {
                     m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。\n" +
                             "**エラーの内容: " + throwable.getLocalizedMessage() + "**\n" +
                             "```\n" +
-                            (stacktrace.length() > 2000 ? stacktrace.substring(0, 1997) + "..." : stacktrace) + "\n" +
+                            StackTraceUtil.getStackTrace(throwable) + "\n" +
                             "```").queue();
                 } else {
                     m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。").queue();

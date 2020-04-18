@@ -120,7 +120,8 @@ public class JMusicBot {
                         new NowplayingCmd(bot),
                         new PlayCmd(bot),
                         new PlaylistsCmd(bot),
-                        new QueueCmd(bot),
+                        //new QueueCmd(bot),
+                        new dev.cosgy.JMusicBot.commands.music.QueueCmd(bot),
                         new RemoveCmd(bot),
                         new SearchCmd(bot),
                         new SCSearchCmd(bot),
@@ -133,10 +134,12 @@ public class JMusicBot {
                         new MoveTrackCmd(bot),
                         new PauseCmd(bot),
                         new PlaynextCmd(bot),
-                        new RepeatCmd(bot),
+                        //new RepeatCmd(bot),
+                        new dev.cosgy.JMusicBot.commands.dj.RepeatCmd(bot),
                         new SkiptoCmd(bot),
                         new StopCmd(bot),
-                        new VolumeCmd(bot),
+                        //new VolumeCmd(bot),
+                        new dev.cosgy.JMusicBot.commands.music.VolumeCmd(bot),
 
                         new PrefixCmd(bot),
                         new SetdjCmd(bot),
@@ -174,11 +177,10 @@ public class JMusicBot {
                 bot.setGUI(gui);
                 gui.init();
             } catch (Exception e) {
-                log.error("GUIを起動できませんでした。あなたがいる場合 "
-
-                        + "サーバー上、または表示できない場所で実行されている"
-
-                        + "ウィンドウ、-Dnogui=trueフラグを使用してnoguiモードで実行してください。");
+                log.error("GUIを開くことができませんでした。次の要因が考えられます:"
+                        + "サーバー上で実行している"
+                        + "画面がない環境下で実行している"
+                        + "このエラーを非表示にするには、 -Dnogui=true フラグを使用してGUIなしモードで実行してください。");
             }
         }
 
