@@ -13,13 +13,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.general;
+package dev.cosgy.JMusicBot.commands.general;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
+import dev.cosgy.JMusicBot.settings.RepeatMode;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Role;
@@ -29,7 +30,6 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 /**
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-@Deprecated
 public class SettingsCmd extends Command {
     private final static String EMOJI = "\uD83C\uDFA7"; // 🎧
 
@@ -55,8 +55,7 @@ public class SettingsCmd extends Command {
                 .setDescription("コマンド実行用チャンネル: " + (tchan == null ? "なし" : "**#" + tchan.getName() + "**")
                         + "\n専用ボイスチャンネル: " + (vchan == null ? "なし" : "**" + vchan.getName() + "**")
                         + "\nDJ 権限: " + (role == null ? "未設定" : "**" + role.getName() + "**")
-                        //コンパイルエラー回避
-                        //+ "\nリピート: **" + (s.getRepeatMode() ? "有効" : "無効") + "**"
+                        + "\nリピート: **" + (s.getRepeatMode() == RepeatMode.ALL ? "有効(全曲リピート)" : (s.getRepeatMode() == RepeatMode.SINGLE ? "有効(1曲リピート)" : "無効")) + "**"
                         + "\nデフォルトプレイリスト: " + (s.getDefaultPlaylist() == null ? "なし" : "**" + s.getDefaultPlaylist() + "**")
                 )
                 //TODO ここの日本語訳を変更する予定

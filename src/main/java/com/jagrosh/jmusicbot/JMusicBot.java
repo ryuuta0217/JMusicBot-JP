@@ -111,7 +111,8 @@ public class JMusicBot {
                 .setGuildSettingsManager(settings)
                 .addCommands(aboutCommand,
                         new PingCommand(),
-                        new SettingsCmd(bot),
+                        //new SettingsCmd(bot),
+                        new dev.cosgy.JMusicBot.commands.general.SettingsCmd(bot),
 
                         new ServerInfo(),
                         new UserInfo(),
