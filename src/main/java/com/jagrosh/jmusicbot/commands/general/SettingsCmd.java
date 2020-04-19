@@ -54,7 +54,7 @@ public class SettingsCmd extends Command {
                 .setDescription("コマンド実行用チャンネル: " + (tchan == null ? "なし" : "**#" + tchan.getName() + "**")
                         + "\n専用ボイスチャンネル: " + (vchan == null ? "なし" : "**" + vchan.getName() + "**")
                         + "\nDJ 権限: " + (role == null ? "未設定" : "**" + role.getName() + "**")
-                        + "\nリピート: **" + (s.getRepeatMode() ? "有効" : "無効") + "**"
+                        //+ "\nリピート: **" + (s.getRepeatMode() ? "有効" : "無効") + "**"
                         + "\nデフォルトプレイリスト: " + (s.getDefaultPlaylist() == null ? "なし" : "**" + s.getDefaultPlaylist() + "**")
                 )
                 //TODO ここの日本語訳を変更する予定
