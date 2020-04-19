@@ -53,6 +53,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
     private final PlayerManager manager;
     private final AudioPlayer audioPlayer;
     private final long guildId;
+    private final String stringGuildId;
 
     private AudioFrame lastFrame;
 
@@ -60,6 +61,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
         this.manager = manager;
         this.audioPlayer = player;
         this.guildId = guild.getIdLong();
+        this.stringGuildId = guild.getId();
     }
 
     public int addTrackToFront(QueuedTrack qtrack) {
@@ -121,7 +123,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
         if (settings == null || settings.getDefaultPlaylist() == null)
             return false;
 
-        Playlist pl = manager.getBot().getPlaylistLoader().getPlaylist(settings.getDefaultPlaylist());
+        Playlist pl = manager.getBot().getPlaylistLoader().getPlaylist(stringGuildId, settings.getDefaultPlaylist());
         if (pl == null || pl.getItems().isEmpty())
             return false;
         pl.loadTracks(manager, (at) ->

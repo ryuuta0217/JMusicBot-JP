@@ -1,7 +1,6 @@
 package com.jagrosh.jmusicbot.playlist;
 
 import com.jagrosh.jmusicbot.BotConfig;
-import com.jagrosh.jmusicbot.utils.OtherUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -35,64 +34,86 @@ public class PlaylistLoader {
         }
     }
 
-    public List<String> getPlaylistNames() {
+    public List getPlaylistNames(String guildId) {
         if (folderExists()) {
-            File folder = new File(config.getPlaylistsFolder());
-            return Arrays.asList(folder.listFiles((pathname) -> pathname.getName().endsWith(".txt")))
-                    .stream().map(f -> f.getName().substring(0, f.getName().length() - 4)).collect(Collectors.toList());
+            if (folderGuildExists(guildId)) {
+                File folder = new File(config.getPlaylistsFolder() + File.separator + guildId);
+                return Arrays.stream(Objects.requireNonNull(folder.listFiles((pathname) -> pathname.getName().endsWith(".txt")))).map(f -> f.getName().substring(0, f.getName().length() - 4)).collect(Collectors.toList());
+            } else {
+                createGuildFolder(guildId);
+                return Collections.EMPTY_LIST;
+            }
         } else {
             createFolder();
+            createGuildFolder(guildId);
             return Collections.EMPTY_LIST;
+        }
+    }
+
+    public void createGuildFolder(String guildId) {
+        try {
+            Files.createDirectory(Paths.get(config.getPlaylistsFolder() + File.separator + guildId));
+        } catch (IOException ignore) {
         }
     }
 
     public void createFolder() {
         try {
-            Files.createDirectory(OtherUtil.getPath(config.getPlaylistsFolder()));
+            Files.createDirectory(Paths.get(config.getPlaylistsFolder()));
         } catch (IOException ignore) {
         }
     }
 
+    public boolean folderGuildExists(String guildId) {
+        return Files.exists(Paths.get(config.getPlaylistsFolder() + File.separator + guildId));
+    }
+
     public boolean folderExists() {
-        return Files.exists(OtherUtil.getPath(config.getPlaylistsFolder()));
+        return Files.exists(Paths.get(config.getPlaylistsFolder()));
     }
 
-    public void createPlaylist(String name) throws IOException {
-        Files.createFile(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt"));
+    public void createPlaylist(String guildId, String name) throws IOException {
+        Files.createFile(Paths.get(config.getPlaylistsFolder() + File.separator + guildId + File.separator + name + ".txt"));
     }
 
-    public void deletePlaylist(String name) throws IOException {
-        Files.delete(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt"));
+    public void deletePlaylist(String guildId, String name) throws IOException {
+        Files.delete(Paths.get(config.getPlaylistsFolder() + File.separator + guildId + File.separator + name + ".txt"));
     }
 
-    public void writePlaylist(String name, String text) throws IOException {
-        Files.write(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt"), text.trim().getBytes());
+    public void writePlaylist(String guildId, String name, String text) throws IOException {
+        Files.write(Paths.get(config.getPlaylistsFolder() + File.separator + guildId + File.separator + name + ".txt"), text.trim().getBytes());
     }
 
-    public Playlist getPlaylist(String name) {
-        if (!getPlaylistNames().contains(name))
+    public Playlist getPlaylist(String guildId, String name) {
+        if (!getPlaylistNames(guildId).contains(name))
             return null;
         try {
             if (folderExists()) {
-                boolean[] shuffle = {false};
-                List<String> list = new ArrayList<>();
-                Files.readAllLines(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt")).forEach(str ->
-                {
-                    String s = str.trim();
-                    if (s.isEmpty())
-                        return;
-                    if (s.startsWith("#") || s.startsWith("//")) {
-                        s = s.replaceAll("\\s+", "");
-                        if (s.equalsIgnoreCase("#shuffle") || s.equalsIgnoreCase("//shuffle"))
-                            shuffle[0] = true;
-                    } else
-                        list.add(s);
-                });
-                if (shuffle[0])
-                    shuffle(list);
-                return new Playlist(name, list, shuffle[0]);
+                if (folderGuildExists(guildId)) {
+                    boolean[] shuffle = {false};
+                    List<String> list = new ArrayList<>();
+                    Files.readAllLines(Paths.get(config.getPlaylistsFolder() + File.separator + guildId + File.separator + name + ".txt")).forEach(str ->
+                    {
+                        String s = str.trim();
+                        if (s.isEmpty())
+                            return;
+                        if (s.startsWith("#") || s.startsWith("//")) {
+                            s = s.replaceAll("\\s+", "");
+                            if (s.equalsIgnoreCase("#shuffle") || s.equalsIgnoreCase("//shuffle"))
+                                shuffle[0] = true;
+                        } else
+                            list.add(s);
+                    });
+                    if (shuffle[0])
+                        shuffle(list);
+                    return new Playlist(name, list, shuffle[0]);
+                } else {
+                    createGuildFolder(guildId);
+                    return null;
+                }
             } else {
                 createFolder();
+                createGuildFolder(guildId);
                 return null;
             }
         } catch (IOException e) {
@@ -134,7 +155,7 @@ public class PlaylistLoader {
                     @Override
                     public void trackLoaded(AudioTrack at) {
                         if (config.isTooLong(at))
-                            errors.add(new PlaylistLoadError(index, items.get(index), "This track is longer than the allowed maximum"));
+                            errors.add(new PlaylistLoadError(index, items.get(index), "このトラックは許可された最大長を超えています"));
                         else {
                             at.setUserData(0L);
                             tracks.add(at);
@@ -158,23 +179,23 @@ public class PlaylistLoader {
                                     loaded.set(first, loaded.get(second));
                                     loaded.set(second, tmp);
                                 }
-                            loaded.removeIf(track -> config.isTooLong(track));
+                            loaded.removeIf(config::isTooLong);
                             loaded.forEach(at -> at.setUserData(0L));
                             tracks.addAll(loaded);
-                            loaded.forEach(at -> consumer.accept(at));
+                            loaded.forEach(consumer::accept);
                         }
                         done();
                     }
 
                     @Override
                     public void noMatches() {
-                        errors.add(new PlaylistLoadError(index, items.get(index), "No matches found."));
+                        errors.add(new PlaylistLoadError(index, items.get(index), "一致するものが見つかりませんでした。"));
                         done();
                     }
 
                     @Override
                     public void loadFailed(FriendlyException fe) {
-                        errors.add(new PlaylistLoadError(index, items.get(index), "Failed to load track: " + fe.getLocalizedMessage()));
+                        errors.add(new PlaylistLoadError(index, items.get(index), "トラックを読み込めませんでした: " + fe.getLocalizedMessage()));
                         done();
                     }
                 });

@@ -36,8 +36,6 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -217,11 +215,12 @@ public class PlayCmd extends MusicCommand {
 
         @Override
         public void doCommand(CommandEvent event) {
+            String guildId = event.getGuild().getId();
             if (event.getArgs().isEmpty()) {
                 event.reply(event.getClient().getError() + " 再生リスト名を含めてください。");
                 return;
             }
-            Playlist playlist = bot.getPlaylistLoader().getPlaylist(event.getArgs());
+            Playlist playlist = bot.getPlaylistLoader().getPlaylist(guildId, event.getArgs());
             if (playlist == null) {
                 event.replyError("`" + event.getArgs() + ".txt `を見つけられませんでした ");
                 return;

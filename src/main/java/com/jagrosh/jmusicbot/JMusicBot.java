@@ -18,10 +18,7 @@ package com.jagrosh.jmusicbot;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import com.jagrosh.jmusicbot.commands.admin.PrefixCmd;
-import com.jagrosh.jmusicbot.commands.admin.SetdjCmd;
-import com.jagrosh.jmusicbot.commands.admin.SettcCmd;
-import com.jagrosh.jmusicbot.commands.admin.SetvcCmd;
+import com.jagrosh.jmusicbot.commands.admin.*;
 import com.jagrosh.jmusicbot.commands.dj.*;
 import com.jagrosh.jmusicbot.commands.general.SettingsCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
@@ -42,7 +39,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * @author John Grosh (jagrosh)
@@ -59,7 +55,7 @@ public class JMusicBot {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // startup log
         Logger log = LoggerFactory.getLogger("Startup");
 
@@ -145,10 +141,10 @@ public class JMusicBot {
                         new SetdjCmd(bot),
                         new SettcCmd(bot),
                         new SetvcCmd(bot),
-
                         new AutoplaylistCmd(bot),
-                        new DebugCmd(bot),
                         new PlaylistCmd(bot),
+
+                        new DebugCmd(bot),
                         new SetavatarCmd(bot),
                         new SetgameCmd(bot),
                         new SetnameCmd(bot),
