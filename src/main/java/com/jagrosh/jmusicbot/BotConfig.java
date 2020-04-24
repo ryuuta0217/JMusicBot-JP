@@ -29,7 +29,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class BotConfig {
     private final static String CONTEXT = "Config";

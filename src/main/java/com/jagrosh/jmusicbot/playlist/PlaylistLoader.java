@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,26 +35,26 @@ public class PlaylistLoader {
         }
     }
 
-    public List getPlaylistNames(String guildId) {
+    public List<String> getPlaylistNames(String guildId) {
         if (folderExists()) {
             if (folderGuildExists(guildId)) {
                 File folder = new File(config.getPlaylistsFolder() + File.separator + guildId);
                 return Arrays.stream(Objects.requireNonNull(folder.listFiles((pathname) -> pathname.getName().endsWith(".txt")))).map(f -> f.getName().substring(0, f.getName().length() - 4)).collect(Collectors.toList());
             } else {
                 createGuildFolder(guildId);
-                return Collections.EMPTY_LIST;
+                return getPlaylistNames(guildId);
             }
         } else {
             createFolder();
             createGuildFolder(guildId);
-            return Collections.EMPTY_LIST;
+            return getPlaylistNames(guildId);
         }
     }
 
     public void createGuildFolder(String guildId) {
         try {
             Files.createDirectory(Paths.get(config.getPlaylistsFolder() + File.separator + guildId));
-        } catch (IOException ignore) {
+        } catch (IOException ignored) {
         }
     }
 
@@ -84,6 +85,7 @@ public class PlaylistLoader {
         Files.write(Paths.get(config.getPlaylistsFolder() + File.separator + guildId + File.separator + name + ".txt"), text.trim().getBytes());
     }
 
+    @Nullable
     public Playlist getPlaylist(String guildId, String name) {
         if (!getPlaylistNames(guildId).contains(name))
             return null;

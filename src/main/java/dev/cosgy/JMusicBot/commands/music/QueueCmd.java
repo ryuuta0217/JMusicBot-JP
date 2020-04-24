@@ -116,6 +116,6 @@ public class QueueCmd extends MusicCommand {
                 // RepeatMode.OFF - ""
                 // RepeatMode.ALL - QueueCmd.REPEAT_ALL
                 // RepeatMode.SINGLE = QueueCmd.REPEAT_SINGLE
-                .append(repeatmode!=RepeatMode.OFF ? "| "+(repeatmode==RepeatMode.ALL ? REPEAT_ALL : REPEAT_SINGLE) : "").toString());
+                .append(repeatmode != RepeatMode.OFF ? "| " + (repeatmode == RepeatMode.ALL ? REPEAT_ALL : REPEAT_SINGLE) : "").toString());
     }
 }

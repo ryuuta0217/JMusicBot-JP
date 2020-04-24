@@ -33,7 +33,7 @@ public class PlaylistCmd extends AdminCommand {
 
     public PlaylistCmd(Bot bot) {
         this.bot = bot;
-        this.guildOnly = false;
+        this.guildOnly = true;
         this.name = "playlist";
         this.arguments = "<append|delete|make|setdefault>";
         this.help = "再生リスト管理";
@@ -43,7 +43,7 @@ public class PlaylistCmd extends AdminCommand {
                 new AppendlistCmd(),
                 new DeletelistCmd(),
                 new MakelistCmd(),
-                new DefaultlistCmd(bot)
+                new DefaultPlaylistCmd(bot)
         };
     }
 
@@ -55,6 +55,17 @@ public class PlaylistCmd extends AdminCommand {
             builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" ").append(cmd.getName())
                     .append(" ").append(cmd.getArguments() == null ? "" : cmd.getArguments()).append("` - ").append(cmd.getHelp());
         event.reply(builder.toString());
+    }
+
+    public static class DefaultPlaylistCmd extends AutoplaylistCmd {
+        public DefaultPlaylistCmd(Bot bot) {
+            super(bot);
+            this.name = "setdefault";
+            this.aliases = new String[]{"default"};
+            this.arguments = "<playlistname|NONE>";
+            this.guildOnly = true;
+            this.ownerCommand = false;
+        }
     }
 
     public class MakelistCmd extends AdminCommand {
@@ -72,31 +83,28 @@ public class PlaylistCmd extends AdminCommand {
 
             String pname = event.getArgs().replaceAll("\\s+", "_");
             String guildId = event.getGuild().getId();
-            if (!pname.equals("")) {
-                if (bot.getPlaylistLoader().getPlaylist(guildId, pname) == null) {
-                    try {
-                        if (!pname.isEmpty()) {
-                            bot.getPlaylistLoader().createPlaylist(guildId, pname);
-                            event.reply(event.getClient().getSuccess() + "再生リストを作成しました:`" + pname + "`");
-                        } else {
-                            event.replyError("再生リスト名を指定してください。");
-                        }
-                    } catch (IOException e) {
-                        if (event.getAuthor().getIdLong() == event.getClient().getOwnerIdLong() || event.getMember().isOwner()) {
-                            event.replyError("曲の読み込み中にエラーが発生しました。\n" +
-                                    "**エラーの内容: " + e.getLocalizedMessage() + "**\n" +
-                                    "```\n" +
-                                    StackTraceUtil.getStackTrace(e) + "\n" +
-                                    "```");
-                            return;
-                        }
 
-                        event.reply(event.getClient().getError() + " 再生リストを作成できませんでした。:" + e.getLocalizedMessage());
+            if (pname.isEmpty()) {
+                event.replyError("プレイリスト名を指定してください。");
+                return;
+            }
+
+            if (bot.getPlaylistLoader().getPlaylist(guildId, pname) == null) {
+                try {
+                    bot.getPlaylistLoader().createPlaylist(guildId, pname);
+                    event.reply(event.getClient().getSuccess() + "再生リスト `" + pname + "` を作成しました");
+                } catch (IOException e) {
+                    if (event.isOwner() || event.getMember().isOwner()) {
+                        event.replyError("曲の読み込み中にエラーが発生しました。\n" +
+                                "**エラーの内容: " + e.getLocalizedMessage() + "**");
+                        StackTraceUtil.sendStackTrace(event.getTextChannel(), e);
+                        return;
                     }
-                } else
-                    event.reply(event.getClient().getError() + " 再生リストはすでに存在しています： `" + pname + "`");
-            }else{
-                event.reply(event.getClient().getError() + "再生リストの名前を含めてください");
+
+                    event.reply(event.getClient().getError() + " 再生リストを作成できませんでした。:" + e.getLocalizedMessage());
+                }
+            } else {
+                event.reply(event.getClient().getError() + " 再生リスト `" + pname + "` は既に存在します");
             }
         }
     }
@@ -127,7 +135,7 @@ public class PlaylistCmd extends AdminCommand {
                         event.reply(event.getClient().getError() + " 再生リストを削除できませんでした: " + e.getLocalizedMessage());
                     }
                 }
-            }else {
+            } else {
                 event.reply(event.getClient().getError() + "再生リストの名前を含めてください");
             }
         }
@@ -173,17 +181,6 @@ public class PlaylistCmd extends AdminCommand {
                     event.reply(event.getClient().getError() + " 再生リストに追加できませんでした: " + e.getLocalizedMessage());
                 }
             }
-        }
-    }
-
-    public class DefaultlistCmd extends AutoplaylistCmd {
-        public DefaultlistCmd(Bot bot) {
-            super(bot);
-            this.name = "setdefault";
-            this.aliases = new String[]{"default"};
-            this.arguments = "<playlistname|NONE>";
-            this.guildOnly = true;
-            this.ownerCommand = false;
         }
     }
 

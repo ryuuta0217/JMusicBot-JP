@@ -38,7 +38,7 @@ public class AutoplaylistCmd extends AdminCommand {
 
     @Override
     public void execute(CommandEvent event) {
-        if(!event.isOwner() || !event.getMember().isOwner()) return;
+        if (!event.isOwner() || !event.getMember().isOwner()) return;
         String guildid = event.getGuild().getId();
 
         if (event.getArgs().isEmpty()) {
