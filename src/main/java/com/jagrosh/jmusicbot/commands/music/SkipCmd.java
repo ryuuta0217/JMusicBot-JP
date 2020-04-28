@@ -69,6 +69,8 @@ public class SkipCmd extends MusicCommand {
             if (required != listeners) {
                 // メッセージを付加する
                 msg += "スキップリクエスト数は、" + skippers + "です。スキップするには、" + required + "/" + listeners + "必要です。]`";
+            } else {
+                msg = "";
             }
 
             // 現在の投票者数が、必要投票数に達しているかどうか
