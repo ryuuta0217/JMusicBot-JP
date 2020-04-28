@@ -38,8 +38,18 @@ public class BotConfig {
     private final Prompt prompt;
     private Path path = null;
     // [JMusicBot-JP] added nicoEmail, nicoPass
-    private String token, prefix, altprefix, helpWord, playlistsFolder,
-            successEmoji, warningEmoji, errorEmoji, loadingEmoji, searchingEmoji, nicoEmail, nicoPass;
+    private String token;
+    private String prefix;
+    private String altprefix;
+    private String helpWord;
+    private String playlistsFolder;
+    private String successEmoji;
+    private String warningEmoji;
+    private String errorEmoji;
+    private String loadingEmoji;
+    private String searchingEmoji;
+    private String nicoEmail;
+    private String nicoPass;
     // [JMusicBot-JP] added useNicoNico, changeNickName, pauseNoUsers, resumeJoined, stopNoUsers
     private boolean useNicoNico, changeNickName, stayInChannel, pauseNoUsers, resumeJoined, stopNoUsers, songInGame, npImages, updatealerts, useEval, dbots;
     private long owner, maxSeconds;

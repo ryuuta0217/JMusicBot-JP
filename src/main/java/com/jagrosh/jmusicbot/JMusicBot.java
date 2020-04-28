@@ -20,7 +20,6 @@ import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jmusicbot.commands.admin.*;
 import com.jagrosh.jmusicbot.commands.dj.*;
-import com.jagrosh.jmusicbot.commands.general.SettingsCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.entities.Prompt;
@@ -30,6 +29,7 @@ import com.jagrosh.jmusicbot.utils.OtherUtil;
 import dev.cosgy.JMusicBot.commands.examples.AboutCommand;
 import dev.cosgy.JMusicBot.commands.examples.PingCommand;
 import dev.cosgy.JMusicBot.commands.general.ServerInfo;
+import dev.cosgy.JMusicBot.commands.general.SettingsCmd;
 import dev.cosgy.JMusicBot.commands.general.UserInfo;
 import dev.cosgy.JMusicBot.commands.music.NicoSearchCmd;
 import net.dv8tion.jda.core.*;
@@ -107,8 +107,7 @@ public class JMusicBot {
                 .setGuildSettingsManager(settings)
                 .addCommands(aboutCommand,
                         new PingCommand(),
-                        //new SettingsCmd(bot),
-                        new dev.cosgy.JMusicBot.commands.general.SettingsCmd(bot),
+                        new SettingsCmd(bot),
 
                         new ServerInfo(),
                         new UserInfo(),

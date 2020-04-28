@@ -13,12 +13,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.admin;
+package com.jagrosh.jmusicbot.commands.dj;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.AdminCommand;
+import com.jagrosh.jmusicbot.commands.DJCommand;
+import com.jagrosh.jmusicbot.commands.admin.AutoplaylistCmd;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
 import dev.cosgy.JMusicBot.util.StackTraceUtil;
 
@@ -28,27 +30,25 @@ import java.util.List;
 /**
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class PlaylistCmd extends AdminCommand {
-    private final Bot bot;
-
+public class PlaylistCmd extends DJCommand {
     public PlaylistCmd(Bot bot) {
-        this.bot = bot;
+        super(bot);
         this.guildOnly = false;
         this.name = "playlist";
         this.arguments = "<append|delete|make|setdefault>";
         this.help = "再生リスト管理";
         this.aliases = bot.getConfig().getAliases(this.name);
-        this.children = new AdminCommand[]{
-                new ListCmd(),
-                new AppendlistCmd(),
-                new DeletelistCmd(),
-                new MakelistCmd(),
+        this.children = new Command[]{
+                new ListCmd(bot),
+                new AppendlistCmd(bot),
+                new DeletelistCmd(bot),
+                new MakelistCmd(bot),
                 new DefaultlistCmd(bot)
         };
     }
 
     @Override
-    public void execute(CommandEvent event) {
+    public void doCommand(CommandEvent event) {
 
         StringBuilder builder = new StringBuilder(event.getClient().getWarning() + " 再生リスト管理コマンド:\n");
         for (Command cmd : this.children)
@@ -57,8 +57,9 @@ public class PlaylistCmd extends AdminCommand {
         event.reply(builder.toString());
     }
 
-    public class MakelistCmd extends AdminCommand {
-        public MakelistCmd() {
+    public class MakelistCmd extends DJCommand {
+        public MakelistCmd(Bot bot) {
+            super(bot);
             this.name = "make";
             this.aliases = new String[]{"create"};
             this.help = "再生リストを新規作成";
@@ -68,7 +69,7 @@ public class PlaylistCmd extends AdminCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
 
             String pname = event.getArgs().replaceAll("\\s+", "_");
             String guildId = event.getGuild().getId();
@@ -101,8 +102,9 @@ public class PlaylistCmd extends AdminCommand {
         }
     }
 
-    public class DeletelistCmd extends AdminCommand {
-        public DeletelistCmd() {
+    public class DeletelistCmd extends DJCommand {
+        public DeletelistCmd(Bot bot) {
+            super(bot);
             this.name = "delete";
             this.aliases = new String[]{"remove"};
             this.help = "既存の再生リストを削除";
@@ -112,7 +114,7 @@ public class PlaylistCmd extends AdminCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
 
             String pname = event.getArgs().replaceAll("\\s+", "_");
             String guildid = event.getGuild().getId();
@@ -133,8 +135,9 @@ public class PlaylistCmd extends AdminCommand {
         }
     }
 
-    public class AppendlistCmd extends AdminCommand {
-        public AppendlistCmd() {
+    public class AppendlistCmd extends DJCommand {
+        public AppendlistCmd(Bot bot) {
+            super(bot);
             this.name = "append";
             this.aliases = new String[]{"add"};
             this.help = "既存の再生リストに曲を追加";
@@ -144,7 +147,7 @@ public class PlaylistCmd extends AdminCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
 
             String[] parts = event.getArgs().split("\\s+", 2);
             String guildid = event.getGuild().getId();
@@ -187,8 +190,9 @@ public class PlaylistCmd extends AdminCommand {
         }
     }
 
-    public class ListCmd extends AdminCommand {
-        public ListCmd() {
+    public class ListCmd extends DJCommand {
+        public ListCmd(Bot bot) {
+            super(bot);
             this.name = "all";
             this.aliases = new String[]{"available", "list"};
             this.help = "利用可能なすべての再生リストを表示";
@@ -197,7 +201,7 @@ public class PlaylistCmd extends AdminCommand {
         }
 
         @Override
-        protected void execute(CommandEvent event) {
+        public void doCommand(CommandEvent event) {
             String guildId = event.getGuild().getId();
 
             if (!bot.getPlaylistLoader().folderGuildExists(guildId))
