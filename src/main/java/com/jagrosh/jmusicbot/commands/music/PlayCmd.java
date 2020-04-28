@@ -191,13 +191,12 @@ public class PlayCmd extends MusicCommand {
             } else {
                 if (m.getAuthor().getIdLong() == bot.getConfig().getOwnerId() || m.getMember().isOwner()) {
                     m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。\n" +
-                            "**エラーの内容: " + throwable.getLocalizedMessage() + "**\n" +
-                            "```\n" +
-                            StackTraceUtil.getStackTrace(throwable) + "\n" +
-                            "```").queue();
-                } else {
-                    m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。").queue();
+                            "**エラーの内容: " + throwable.getLocalizedMessage() + "**").queue();
+                    StackTraceUtil.sendStackTrace(event.getTextChannel(), throwable);
+                    return;
                 }
+
+                m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。").queue();
             }
         }
     }

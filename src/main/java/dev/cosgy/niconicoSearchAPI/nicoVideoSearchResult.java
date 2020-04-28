@@ -185,10 +185,11 @@ public class nicoVideoSearchResult {
             });
 
             nvi.setTags(tags.toArray(new String[]{}));
-            nvi.setUploadUserIconUrl(object.getString("user_icon_url"));
+            // Bug Fixes: [object#has(String key)] == 公式upの場合、ユーザー関連の情報が取得できないので has を挟む
+            if(object.has("user_icon_url")) nvi.setUploadUserIconUrl(object.getString("user_icon_url"));
             nvi.setWatchUrl(object.getString("watch_url"));
-            nvi.setUploadUserId(object.getInt("user_id"));
-            nvi.setUploadUserName(object.getString("user_nickname"));
+            if(object.has("user_id")) nvi.setUploadUserId(object.getInt("user_id"));
+            if(object.has("user_nickname")) nvi.setUploadUserName(object.getString("user_nickname"));
             nvi.setViewCount(object.getInt("view_counter"));
             nvi.setVideoId(object.getString("video_id"));
             return nvi;

@@ -53,17 +53,14 @@ public class OtherUtil {
      * @param path the string path
      * @return the Path object
      */
-    public static Path getPath(String path)
-    {
+    public static Path getPath(String path) {
         // special logic to prevent trying to access system32
-        if(path.toLowerCase().startsWith(WINDOWS_INVALID_PATH))
-        {
+        if (path.toLowerCase().startsWith(WINDOWS_INVALID_PATH)) {
             String filename = path.substring(WINDOWS_INVALID_PATH.length());
-            try
-            {
+            try {
                 path = new File(JMusicBot.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getPath() + File.separator + filename;
+            } catch (URISyntaxException ex) {
             }
-            catch(URISyntaxException ex) {}
         }
         return Paths.get(path);
     }
@@ -72,7 +69,7 @@ public class OtherUtil {
      * Loads a resource from the jar as a string
      *
      * @param clazz class base object
-     * @param name name of resource
+     * @param name  name of resource
      * @return string containing the contents of the resource
      */
     public static String loadResource(Object clazz, String name) {
@@ -139,8 +136,7 @@ public class OtherUtil {
         return Game.playing(game);
     }
 
-    public static String makeNonEmpty(String str)
-    {
+    public static String makeNonEmpty(String str) {
         return str == null || str.isEmpty() ? "\u200B" : str;
     }
 

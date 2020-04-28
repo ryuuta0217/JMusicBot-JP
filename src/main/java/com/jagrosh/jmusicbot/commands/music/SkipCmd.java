@@ -66,7 +66,7 @@ public class SkipCmd extends MusicCommand {
             int required = (int) Math.ceil(listeners * .55);
 
             // 必要投票数が、ボイチャにいる人数と相違する場合
-            if(required != listeners) {
+            if (required != listeners) {
                 // メッセージを付加する
                 msg += "スキップリクエスト数は、" + skippers + "です。スキップするには、" + required + "/" + listeners + "必要です。]`";
             }

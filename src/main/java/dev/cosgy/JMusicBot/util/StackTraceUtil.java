@@ -1,14 +1,16 @@
 package dev.cosgy.JMusicBot.util;
 
+import net.dv8tion.jda.core.entities.TextChannel;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class StackTraceUtil {
-    public static String getStackTrace(Throwable throwable) {
+    public static void sendStackTrace(TextChannel channel, Throwable throwable) {
         StringWriter writer = new StringWriter();
         PrintWriter pWriter = new PrintWriter(writer);
         throwable.printStackTrace(pWriter);
         pWriter.flush();
-        return writer.toString().substring(0, (2000-3))+"...";
+        channel.sendMessage("```\n" + writer.toString().substring(0, (2000 - 3)) + "...\n```").queue();
     }
 }
