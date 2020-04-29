@@ -31,6 +31,7 @@ import dev.cosgy.JMusicBot.commands.examples.PingCommand;
 import dev.cosgy.JMusicBot.commands.general.ServerInfo;
 import dev.cosgy.JMusicBot.commands.general.SettingsCmd;
 import dev.cosgy.JMusicBot.commands.general.UserInfo;
+import dev.cosgy.JMusicBot.commands.listeners.CommandAudit;
 import dev.cosgy.JMusicBot.commands.music.NicoSearchCmd;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
@@ -51,6 +52,7 @@ public class JMusicBot {
             Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_MANAGE, Permission.MESSAGE_EXT_EMOJI,
             Permission.MANAGE_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK, Permission.NICKNAME_CHANGE};
     public static boolean CHECK_UPDATE = true;
+    public static boolean COMMAND_AUDIT_ENABLED = false;
 
     /**
      * @param args the command line arguments
@@ -71,7 +73,10 @@ public class JMusicBot {
                 break;
             } else if ("-nocheckupdates".equalsIgnoreCase(arg)) {
                 CHECK_UPDATE = false;
-                prompt.alert(Prompt.Level.INFO, "GUI", "アップデートチェックを無効にしました。");
+                prompt.alert(Prompt.Level.INFO, "Startup", "アップデートチェックを無効にしました。");
+            } else if ("-auditcommands".equalsIgnoreCase(arg)) {
+                COMMAND_AUDIT_ENABLED = true;
+                prompt.alert(Prompt.Level.INFO, "CommandAudit", "実行されたコマンドの記録を有効にしました。");
             }
 
         // get and check latest version
@@ -105,6 +110,7 @@ public class JMusicBot {
                 .setHelpWord(config.getHelp())
                 .setLinkedCacheSize(200)
                 .setGuildSettingsManager(settings)
+                .setListener(new CommandAudit())
                 .addCommands(aboutCommand,
                         new PingCommand(),
                         new SettingsCmd(bot),
