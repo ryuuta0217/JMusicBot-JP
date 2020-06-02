@@ -19,7 +19,7 @@ public class MylistCmd extends MusicCommand {
         this.bot = bot;
         this.guildOnly = false;
         this.name = "mylist";
-        this.arguments = "<append|delete|make>";
+        this.arguments = "<append|delete|make|all>";
         this.help = "自分専用の再生リストを管理";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.children = new MusicCommand[]{

@@ -31,10 +31,12 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException.Severity;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import dev.cosgy.JMusicBot.commands.music.MylistCmd;
 import dev.cosgy.JMusicBot.util.StackTraceUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import dev.cosgy.JMusicBot.playlist.MylistLoader;
 
 import java.util.concurrent.TimeUnit;
 
@@ -56,7 +58,7 @@ public class PlayCmd extends MusicCommand {
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = false;
-        this.children = new Command[]{new PlaylistCmd(bot)};
+        this.children = new Command[]{new PlaylistCmd(bot), new MylistCmd(bot)};
     }
 
     @Override
@@ -225,6 +227,48 @@ public class PlayCmd extends MusicCommand {
                 return;
             }
             event.getChannel().sendMessage(":calling: 再生リスト **" + event.getArgs() + "**を読み込んでいます... (" + playlist.getItems().size() + " 曲)").queue(m ->
+            {
+                AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+                playlist.loadTracks(bot.getPlayerManager(), (at) -> handler.addTrack(new QueuedTrack(at, event.getAuthor())), () -> {
+                    StringBuilder builder = new StringBuilder(playlist.getTracks().isEmpty()
+                            ? event.getClient().getWarning() + " 楽曲がロードされていません。"
+                            : event.getClient().getSuccess() + "**" + playlist.getTracks().size() + "**　曲、読み込みました。");
+                    if (!playlist.getErrors().isEmpty())
+                        builder.append("\n以下の楽曲をロードできませんでした:");
+                    playlist.getErrors().forEach(err -> builder.append("\n`[").append(err.getIndex() + 1).append("]` **").append(err.getItem()).append("**: ").append(err.getReason()));
+                    String str = builder.toString();
+                    if (str.length() > 2000)
+                        str = str.substring(0, 1994) + " (以下略)";
+                    m.editMessage(FormatUtil.filter(str)).queue();
+                });
+            });
+        }
+    }
+
+    public class MylistCmd extends MusicCommand {
+        public MylistCmd(Bot bot) {
+            super(bot);
+            this.name = "mylist";
+            this.aliases = new String[]{"ml"};
+            this.arguments = "<name>";
+            this.help = "マイリストを再生します";
+            this.beListening = true;
+            this.bePlaying = false;
+        }
+
+        @Override
+        public void doCommand(CommandEvent event) {
+            String userId = event.getAuthor().getId();
+            if (event.getArgs().isEmpty()) {
+                event.reply(event.getClient().getError() + " マイリスト名を含めてください。");
+                return;
+            }
+            MylistLoader.Playlist playlist = bot.getMylistLoader().getPlaylist(userId, event.getArgs());
+            if (playlist == null) {
+                event.replyError("`" + event.getArgs() + ".txt `を見つけられませんでした ");
+                return;
+            }
+            event.getChannel().sendMessage(":calling: マイリストリスト **" + event.getArgs() + "**を読み込んでいます... (" + playlist.getItems().size() + " 曲)").queue(m ->
             {
                 AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
                 playlist.loadTracks(bot.getPlayerManager(), (at) -> handler.addTrack(new QueuedTrack(at, event.getAuthor())), () -> {
