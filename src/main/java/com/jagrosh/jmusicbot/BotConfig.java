@@ -42,6 +42,7 @@ public class BotConfig {
     private String altprefix;
     private String helpWord;
     private String playlistsFolder;
+    private String mylistfolder;
     private String successEmoji;
     private String warningEmoji;
     private String errorEmoji;
@@ -99,6 +100,7 @@ public class BotConfig {
             useEval = config.getBoolean("eval");
             maxSeconds = config.getLong("maxtime");
             playlistsFolder = config.getString("playlistsfolder");
+            mylistfolder = config.getString("mylistfolder");
             aliases = config.getConfig("aliases");
             dbots = owner == 113156185389092864L;
 
@@ -256,6 +258,8 @@ public class BotConfig {
     public String getPlaylistsFolder() {
         return playlistsFolder;
     }
+
+    public String getMylistfolder() { return mylistfolder; }
 
     public boolean getDBots() {
         return dbots;
