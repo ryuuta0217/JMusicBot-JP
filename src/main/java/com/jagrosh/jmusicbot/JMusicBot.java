@@ -32,6 +32,7 @@ import dev.cosgy.JMusicBot.commands.general.ServerInfo;
 import dev.cosgy.JMusicBot.commands.general.SettingsCmd;
 import dev.cosgy.JMusicBot.commands.general.UserInfo;
 import dev.cosgy.JMusicBot.commands.listeners.CommandAudit;
+import dev.cosgy.JMusicBot.commands.music.MylistCmd;
 import dev.cosgy.JMusicBot.commands.music.NicoSearchCmd;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
@@ -122,6 +123,7 @@ public class JMusicBot {
                         new NowplayingCmd(bot),
                         new PlayCmd(bot),
                         new PlaylistsCmd(bot),
+                        new MylistCmd(bot),
                         //new QueueCmd(bot),
                         new dev.cosgy.JMusicBot.commands.music.QueueCmd(bot),
                         new RemoveCmd(bot),

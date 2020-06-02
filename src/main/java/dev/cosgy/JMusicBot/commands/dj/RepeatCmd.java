@@ -44,6 +44,7 @@ public class RepeatCmd extends DJCommand {
         RepeatMode value;
         Settings settings = event.getClient().getSettingsFor(event.getGuild());
         if (event.getArgs().isEmpty()) {
+            log.info("変更前の再生モード:"+ settings.getRepeatMode());
             value = (settings.getRepeatMode() == RepeatMode.OFF ? RepeatMode.ALL : (settings.getRepeatMode() == RepeatMode.ALL ? RepeatMode.SINGLE : (settings.getRepeatMode() == RepeatMode.SINGLE ? RepeatMode.OFF : settings.getRepeatMode())));
         } else if (event.getArgs().matches("(true|all|on)")) {
             value = RepeatMode.ALL;
