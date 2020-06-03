@@ -17,7 +17,7 @@
 <!-- author: Kaidan Gustave -->
 <configuration>
     <property name="logDir" value="./logs/" />
-    <property name="fileName" value="JMusicBotJP.log"/>
+    <property name="fileName" value="JMusicBotJP"/>
     <appender name="Simple" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <!-- Pattern -->
@@ -27,9 +27,9 @@
         </encoder>
     </appender>
     <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logDir}${fileName}</file>
+        <file>${logDir}${fileName}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logDir}${fileName}.%d{yyyy-MM-dd-HH:mm:ss}.log</fileNamePattern>
+            <fileNamePattern>${logDir}${fileName}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
 
