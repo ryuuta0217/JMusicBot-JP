@@ -268,7 +268,7 @@ public class PlayCmd extends MusicCommand {
                 event.replyError("`" + event.getArgs() + ".txt `を見つけられませんでした ");
                 return;
             }
-            event.getChannel().sendMessage(":calling: マイリストリスト **" + event.getArgs() + "**を読み込んでいます... (" + playlist.getItems().size() + " 曲)").queue(m ->
+            event.getChannel().sendMessage(":calling: マイリスト **" + event.getArgs() + "**を読み込んでいます... (" + playlist.getItems().size() + " 曲)").queue(m ->
             {
                 AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
                 playlist.loadTracks(bot.getPlayerManager(), (at) -> handler.addTrack(new QueuedTrack(at, event.getAuthor())), () -> {

@@ -25,6 +25,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -103,11 +104,8 @@ public class NowplayingHandler {
             String text = handler.getTopicFormat(bot.getJDA()) + otherText;
             if (!text.equals(tchan.getTopic())) {
                 try {
-                    if (wait)
-                        tchan.getManager().setTopic(text).complete();
-                    else
-                        tchan.getManager().setTopic(text).queue();
-                } catch (PermissionException ignore) {
+                    tchan.getManager().setTopic(text).complete(wait);
+                } catch (PermissionException | RateLimitedException ignore) {
                 }
             }
         }
