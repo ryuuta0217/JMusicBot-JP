@@ -45,7 +45,7 @@ public class VolumeCmd extends MusicCommand {
         Settings settings = event.getClient().getSettingsFor(event.getGuild());
         int volume = handler.getPlayer().getVolume();
         if (event.getArgs().isEmpty()) {
-            event.reply(FormatUtil.volumeIcon(volume) + " 現在の音量は `" + volume + "です  `");
+            event.reply(FormatUtil.volumeIcon(volume) + " 現在の音量は`" + volume + "`です。");
         } else {
             int nvolume;
             try {
