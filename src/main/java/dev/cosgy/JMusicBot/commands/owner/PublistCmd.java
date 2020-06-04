@@ -16,7 +16,7 @@ public class PublistCmd extends OwnerCommand {
     public PublistCmd(Bot bot) {
         this.bot = bot;
         this.guildOnly = false;
-        this.name = "playlist";
+        this.name = "publist";
         this.arguments = "<append|delete|make|all>";
         this.help = "再生リスト管理";
         this.aliases = bot.getConfig().getAliases(this.name);
