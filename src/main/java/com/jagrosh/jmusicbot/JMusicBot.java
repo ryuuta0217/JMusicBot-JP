@@ -26,8 +26,8 @@ import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
-import dev.cosgy.JMusicBot.commands.examples.AboutCommand;
-import dev.cosgy.JMusicBot.commands.examples.PingCommand;
+import dev.cosgy.JMusicBot.commands.general.AboutCommand;
+import dev.cosgy.JMusicBot.commands.general.PingCommand;
 import dev.cosgy.JMusicBot.commands.general.ServerInfo;
 import dev.cosgy.JMusicBot.commands.general.SettingsCmd;
 import dev.cosgy.JMusicBot.commands.general.UserInfo;
@@ -72,7 +72,6 @@ public class JMusicBot {
             if ("-nogui".equalsIgnoreCase(arg)) {
                 prompt.alert(Prompt.Level.WARNING, "GUI", "-noguiフラグは廃止予定です。 "
                         + "jarの名前の前に-Dnogui = trueフラグを使用してください。 例：java -jar -Dnogui=true JMusicBot.jar");
-                break;
             } else if ("-nocheckupdates".equalsIgnoreCase(arg)) {
                 CHECK_UPDATE = false;
                 prompt.alert(Prompt.Level.INFO, "Startup", "アップデートチェックを無効にしました。");
