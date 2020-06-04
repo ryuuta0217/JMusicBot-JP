@@ -72,7 +72,6 @@ public class JMusicBot {
             if ("-nogui".equalsIgnoreCase(arg)) {
                 prompt.alert(Prompt.Level.WARNING, "GUI", "-noguiフラグは廃止予定です。 "
                         + "jarの名前の前に-Dnogui = trueフラグを使用してください。 例：java -jar -Dnogui=true JMusicBot.jar");
-                break;
             } else if ("-nocheckupdates".equalsIgnoreCase(arg)) {
                 CHECK_UPDATE = false;
                 prompt.alert(Prompt.Level.INFO, "Startup", "アップデートチェックを無効にしました。");
