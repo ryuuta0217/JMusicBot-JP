@@ -36,7 +36,7 @@ public class PubliclistLoader {
 
     public List<String> getPlaylistNames() {
         if (folderExists()) {
-            File folder = new File(config.getPlaylistsFolder());
+            File folder = new File(config.getPublistFolder());
             return Arrays.stream(folder.listFiles((pathname) -> pathname.getName().endsWith(".txt")))
                     .map(f -> f.getName().substring(0, f.getName().length() - 4))
                     .collect(Collectors.toList());
@@ -48,25 +48,25 @@ public class PubliclistLoader {
 
     public void createFolder() {
         try {
-            Files.createDirectory(OtherUtil.getPath(config.getPlaylistsFolder()));
+            Files.createDirectory(OtherUtil.getPath(config.getPublistFolder()));
         } catch (IOException ignore) {
         }
     }
 
     public boolean folderExists() {
-        return Files.exists(OtherUtil.getPath(config.getPlaylistsFolder()));
+        return Files.exists(OtherUtil.getPath(config.getPublistFolder()));
     }
 
     public void createPlaylist(String name) throws IOException {
-        Files.createFile(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt"));
+        Files.createFile(OtherUtil.getPath(config.getPublistFolder() + File.separator + name + ".txt"));
     }
 
     public void deletePlaylist(String name) throws IOException {
-        Files.delete(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt"));
+        Files.delete(OtherUtil.getPath(config.getPublistFolder() + File.separator + name + ".txt"));
     }
 
     public void writePlaylist(String name, String text) throws IOException {
-        Files.write(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt"), text.trim().getBytes());
+        Files.write(OtherUtil.getPath(config.getPublistFolder() + File.separator + name + ".txt"), text.trim().getBytes());
     }
 
     public Playlist getPlaylist(String name) {
@@ -76,7 +76,7 @@ public class PubliclistLoader {
             if (folderExists()) {
                 boolean[] shuffle = {false};
                 List<String> list = new ArrayList<>();
-                Files.readAllLines(OtherUtil.getPath(config.getPlaylistsFolder() + File.separator + name + ".txt")).forEach(str ->
+                Files.readAllLines(OtherUtil.getPath(config.getPublistFolder() + File.separator + name + ".txt")).forEach(str ->
                 {
                     String s = str.trim();
                     if (s.isEmpty())
@@ -134,7 +134,7 @@ public class PubliclistLoader {
                     @Override
                     public void trackLoaded(AudioTrack at) {
                         if (config.isTooLong(at))
-                            errors.add(new PlaylistLoadError(index, items.get(index), "This track is longer than the allowed maximum"));
+                            errors.add(new PlaylistLoadError(index, items.get(index), "このトラックは許可された最大長を超えています"));
                         else {
                             at.setUserData(0L);
                             tracks.add(at);
@@ -168,13 +168,13 @@ public class PubliclistLoader {
 
                     @Override
                     public void noMatches() {
-                        errors.add(new PlaylistLoadError(index, items.get(index), "No matches found."));
+                        errors.add(new PlaylistLoadError(index, items.get(index), "一致するものが見つかりませんでした。"));
                         done();
                     }
 
                     @Override
                     public void loadFailed(FriendlyException fe) {
-                        errors.add(new PlaylistLoadError(index, items.get(index), "Failed to load track: " + fe.getLocalizedMessage()));
+                        errors.add(new PlaylistLoadError(index, items.get(index), "トラックを読み込めませんでした: " + fe.getLocalizedMessage()));
                         done();
                     }
                 });
