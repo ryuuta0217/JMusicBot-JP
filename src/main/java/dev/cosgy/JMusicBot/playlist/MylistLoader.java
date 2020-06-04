@@ -39,7 +39,9 @@ public class MylistLoader {
         if (folderExists()) {
             if (folderUserExists(userId)) {
                 File folder = new File(config.getMylistfolder() + File.separator + userId);
-                return Arrays.stream(Objects.requireNonNull(folder.listFiles((pathname) -> pathname.getName().endsWith(".txt")))).map(f -> f.getName().substring(0, f.getName().length() - 4)).collect(Collectors.toList());
+                return Arrays.stream(Objects.requireNonNull(folder.listFiles((pathname) -> pathname.getName().endsWith(".txt"))))
+                        .map(f -> f.getName().substring(0, f.getName().length() - 4))
+                        .collect(Collectors.toList());
             } else {
                 createUserFolder(userId);
                 return getPlaylistNames(userId);
@@ -94,18 +96,18 @@ public class MylistLoader {
                 if (folderUserExists(userId)) {
                     boolean[] shuffle = {false};
                     List<String> list = new ArrayList<>();
-                    Files.readAllLines(Paths.get(config.getMylistfolder() + File.separator + userId + File.separator + name + ".txt")).forEach(str ->
-                    {
-                        String s = str.trim();
-                        if (s.isEmpty())
-                            return;
-                        if (s.startsWith("#") || s.startsWith("//")) {
-                            s = s.replaceAll("\\s+", "");
-                            if (s.equalsIgnoreCase("#shuffle") || s.equalsIgnoreCase("//shuffle"))
-                                shuffle[0] = true;
-                        } else
-                            list.add(s);
-                    });
+                    Files.readAllLines(Paths.get(config.getMylistfolder() + File.separator + userId + File.separator + name + ".txt"))
+                            .forEach(str -> {
+                                String s = str.trim();
+                                if (s.isEmpty())
+                                    return;
+                                if (s.startsWith("#") || s.startsWith("//")) {
+                                    s = s.replaceAll("\\s+", "");
+                                    if (s.equalsIgnoreCase("#shuffle") || s.equalsIgnoreCase("//shuffle"))
+                                        shuffle[0] = true;
+                                } else
+                                    list.add(s);
+                            });
                     if (shuffle[0])
                         shuffle(list);
                     return new Playlist(name, list, shuffle[0]);
@@ -184,7 +186,7 @@ public class MylistLoader {
                             loaded.removeIf(config::isTooLong);
                             loaded.forEach(at -> at.setUserData(0L));
                             tracks.addAll(loaded);
-                            loaded.forEach(consumer::accept);
+                            loaded.forEach(consumer);
                         }
                         done();
                     }
@@ -225,7 +227,7 @@ public class MylistLoader {
         }
     }
 
-    public class PlaylistLoadError {
+    public static class PlaylistLoadError {
         private final int number;
         private final String item;
         private final String reason;
