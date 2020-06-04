@@ -34,6 +34,7 @@ import dev.cosgy.JMusicBot.commands.general.UserInfo;
 import dev.cosgy.JMusicBot.commands.listeners.CommandAudit;
 import dev.cosgy.JMusicBot.commands.music.MylistCmd;
 import dev.cosgy.JMusicBot.commands.music.NicoSearchCmd;
+import dev.cosgy.JMusicBot.commands.owner.PublistCmd;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import org.slf4j.Logger;
@@ -112,13 +113,15 @@ public class JMusicBot {
                 .setLinkedCacheSize(200)
                 .setGuildSettingsManager(settings)
                 .setListener(new CommandAudit())
-                .addCommands(aboutCommand,
+                .addCommands(
+                        //その他
+                        aboutCommand,
                         new PingCommand(),
                         new SettingsCmd(bot),
-
+                        // General
                         new ServerInfo(),
                         new UserInfo(),
-
+                        // Music
                         new LyricsCmd(bot),
                         new NowplayingCmd(bot),
                         new PlayCmd(bot),
@@ -132,7 +135,8 @@ public class JMusicBot {
                         new NicoSearchCmd(bot),
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
-
+                        new dev.cosgy.JMusicBot.commands.music.VolumeCmd(bot),
+                        // DJ
                         new ForceRemoveCmd(bot),
                         new ForceskipCmd(bot),
                         new MoveTrackCmd(bot),
@@ -141,22 +145,22 @@ public class JMusicBot {
                         //new RepeatCmd(bot),
                         new dev.cosgy.JMusicBot.commands.dj.RepeatCmd(bot),
                         new SkiptoCmd(bot),
+                        new PlaylistCmd(bot),
                         new StopCmd(bot),
                         //new VolumeCmd(bot),
-                        new dev.cosgy.JMusicBot.commands.music.VolumeCmd(bot),
-
+                        // Admin
                         new PrefixCmd(bot),
                         new SetdjCmd(bot),
                         new SettcCmd(bot),
                         new SetvcCmd(bot),
                         new AutoplaylistCmd(bot),
-                        new PlaylistCmd(bot),
-
+                        // Owner
                         new DebugCmd(bot),
                         new SetavatarCmd(bot),
                         new SetgameCmd(bot),
                         new SetnameCmd(bot),
                         new SetstatusCmd(bot),
+                        new PublistCmd(bot),
                         new ShutdownCmd(bot)
 
 

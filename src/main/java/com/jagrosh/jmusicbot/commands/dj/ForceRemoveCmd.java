@@ -83,7 +83,7 @@ public class ForceRemoveCmd extends DJCommand {
         if (count == 0) {
             event.replyWarning("**" + target.getName() + "** の再生待ちに曲がありません！");
         } else {
-            event.replySuccess(target.getName() + "**#" + target.getDiscriminator() + "から`" + count + "`曲削除しました。");
+            event.replySuccess("**" + target.getName() + "**#" + target.getDiscriminator() + "から`" + count + "`曲削除しました。");
         }
     }
 }
