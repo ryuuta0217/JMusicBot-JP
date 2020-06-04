@@ -63,6 +63,7 @@ public class RepeatCmd extends DJCommand {
                     "(または、オプション無しで切り替えが可能です)");
             return;
         }
+
         settings.setRepeatMode(value);
         log.info(event.getGuild().getName() + "でリピートコマンドを実行し、設定を" + value + "に設定しました。");
         event.replySuccess("リピートを `" + (value == RepeatMode.ALL ? "有効(全曲リピート)" : (value == RepeatMode.SINGLE ? "有効(1曲リピート)" : "無効")) + "` にしました。");

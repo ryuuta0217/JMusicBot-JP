@@ -126,14 +126,12 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
         Playlist pl = manager.getBot().getPlaylistLoader().getPlaylist(stringGuildId, settings.getDefaultPlaylist());
         if (pl == null || pl.getItems().isEmpty())
             return false;
-        pl.loadTracks(manager, (at) ->
-        {
+        pl.loadTracks(manager, (at) -> {
             if (audioPlayer.getPlayingTrack() == null)
                 audioPlayer.playTrack(at);
             else
                 defaultQueue.add(at);
-        }, () ->
-        {
+        }, () -> {
             if (pl.getTracks().isEmpty() && !manager.getBot().getConfig().getStay())
                 manager.getBot().closeAudioConnection(guildId);
         });
@@ -148,7 +146,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
         if (endReason == AudioTrackEndReason.FINISHED && repeatMode != RepeatMode.OFF) {
             // in RepeatMode.ALL
             if (repeatMode == RepeatMode.ALL) {
-                queue.addAt(queue.size() - 1, new QueuedTrack(track.makeClone(), track.getUserData(Long.class) == null ? 0L : track.getUserData(Long.class)));
+                queue.add(new QueuedTrack(track.makeClone(), track.getUserData(Long.class) == null ? 0L : track.getUserData(Long.class)));
 
                 // in RepeatMode.SINGLE
             } else if (repeatMode == RepeatMode.SINGLE) {
