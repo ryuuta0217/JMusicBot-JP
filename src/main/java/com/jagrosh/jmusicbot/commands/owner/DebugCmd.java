@@ -57,6 +57,8 @@ public class DebugCmd extends OwnerCommand {
                 .append("\n  ID = ").append(event.getJDA().getSelfUser().getId())
                 .append("\n  Guilds = ").append(event.getJDA().getGuildCache().size())
                 .append("\n  Users = ").append(event.getJDA().getUserCache().size());
+        sb.append("このファイルを開発者に送信する場合はファイルを編集せずに送信するようにお願いします。")
+                .append("\nこのファイルは個人情報を特定、アカウントの乗っ取りなどに使用できるデータは含んでいません。");
 
         if (event.isFromType(ChannelType.PRIVATE)
                 || event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ATTACH_FILES))

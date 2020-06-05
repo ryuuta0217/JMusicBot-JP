@@ -37,7 +37,7 @@ public class DefaultYoutubeTrackDetailsLoader implements YoutubeTrackDetailsLoad
             int statusCode = response.getStatusLine().getStatusCode();
 
             if (!HttpClientTools.isSuccessWithContent(statusCode)) {
-                throw new IOException("Invalid status code for video page response: " + statusCode);
+                throw new IOException("ビデオページ応答の無効なステータスコード： " + statusCode);
             }
 
             String responseText = EntityUtils.toString(response.getEntity(), UTF_8);
@@ -60,7 +60,7 @@ public class DefaultYoutubeTrackDetailsLoader implements YoutubeTrackDetailsLoad
                 switch (checkStatusBlock(statusBlock)) {
                     case INFO_PRESENT:
                         if (playerInfo.isNull()) {
-                            throw new RuntimeException("No player info block.");
+                            throw new RuntimeException("プレーヤー情報ブロックはありません。");
                         }
 
                         return new DefaultYoutubeTrackDetails(videoId, playerInfo);
@@ -74,21 +74,21 @@ public class DefaultYoutubeTrackDetailsLoader implements YoutubeTrackDetailsLoad
             } catch (FriendlyException e) {
                 throw e;
             } catch (Exception e) {
-                throw new FriendlyException("Received unexpected response from YouTube.", SUSPICIOUS,
-                        new RuntimeException("Failed to parse: " + responseText, e));
+                throw new FriendlyException("YouTubeから予期しない応答を受け取りました。", SUSPICIOUS,
+                        new RuntimeException("解析できませんでした： " + responseText, e));
             }
         }
     }
 
     protected InfoStatus checkStatusBlock(JsonBrowser statusBlock) {
         if (statusBlock.isNull()) {
-            throw new RuntimeException("No playability status block.");
+            throw new RuntimeException("再生可能性ステータスブロックはありません。");
         }
 
         String status = statusBlock.get("status").text();
 
         if (status == null) {
-            throw new RuntimeException("No playability status field.");
+            throw new RuntimeException("再生可能性ステータスフィールドはありません。");
         } else if ("OK".equals(status)) {
             return InfoStatus.INFO_PRESENT;
         } else if ("ERROR".equals(status)) {
@@ -105,7 +105,7 @@ public class DefaultYoutubeTrackDetailsLoader implements YoutubeTrackDetailsLoad
         } else if ("LOGIN_REQUIRED".equals(status)) {
             return InfoStatus.REQUIRES_LOGIN;
         } else {
-            throw new FriendlyException("This video cannot be viewed anonymously.", COMMON, null);
+            throw new FriendlyException("この動画は匿名で表示できません。", COMMON, null);
         }
     }
 
@@ -148,8 +148,8 @@ public class DefaultYoutubeTrackDetailsLoader implements YoutubeTrackDetailsLoad
             }
         }
 
-        throw new FriendlyException("Track information is unavailable.", SUSPICIOUS,
-                new IllegalStateException("Expected player config is not present in embed page."));
+        throw new FriendlyException("トラック情報は利用できません。", SUSPICIOUS,
+                new IllegalStateException("埋め込みページに必要なプレーヤー設定がありません。"));
     }
 
     protected Map<String, String> loadTrackArgsFromVideoInfoPage(HttpInterface httpInterface, String videoId, String sts) throws IOException {

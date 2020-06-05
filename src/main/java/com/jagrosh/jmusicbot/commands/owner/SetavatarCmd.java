@@ -53,7 +53,7 @@ public class SetavatarCmd extends OwnerCommand {
         } else {
             try {
                 event.getSelfUser().getManager().setAvatar(Icon.from(s)).queue(
-                        v -> event.reply(event.getClient().getSuccess() + " Successfully changed avatar."),
+                        v -> event.reply(event.getClient().getSuccess() + "アバターを変更しました。"),
                         t -> event.reply(event.getClient().getError() + "アバターを設定できませんでした。"));
             } catch (IOException e) {
                 event.reply(event.getClient().getError() + " 提供されたURLから読み込めませんでした。");

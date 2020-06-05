@@ -31,8 +31,8 @@ public class RemoveCmd extends MusicCommand {
     public RemoveCmd(Bot bot) {
         super(bot);
         this.name = "remove";
-        this.help = "再生待ちから曲を削除します";
-        this.arguments = "<キュー番号|すべて|ALL>";
+        this.help = "再生再生待ちから曲を削除します";
+        this.arguments = "<再生待ち番号|すべて|ALL>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = true;
@@ -42,7 +42,7 @@ public class RemoveCmd extends MusicCommand {
     public void doCommand(CommandEvent event) {
         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
         if (handler.getQueue().isEmpty()) {
-            event.replyError("キューには何もありません。");
+            event.replyError("再生待ちには何もありません。");
             return;
         }
         if (event.getArgs().toLowerCase().matches("(all|すべて)")) {
@@ -70,7 +70,7 @@ public class RemoveCmd extends MusicCommand {
         QueuedTrack qt = handler.getQueue().get(pos - 1);
         if (qt.getIdentifier() == event.getAuthor().getIdLong()) {
             handler.getQueue().remove(pos - 1);
-            event.replySuccess("**" + qt.getTrack().getInfo().title + "**を再生待ちから削除しました。");
+            event.replySuccess("**" + qt.getTrack().getInfo().title + "**をキューから削除しました。");
         } else if (isDJ) {
             handler.getQueue().remove(pos - 1);
             User u;
@@ -80,9 +80,9 @@ public class RemoveCmd extends MusicCommand {
                 u = null;
             }
             event.replySuccess("**" + qt.getTrack().getInfo().title
-                    + "**を再生待ちから削除しました。\n(この曲は" + (u == null ? "誰かがリクエストしました。" : "**" + u.getName() + "がリクエストしました。**") + ")");
+                    + "**を再生待ちから削除しました。\n(この曲は" + (u == null ? "誰かがリクエストしました。" : "**" + u.getName() + "**がリクエストしました。") + ")");
         } else {
-            event.replyError("楽曲 **" + qt.getTrack().getInfo().title + "** を削除できませんでした。理由: 追加されなかったため");
+            event.replyError("**" + qt.getTrack().getInfo().title + "** を削除できませんでした。理由: DJ権限を持っていますか？自分のリクエスト以外は削除できません。");
         }
     }
 }
