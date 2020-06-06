@@ -9,7 +9,7 @@
 # JMusicBotJP
 JMusicBotは、シンプルでかつ操作性の良いUIを使用しています。セットアップも起動も簡単です。
 
-[![Setup](http://i.imgur.com/VvXYp5j.png)](https://www.cosgy.jp/2019/09/06/jmusicbot-setup/)
+[![Setup](http://i.imgur.com/VvXYp5j.png)](https://www.cosgy.tokyo/2019/09/06/jmusicbot-setup/)
 
 # 機能性
 * 操作が簡単(Javaがインストールされているか確認してください)
@@ -25,7 +25,7 @@ JMusicBotは、シンプルでかつ操作性の良いUIを使用しています
 * 再生リストのサポート(web/youtube/local)
 
 # セットアップ
-このボットを自分で起動するには [Cosgy Dev 公式ページ](https://www.cosgy.jp/2019/09/06/jmusicbot-setup/) を参照してください
+このボットを自分で起動するには [Cosgy Dev 公式ページ](https://www.cosgy.tokyo/2019/09/06/jmusicbot-setup/) を参照してください
 
 # 質問/提案/バグレポート
 **機能を提案する前に、推奨/計画された機能リストをお読みください。**<br>
