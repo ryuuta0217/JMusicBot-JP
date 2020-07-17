@@ -33,15 +33,15 @@ import org.slf4j.LoggerFactory;
  * @author John Grosh (john.a.grosh@gmail.com)
  */
 public class PlaynextCmd extends DJCommand {
-    Logger log = LoggerFactory.getLogger("Playnext");
     private final String loadingEmoji;
+    Logger log = LoggerFactory.getLogger("Playnext");
 
     public PlaynextCmd(Bot bot) {
         super(bot);
         this.loadingEmoji = bot.getConfig().getLoading();
         this.name = "playnext";
         this.arguments = "<title|URL>";
-        this.help = "次にこの曲を再生する";
+        this.help = "次に再生する曲を指定します";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = false;
@@ -56,8 +56,8 @@ public class PlaynextCmd extends DJCommand {
         String args = event.getArgs().startsWith("<") && event.getArgs().endsWith(">")
                 ? event.getArgs().substring(1, event.getArgs().length() - 1)
                 : event.getArgs().isEmpty() ? event.getMessage().getAttachments().get(0).getUrl() : event.getArgs();
-        log.info(event.getGuild().getName() + "で[" + args + "]のロードを開始しました。");
-        event.reply(loadingEmoji + "`[" + args + "]`をロード中です...", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m, event, false)));
+        log.info(event.getGuild().getName() + "で[" + args + "]の読み込みを開始しました。");
+        event.reply(loadingEmoji + "`[" + args + "]`を読み込み中です...", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m, event, false)));
     }
 
     private class ResultHandler implements AudioLoadResultHandler {
@@ -119,7 +119,7 @@ public class PlaynextCmd extends DJCommand {
                 m.editMessage(event.getClient().getError() + " 読み込みエラー: " + throwable.getMessage()).queue();
             else
                 m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。").queue();
-                log.info(event.getGuild().getName() + "で読み込みエラーが発生しました。");
+            log.info(event.getGuild().getName() + "で読み込みエラーが発生しました。");
         }
     }
 }

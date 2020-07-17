@@ -48,7 +48,7 @@ public class PlayerManager extends DefaultAudioPlayerManager {
 
         AudioSourceManagers.registerRemoteSources(this);
         AudioSourceManagers.registerLocalSource(this);
-        source(YoutubeAudioSourceManager.class).setPlaylistPageCount(10);
+        source(YoutubeAudioSourceManager.class).setPlaylistPageCount(3);
 
         if (getConfiguration().getOpusEncodingQuality() != 10) {
             logger.debug("OpusEncodingQuality is " + getConfiguration().getOpusEncodingQuality() + "(< 10)" + ", Setting Quality to 10.");

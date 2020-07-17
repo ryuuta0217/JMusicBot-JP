@@ -32,7 +32,7 @@ public class TextAreaOutputStream extends OutputStream {
 // INSTANCE MEMBERS
 // *************************************************************************************************
 
-    private byte[] oneByte;                                                    // array for write(int val);
+    private final byte[] oneByte;                                                    // array for write(int val);
     private Appender appender;                                                   // most recent action
 
     public TextAreaOutputStream(JTextArea txtara) {
@@ -45,6 +45,15 @@ public class TextAreaOutputStream extends OutputStream {
         }
         oneByte = new byte[1];
         appender = new Appender(txtara, maxlin);
+    }
+
+    //@edu.umd.cs.findbugs.annotations.SuppressWarnings("DM_DEFAULT_ENCODING")
+    static private String bytesToString(byte[] ba, int str, int len) {
+        try {
+            return new String(ba, str, len, System.getProperty("file.encoding"));
+        } catch (UnsupportedEncodingException thr) {
+            return new String(ba, str, len);
+        } // all JVMs are required to support UTF-8
     }
 
     /**
@@ -82,15 +91,6 @@ public class TextAreaOutputStream extends OutputStream {
         if (appender != null) {
             appender.append(bytesToString(ba, str, len));
         }
-    }
-
-    //@edu.umd.cs.findbugs.annotations.SuppressWarnings("DM_DEFAULT_ENCODING")
-    static private String bytesToString(byte[] ba, int str, int len) {
-        try {
-            return new String(ba, str, len, System.getProperty("file.encoding"));
-        } catch (UnsupportedEncodingException thr) {
-            return new String(ba, str, len);
-        } // all JVMs are required to support UTF-8
     }
 
 // *************************************************************************************************

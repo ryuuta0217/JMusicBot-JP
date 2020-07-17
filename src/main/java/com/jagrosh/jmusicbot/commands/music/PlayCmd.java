@@ -25,17 +25,19 @@ import com.jagrosh.jmusicbot.audio.QueuedTrack;
 import com.jagrosh.jmusicbot.commands.DJCommand;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
-import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException.Severity;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import dev.cosgy.JMusicBot.commands.music.MylistCmd;
+import dev.cosgy.JMusicBot.util.StackTraceUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import dev.cosgy.JMusicBot.playlist.MylistLoader;
+import dev.cosgy.JMusicBot.playlist.PubliclistLoader;
 
 import java.util.concurrent.TimeUnit;
 
@@ -57,7 +59,7 @@ public class PlayCmd extends MusicCommand {
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = false;
-        this.children = new Command[]{new PlaylistCmd(bot)};
+        this.children = new Command[]{new PlaylistCmd(bot), new dev.cosgy.JMusicBot.commands.music.PlayCmd.MylistCmd(bot), new dev.cosgy.JMusicBot.commands.music.PlayCmd.PublistCmd(bot)};
     }
 
     @Override
@@ -65,14 +67,13 @@ public class PlayCmd extends MusicCommand {
         if (event.getArgs().isEmpty() && event.getMessage().getAttachments().isEmpty()) {
             AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
             if (handler.getPlayer().getPlayingTrack() != null && handler.getPlayer().isPaused()) {
-                if(DJCommand.checkDJPermission(event)){
+                if (DJCommand.checkDJPermission(event)) {
                     handler.getPlayer().setPaused(false);
                     event.replySuccess("**" + handler.getPlayer().getPlayingTrack().getInfo().title + "**の再生を再開しました。");
 
                     Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PLAYING);
-                }
-                else
-                    event.replyError("プレーヤーの一時停止を解除できるのはDJだけです！");
+                } else
+                    event.replyError("再生を再開できるのはDJのみです！");
                 return;
             }
             StringBuilder builder = new StringBuilder(event.getClient().getWarning() + " Play コマンド:\n");
@@ -140,7 +141,7 @@ public class PlayCmd extends MusicCommand {
 
         private int loadPlaylist(AudioPlaylist playlist, AudioTrack exclude) {
             int[] count = {0};
-            playlist.getTracks().stream().forEach((track) -> {
+            playlist.getTracks().forEach((track) -> {
                 if (!bot.getConfig().isTooLong(track) && !track.equals(exclude)) {
                     AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
                     handler.addTrack(new QueuedTrack(track, event.getAuthor()));
@@ -188,10 +189,18 @@ public class PlayCmd extends MusicCommand {
 
         @Override
         public void loadFailed(FriendlyException throwable) {
-            if (throwable.severity == Severity.COMMON)
-                m.editMessage(event.getClient().getError() + " 読み込みエラー: " + throwable.getMessage()).queue();
-            else
-                m.editMessage(event.getClient().getError() + " トラックの読み込み中にエラーが発生しました。").queue();
+            if (throwable.severity == Severity.COMMON) {
+                m.editMessage(event.getClient().getError() + " 読み込み中にエラーが発生しました: " + throwable.getMessage()).queue();
+            } else {
+                if (m.getAuthor().getIdLong() == bot.getConfig().getOwnerId() || m.getMember().isOwner()) {
+                    m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。\n" +
+                            "**エラーの内容: " + throwable.getLocalizedMessage() + "**").queue();
+                    StackTraceUtil.sendStackTrace(event.getTextChannel(), throwable);
+                    return;
+                }
+
+                m.editMessage(event.getClient().getError() + " 曲の読み込み中にエラーが発生しました。").queue();
+            }
         }
     }
 
@@ -208,11 +217,12 @@ public class PlayCmd extends MusicCommand {
 
         @Override
         public void doCommand(CommandEvent event) {
+            String guildId = event.getGuild().getId();
             if (event.getArgs().isEmpty()) {
                 event.reply(event.getClient().getError() + " 再生リスト名を含めてください。");
                 return;
             }
-            Playlist playlist = bot.getPlaylistLoader().getPlaylist(event.getArgs());
+            Playlist playlist = bot.getPlaylistLoader().getPlaylist(guildId, event.getArgs());
             if (playlist == null) {
                 event.replyError("`" + event.getArgs() + ".txt `を見つけられませんでした ");
                 return;
@@ -223,13 +233,13 @@ public class PlayCmd extends MusicCommand {
                 playlist.loadTracks(bot.getPlayerManager(), (at) -> handler.addTrack(new QueuedTrack(at, event.getAuthor())), () -> {
                     StringBuilder builder = new StringBuilder(playlist.getTracks().isEmpty()
                             ? event.getClient().getWarning() + " 楽曲がロードされていません。"
-                            : event.getClient().getSuccess() + "**" + playlist.getTracks().size() + "**　曲を読み込みました。");
+                            : event.getClient().getSuccess() + "**" + playlist.getTracks().size() + "**　曲、読み込みました。");
                     if (!playlist.getErrors().isEmpty())
                         builder.append("\n以下の楽曲をロードできませんでした:");
                     playlist.getErrors().forEach(err -> builder.append("\n`[").append(err.getIndex() + 1).append("]` **").append(err.getItem()).append("**: ").append(err.getReason()));
                     String str = builder.toString();
                     if (str.length() > 2000)
-                        str = str.substring(0, 1994) + " (...)";
+                        str = str.substring(0, 1994) + " (以下略)";
                     m.editMessage(FormatUtil.filter(str)).queue();
                 });
             });

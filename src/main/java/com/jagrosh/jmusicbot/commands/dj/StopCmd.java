@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class StopCmd extends DJCommand {
     Logger log = LoggerFactory.getLogger("Stop");
+
     public StopCmd(Bot bot) {
         super(bot);
         this.name = "stop";
@@ -40,7 +41,7 @@ public class StopCmd extends DJCommand {
         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
         handler.stopAndClear();
         event.getGuild().getAudioManager().closeAudioConnection();
-        event.reply(event.getClient().getSuccess() + " 再生が停止され、再生待ちは削除されました。");
-        log.info(event.getGuild().getName() + "でSTOPコマンドを実行しました。");
+        event.reply(event.getClient().getSuccess() + " 再生待ちを削除して、再生を停止しました。");
+        log.info(event.getGuild().getName() + "で " + event.getMessage().getContentDisplay() + " を実行しました。");
     }
 }

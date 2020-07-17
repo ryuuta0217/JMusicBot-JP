@@ -48,12 +48,12 @@ public abstract class MusicCommand extends Command {
                 event.getMessage().delete().queue();
             } catch (PermissionException ignore) {
             }
-            event.replyInDm(event.getClient().getError() + " そのコマンドを使用できるのは" + tchannel.getAsMention() + "です!");
+            event.replyInDm(event.getClient().getError() + String.format("コマンドは%sでのみ実行できます", tchannel.getAsMention()));
             return;
         }
         bot.getPlayerManager().setUpHandler(event.getGuild()); // no point constantly checking for this later
         if (bePlaying && !((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).isMusicPlaying(event.getJDA())) {
-            event.reply(event.getClient().getError() + "それを使うには音楽が流れていないといけません！");
+            event.reply(event.getClient().getError() + "コマンドを使用するには、再生中である必要があります。");
             return;
         }
         if (beListening) {
@@ -62,14 +62,14 @@ public abstract class MusicCommand extends Command {
                 current = settings.getVoiceChannel(event.getGuild());
             GuildVoiceState userState = event.getMember().getVoiceState();
             if (!userState.inVoiceChannel() || userState.isDeafened() || (current != null && !userState.getChannel().equals(current))) {
-                event.replyError("これを使うには " + (current == null ? "音声チャンネル" : "**" + current.getName() + "**") + " で聴いている必要があります。");
+                event.replyError(String.format("このコマンドを使用するには、%sに参加している必要があります！", (current == null ? "音声チャンネル" : "**" + current.getName() + "**")));
                 return;
             }
             if (!event.getGuild().getSelfMember().getVoiceState().inVoiceChannel()) {
                 try {
                     event.getGuild().getAudioManager().openAudioConnection(userState.getChannel());
                 } catch (PermissionException ex) {
-                    event.reply(event.getClient().getError() + "**" + userState.getChannel().getName() + "**に接続できません!");
+                    event.reply(event.getClient().getError() + String.format("**%s**に接続できません!", userState.getChannel().getName()));
                     return;
                 }
             }

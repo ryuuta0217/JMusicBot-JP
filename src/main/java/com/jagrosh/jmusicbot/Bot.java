@@ -21,6 +21,8 @@ import com.jagrosh.jmusicbot.audio.NowplayingHandler;
 import com.jagrosh.jmusicbot.audio.PlayerManager;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader;
+import dev.cosgy.JMusicBot.playlist.MylistLoader;
+import dev.cosgy.JMusicBot.playlist.PubliclistLoader;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
@@ -45,11 +47,27 @@ public class Bot {
     private final SettingsManager settings;
     private final PlayerManager players;
     private final PlaylistLoader playlists;
+    private final MylistLoader mylists;
+    private final PubliclistLoader publist;
     private final NowplayingHandler nowplaying;
 
     private boolean shuttingDown = false;
     private JDA jda;
     private GUI gui;
+
+    public Bot(EventWaiter waiter, BotConfig config, SettingsManager settings) {
+        this.waiter = waiter;
+        this.config = config;
+        this.settings = settings;
+        this.playlists = new PlaylistLoader(config);
+        this.mylists = new MylistLoader(config);
+        this.publist = new PubliclistLoader(config);
+        this.threadpool = Executors.newSingleThreadScheduledExecutor();
+        this.players = new PlayerManager(this);
+        this.players.init();
+        this.nowplaying = new NowplayingHandler(this);
+        this.nowplaying.init();
+    }
 
     public static void updatePlayStatus(@Nonnull Guild guild, @Nonnull Member selfMember, @Nonnull PlayStatus status) {
         if (!INSTANCE.getConfig().getChangeNickName()) return;
@@ -58,7 +76,7 @@ public class Bot {
             return;
         }
 
-        String name = selfMember.getEffectiveName().replaceAll("^[⏯⏸⏹] ", "");
+        String name = selfMember.getEffectiveName().replaceAll("[⏯⏸⏹] ", "");
         switch (status) {
             case PLAYING:
                 name = "⏯ " + name;
@@ -72,18 +90,6 @@ public class Bot {
         }
 
         guild.getController().setNickname(selfMember, name).queue();
-    }
-
-    public Bot(EventWaiter waiter, BotConfig config, SettingsManager settings) {
-        this.waiter = waiter;
-        this.config = config;
-        this.settings = settings;
-        this.playlists = new PlaylistLoader(config);
-        this.threadpool = Executors.newSingleThreadScheduledExecutor();
-        this.players = new PlayerManager(this);
-        this.players.init();
-        this.nowplaying = new NowplayingHandler(this);
-        this.nowplaying.init();
     }
 
     public BotConfig getConfig() {
@@ -110,12 +116,20 @@ public class Bot {
         return playlists;
     }
 
+    public MylistLoader getMylistLoader() { return mylists; }
+
+    public PubliclistLoader getPublistLoader() { return publist; }
+
     public NowplayingHandler getNowplayingHandler() {
         return nowplaying;
     }
 
     public JDA getJDA() {
         return jda;
+    }
+
+    public void setJDA(JDA jda) {
+        this.jda = jda;
     }
 
     public void closeAudioConnection(long guildId) {
@@ -151,10 +165,6 @@ public class Bot {
         if (gui != null)
             gui.dispose();
         System.exit(0);
-    }
-
-    public void setJDA(JDA jda) {
-        this.jda = jda;
     }
 
     public void setGUI(GUI gui) {

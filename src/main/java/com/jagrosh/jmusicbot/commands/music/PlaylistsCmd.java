@@ -37,13 +37,20 @@ public class PlaylistsCmd extends MusicCommand {
 
     @Override
     public void doCommand(CommandEvent event) {
+        String guildID = event.getGuild().getId();
         if (!bot.getPlaylistLoader().folderExists())
             bot.getPlaylistLoader().createFolder();
+        if (!bot.getPlaylistLoader().folderGuildExists(guildID))
+            bot.getPlaylistLoader().createGuildFolder(guildID);
         if (!bot.getPlaylistLoader().folderExists()) {
             event.reply(event.getClient().getWarning() + " 再生リストフォルダが存在しないため作成できませんでした。");
             return;
         }
-        List<String> list = bot.getPlaylistLoader().getPlaylistNames();
+        if (!bot.getPlaylistLoader().folderGuildExists(guildID)) {
+            event.reply(event.getClient().getWarning() + " このサーバーの再生リストフォルダが存在しないため作成できませんでした。");
+            return;
+        }
+        List<String> list = bot.getPlaylistLoader().getPlaylistNames(guildID);
         if (list == null)
             event.reply(event.getClient().getError() + " 利用可能な再生リストを読み込めませんでした。");
         else if (list.isEmpty())

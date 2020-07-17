@@ -22,13 +22,10 @@ import com.jagrosh.jmusicbot.commands.AdminCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 
 /**
- *
  * @author Kosugi_kun (info@cosgy.jp)
  */
-public class PrefixCmd extends AdminCommand
-{
-    public PrefixCmd(Bot bot)
-    {
+public class PrefixCmd extends AdminCommand {
+    public PrefixCmd(Bot bot) {
         this.name = "prefix";
         this.help = "サーバー固有のプレフィックスを設定します";
         this.arguments = "<プレフィックス|NONE|なし>";
@@ -36,24 +33,19 @@ public class PrefixCmd extends AdminCommand
     }
 
     @Override
-    protected void execute(CommandEvent event)
-    {
-        if(event.getArgs().isEmpty())
-        {
+    protected void execute(CommandEvent event) {
+        if (event.getArgs().isEmpty()) {
             event.replyError("プレフィックスまたはNONEを含めてください");
             return;
         }
 
         Settings s = event.getClient().getSettingsFor(event.getGuild());
-        if(event.getArgs().toLowerCase().matches("(none|なし)"))
-        {
+        if (event.getArgs().toLowerCase().matches("(none|なし)")) {
             s.setPrefix(null);
             event.replySuccess("プレフィックスがクリアされました。");
-        }
-        else
-        {
+        } else {
             s.setPrefix(event.getArgs());
-            event.replySuccess("*"+ event.getGuild().getName() +"* でのプレフィックスを `" + event.getArgs() + "`に設定しました。");
+            event.replySuccess("*" + event.getGuild().getName() + "* でのプレフィックスを `" + event.getArgs() + "`に設定しました。");
         }
     }
 }

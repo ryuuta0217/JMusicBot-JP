@@ -4,7 +4,9 @@
 [![Stars](https://img.shields.io/github/stars/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/stargazers)
 [![Release](https://img.shields.io/github/release/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest)
 [![License](https://img.shields.io/github/license/Cosgy-Dev/MusicBot-JP-java.svg)](https://github.com/Cosgy-Dev/MusicBot-JP-java/blob/master/LICENSE)
-[![Discord](https://discordapp.com/api/guilds/497317844191805450/widget.png)](https://discord.gg/RBpkHxf)<br>
+[![Discord](https://discordapp.com/api/guilds/497317844191805450/widget.png)](https://discord.gg/RBpkHxf)
+![CircleCI](https://img.shields.io/circleci/build/github/Cosgy-Dev/JMusicBot-JP/develop?token=c2ceb77e45cfce45bc8e15161f91d355c54f48b1)
+[![CodeFactor](https://www.codefactor.io/repository/github/cosgy-dev/jmusicbot-jp/badge)](https://www.codefactor.io/repository/github/cosgy-dev/jmusicbot-jp)
 
 # JMusicBotJP
 JMusicBotは、シンプルでかつ操作性の良いUIを使用しています。セットアップも起動も簡単です。
@@ -19,10 +21,10 @@ JMusicBotは、シンプルでかつ操作性の良いUIを使用しています
 * DJという独自の役割
 * シンプルで使いやすいUI
 * チャンネルトピックに表示される再生状態バー
-* YouTubeや、Soundcloudなどを含む多くのサイトをサポート
+* ニコニコ動画、YouTubeや、Soundcloudなどを含む多くのサイトをサポート
 * 多数のオンラインラジオ/ストリームをサポート
 * ローカルファイルをサポート
-* 再生リストのサポート(web/youtube/local)
+* 再生リストのサポート(web/youtube/ニコニコ動画/local)
 
 # セットアップ
 このボットを自分で起動するには [Cosgy Dev 公式ページ](https://www.cosgy.tokyo/2019/09/06/jmusicbot-setup/) を参照してください

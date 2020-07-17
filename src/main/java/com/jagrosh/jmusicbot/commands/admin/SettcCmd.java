@@ -58,7 +58,7 @@ public class SettcCmd extends AdminCommand {
             else {
                 s.setTextChannel(list.get(0));
                 log.info("音楽コマンド用のチャンネルを設定しました。");
-                event.reply(event.getClient().getSuccess() + "音楽コマンドは現在<#" + list.get(0).getId() + ">でしか使用できません");
+                event.reply(event.getClient().getSuccess() + "音楽コマンドを<#" + list.get(0).getId() + ">のみで使用できるように設定しました。");
             }
         }
     }

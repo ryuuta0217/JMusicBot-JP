@@ -1,48 +1,30 @@
-/*
- * Copyright 2018-2020 Cosgy Dev
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
-package com.jagrosh.jmusicbot.commands.owner;
+package dev.cosgy.JMusicBot.commands.owner;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.OwnerCommand;
-import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
+import com.jagrosh.jmusicbot.commands.admin.AutoplaylistCmd;
+import dev.cosgy.JMusicBot.playlist.PubliclistLoader.Playlist;
 
 import java.io.IOException;
 import java.util.List;
 
-/**
- * @author John Grosh <john.a.grosh@gmail.com>
- */
-public class PlaylistCmd extends OwnerCommand {
+public class PublistCmd extends OwnerCommand {
     private final Bot bot;
 
-    public PlaylistCmd(Bot bot) {
+    public PublistCmd(Bot bot) {
         this.bot = bot;
         this.guildOnly = false;
-        this.name = "playlist";
-        this.arguments = "<append|delete|make|setdefault>";
+        this.name = "publist";
+        this.arguments = "<append|delete|make|all>";
         this.help = "再生リスト管理";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.children = new OwnerCommand[]{
                 new ListCmd(),
                 new AppendlistCmd(),
                 new DeletelistCmd(),
-                new MakelistCmd(),
-                new DefaultlistCmd(bot)
+                new MakelistCmd()
         };
     }
 
@@ -67,9 +49,9 @@ public class PlaylistCmd extends OwnerCommand {
         @Override
         protected void execute(CommandEvent event) {
             String pname = event.getArgs().replaceAll("\\s+", "_");
-            if (bot.getPlaylistLoader().getPlaylist(pname) == null) {
+            if (bot.getPublistLoader().getPlaylist(pname) == null) {
                 try {
-                    bot.getPlaylistLoader().createPlaylist(pname);
+                    bot.getPublistLoader().createPlaylist(pname);
                     event.reply(event.getClient().getSuccess() + " `" + pname + "`という名前で再生リストを作成しました!");
                 } catch (IOException e) {
                     event.reply(event.getClient().getError() + " 再生リストを作成できませんでした。:" + e.getLocalizedMessage());
@@ -91,11 +73,11 @@ public class PlaylistCmd extends OwnerCommand {
         @Override
         protected void execute(CommandEvent event) {
             String pname = event.getArgs().replaceAll("\\s+", "_");
-            if (bot.getPlaylistLoader().getPlaylist(pname) == null)
+            if (bot.getPublistLoader().getPlaylist(pname) == null)
                 event.reply(event.getClient().getError() + " 再生リスト `" + pname + "` は存在しません!");
             else {
                 try {
-                    bot.getPlaylistLoader().deletePlaylist(pname);
+                    bot.getPublistLoader().deletePlaylist(pname);
                     event.reply(event.getClient().getSuccess() + " 再生リスト `" + pname + "`を削除しました。!");
                 } catch (IOException e) {
                     event.reply(event.getClient().getError() + " 再生リストを削除できませんでした: " + e.getLocalizedMessage());
@@ -121,7 +103,7 @@ public class PlaylistCmd extends OwnerCommand {
                 return;
             }
             String pname = parts[0];
-            Playlist playlist = bot.getPlaylistLoader().getPlaylist(pname);
+            Playlist playlist = bot.getPublistLoader().getPlaylist(pname);
             if (playlist == null)
                 event.reply(event.getClient().getError() + " 再生リスト `" + pname + "` は存在しません!");
             else {
@@ -135,7 +117,7 @@ public class PlaylistCmd extends OwnerCommand {
                     builder.append("\r\n").append(u);
                 }
                 try {
-                    bot.getPlaylistLoader().writePlaylist(pname, builder.toString());
+                    bot.getPublistLoader().writePlaylist(pname, builder.toString());
                     event.reply(event.getClient().getSuccess() + urls.length + " 項目を再生リスト `" + pname + "`に追加しました!");
                 } catch (IOException e) {
                     event.reply(event.getClient().getError() + " 再生リストに追加できませんでした: " + e.getLocalizedMessage());
@@ -164,13 +146,13 @@ public class PlaylistCmd extends OwnerCommand {
 
         @Override
         protected void execute(CommandEvent event) {
-            if (!bot.getPlaylistLoader().folderExists())
-                bot.getPlaylistLoader().createFolder();
-            if (!bot.getPlaylistLoader().folderExists()) {
+            if (!bot.getPublistLoader().folderExists())
+                bot.getPublistLoader().createFolder();
+            if (!bot.getPublistLoader().folderExists()) {
                 event.reply(event.getClient().getWarning() + " 再生リストフォルダが存在しないため作成できませんでした。");
                 return;
             }
-            List<String> list = bot.getPlaylistLoader().getPlaylistNames();
+            List<String> list = bot.getPublistLoader().getPlaylistNames();
             if (list == null)
                 event.reply(event.getClient().getError() + " 利用可能な再生リストを読み込めませんでした。");
             else if (list.isEmpty())

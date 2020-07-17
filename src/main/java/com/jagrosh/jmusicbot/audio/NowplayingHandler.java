@@ -25,6 +25,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,8 +45,8 @@ public class NowplayingHandler {
     }
 
     public void init() {
-        if(!bot.getConfig().useNPImages())
-            bot.getThreadpool().scheduleWithFixedDelay(() -> updateAll(), 0, 5, TimeUnit.SECONDS);
+        if (!bot.getConfig().useNPImages())
+            bot.getThreadpool().scheduleWithFixedDelay(this::updateAll, 0, 5, TimeUnit.SECONDS);
     }
 
     public void setLastNPMessage(Message m) {
@@ -83,7 +84,7 @@ public class NowplayingHandler {
                 toRemove.add(guildId);
             }
         }
-        toRemove.forEach(id -> lastNP.remove(id));
+        toRemove.forEach(lastNP::remove);
     }
 
     public void updateTopic(long guildId, AudioHandler handler, boolean wait) {
@@ -103,11 +104,8 @@ public class NowplayingHandler {
             String text = handler.getTopicFormat(bot.getJDA()) + otherText;
             if (!text.equals(tchan.getTopic())) {
                 try {
-                    if (wait)
-                        tchan.getManager().setTopic(text).complete();
-                    else
-                        tchan.getManager().setTopic(text).queue();
-                } catch (PermissionException ignore) {
+                    tchan.getManager().setTopic(text).complete(wait);
+                } catch (PermissionException | RateLimitedException ignore) {
                 }
             }
         }

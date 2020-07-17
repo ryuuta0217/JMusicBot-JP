@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PauseCmd extends DJCommand {
     Logger log = LoggerFactory.getLogger("Pause");
+
     public PauseCmd(Bot bot) {
         super(bot);
         this.name = "pause";

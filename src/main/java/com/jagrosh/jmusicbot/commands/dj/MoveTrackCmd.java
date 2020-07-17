@@ -34,10 +34,14 @@ public class MoveTrackCmd extends DJCommand {
     public MoveTrackCmd(Bot bot) {
         super(bot);
         this.name = "movetrack";
-        this.help = "再生待ちの曲の再生順を移動させます。";
+        this.help = "再生待ちの曲の再生順を変更します";
         this.arguments = "<from> <to>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = true;
+    }
+
+    private static boolean isUnavailablePosition(FairQueue<QueuedTrack> queue, int position) {
+        return (position < 1 || position > queue.size());
     }
 
     @Override
@@ -86,9 +90,5 @@ public class MoveTrackCmd extends DJCommand {
         String reply = String.format("**%s** を `%d` から `%d`に移動しました。", trackTitle, from, to);
         log.info(event.getGuild().getName() + "で %s を %d から %d に移動しました。", trackTitle, from, to);
         event.replySuccess(reply);
-    }
-
-    private static boolean isUnavailablePosition(FairQueue<QueuedTrack> queue, int position) {
-        return (position < 1 || position > queue.size());
     }
 }

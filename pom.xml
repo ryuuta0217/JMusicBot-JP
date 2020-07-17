@@ -3,9 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jagrosh</groupId>
     <artifactId>JMusicBot</artifactId>
-    <version>0.2.6</version>
+    <!-- バージョン装飾子参考の参考に: https://kengotoda.gitbooks.io/what-is-maven/deploy/snapshot-and-stable.html -->
+    <version>0.3.0-alpha</version>
     <packaging>jar</packaging>
-    
+
     <repositories>
         <repository>
             <id>central</id>
@@ -13,27 +14,39 @@
             <url>https://jcenter.bintray.com</url>
         </repository>
         <repository>
+            <id>bintray-sedmelluq-com.sedmelluq</id>
+            <name>bintray</name>
+            <url>https://dl.bintray.com/sedmelluq/com.sedmelluq</url>
+        </repository>
+        <repository>
             <id>bintray-jagrosh-maven</id>
             <name>bintray</name>
             <url>https://dl.bintray.com/jagrosh/maven</url>
         </repository>
     </repositories>
-    
+
     <dependencies>
         <dependency>
-            <groupId>net.dv8tion</groupId> 
-            <artifactId>JDA</artifactId> 
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
             <version>3.8.3_464</version>
-        </dependency>
-        <!-- 32bit support for opus lib connector -->
-        <dependency>
-            <groupId>com.sedmelluq</groupId>
-            <artifactId>lavaplayer-natives</artifactId>
-            <version>1.2.55</version>
         </dependency>
         <dependency>
             <groupId>com.sedmelluq</groupId>
             <artifactId>lavaplayer</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <!-- Opus connector lib for [linux x86(32bit), linux arm, linux armhf, linux aarch32, linux aarch64] -->
+        <!-- Warning, this dependencies is **not** contains win x86 opus connector! -->
+        <dependency>
+            <groupId>com.sedmelluq</groupId>
+            <artifactId>lavaplayer-natives-extra</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <!-- YouTube IP Addresses rotator -->
+        <dependency>
+            <groupId>com.sedmelluq</groupId>
+            <artifactId>lavaplayer-ext-youtube-rotator</artifactId>
             <version>LATEST</version>
         </dependency>
         <dependency>
@@ -45,7 +58,7 @@
         <dependency>
             <groupId>com.jagrosh</groupId>
             <artifactId>JLyrics</artifactId>
-            <version>0.2</version>
+            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -75,49 +88,49 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
-      <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <version>1.5</version>
-            <executions>
-                <execution>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>shade</goal>
-                    </goals>
-                    <configuration>
-                        <shadedArtifactAttached>true</shadedArtifactAttached>
-                        <shadedClassifierName>All</shadedClassifierName>
-                        <artifactSet>
-                            <includes>
-                                <include>*:*</include>
-                            </includes>
-                        </artifactSet>
-                        <transformers>
-                            <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                <resource>reference.conf</resource>
-                            </transformer>
-                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                <manifestEntries>
-                                    <Main-Class>com.jagrosh.jmusicbot.JMusicBot</Main-Class>
-                                    <Specification-Title>${project.artifactId}</Specification-Title>
-                                    <Specification-Version>${project.version}</Specification-Version>
-                                    <Implementation-Title>${project.artifactId}</Implementation-Title>
-                                    <Implementation-Version>${project.version}</Implementation-Version>
-                                    <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
-                                </manifestEntries>
-                            </transformer>
-                        </transformers>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-      </plugins>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>All</shadedClassifierName>
+                            <artifactSet>
+                                <includes>
+                                    <include>*:*</include>
+                                </includes>
+                            </artifactSet>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>reference.conf</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>com.jagrosh.jmusicbot.JMusicBot</Main-Class>
+                                        <Specification-Title>${project.artifactId}</Specification-Title>
+                                        <Specification-Version>${project.version}</Specification-Version>
+                                        <Implementation-Title>${project.artifactId}</Implementation-Title>
+                                        <Implementation-Version>${project.version}</Implementation-Version>
+                                        <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>

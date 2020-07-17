@@ -28,6 +28,7 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
+import dev.cosgy.JMusicBot.settings.RepeatMode;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -52,6 +53,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
     private final PlayerManager manager;
     private final AudioPlayer audioPlayer;
     private final long guildId;
+    private final String stringGuildId;
 
     private AudioFrame lastFrame;
 
@@ -59,6 +61,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
         this.manager = manager;
         this.audioPlayer = player;
         this.guildId = guild.getIdLong();
+        this.stringGuildId = guild.getId();
     }
 
     public int addTrackToFront(QueuedTrack qtrack) {
@@ -120,17 +123,15 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
         if (settings == null || settings.getDefaultPlaylist() == null)
             return false;
 
-        Playlist pl = manager.getBot().getPlaylistLoader().getPlaylist(settings.getDefaultPlaylist());
+        Playlist pl = manager.getBot().getPlaylistLoader().getPlaylist(stringGuildId, settings.getDefaultPlaylist());
         if (pl == null || pl.getItems().isEmpty())
             return false;
-        pl.loadTracks(manager, (at) ->
-        {
+        pl.loadTracks(manager, (at) -> {
             if (audioPlayer.getPlayingTrack() == null)
                 audioPlayer.playTrack(at);
             else
                 defaultQueue.add(at);
-        }, () ->
-        {
+        }, () -> {
             if (pl.getTracks().isEmpty() && !manager.getBot().getConfig().getStay())
                 manager.getBot().closeAudioConnection(guildId);
         });
@@ -140,9 +141,17 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
     // Audio Events
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        // if the track ended normally, and we're in repeat mode, re-add it to the queue
-        if (endReason == AudioTrackEndReason.FINISHED && manager.getBot().getSettingsManager().getSettings(guildId).getRepeatMode()) {
-            queue.add(new QueuedTrack(track.makeClone(), track.getUserData(Long.class) == null ? 0L : track.getUserData(Long.class)));
+        RepeatMode repeatMode = manager.getBot().getSettingsManager().getSettings(guildId).getRepeatMode();
+        // もしも楽曲再生が通常通り終了し、リピートモードが有効(!OFF)ならばキューに再追加する
+        if (endReason == AudioTrackEndReason.FINISHED && repeatMode != RepeatMode.OFF) {
+            // in RepeatMode.ALL
+            if (repeatMode == RepeatMode.ALL) {
+                queue.add(new QueuedTrack(track.makeClone(), track.getUserData(Long.class) == null ? 0L : track.getUserData(Long.class)));
+
+                // in RepeatMode.SINGLE
+            } else if (repeatMode == RepeatMode.SINGLE) {
+                queue.addAt(0, new QueuedTrack(track.makeClone(), track.getUserData(Long.class) == null ? 0L : track.getUserData(Long.class)));
+            }
         }
 
         if (queue.isEmpty()) {
@@ -177,7 +186,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
             Guild guild = guild(jda);
             AudioTrack track = audioPlayer.getPlayingTrack();
             MessageBuilder mb = new MessageBuilder();
-            mb.append(FormatUtil.filter(manager.getBot().getConfig().getSuccess() + " **" + guild.getSelfMember().getVoiceState().getChannel().getName() + "で、再生中です...**"));
+            mb.append(FormatUtil.filter(manager.getBot().getConfig().getSuccess() + " **" + guild.getSelfMember().getVoiceState().getChannel().getName() + "**で、再生中です..."));
             EmbedBuilder eb = new EmbedBuilder();
             eb.setColor(guild.getSelfMember().getColor());
             if (getRequester() != 0) {
@@ -214,7 +223,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
     public Message getNoMusicPlaying(JDA jda) {
         Guild guild = guild(jda);
         return new MessageBuilder()
-                .setContent(FormatUtil.filter(manager.getBot().getConfig().getSuccess() + " **音楽を再生していません。*"))
+                .setContent(FormatUtil.filter(manager.getBot().getConfig().getSuccess() + " **音楽を再生していません。**"))
                 .setEmbed(new EmbedBuilder()
                         .setTitle("音楽を再生していません。")
                         .setDescription(JMusicBot.STOP_EMOJI + " " + FormatUtil.progressBar(-1) + " " + FormatUtil.volumeIcon(audioPlayer.getVolume()))

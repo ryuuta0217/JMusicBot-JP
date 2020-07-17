@@ -155,9 +155,9 @@ public class CommandClientImpl implements CommandClient, EventListener {
             }
             User owner = event.getJDA().getUserById(ownerId);
             if (owner != null) {
-                builder.append("\n\n追加のヘルプについては、お問い合わせください **").append(owner.getName()).append("**#").append(owner.getDiscriminator());
+                builder.append("\n\nほかのコマンドや使い方は **").append(owner.getName()).append("**#").append(owner.getDiscriminator() + " までお知らせ下さい");
                 if (serverInvite != null)
-                    builder.append(" または参加する ").append(serverInvite);
+                    builder.append(" または公式サーバーに参加することもできます: ").append(serverInvite);
             }
             event.replyInDm(builder.toString(), unused ->
             {
@@ -172,14 +172,18 @@ public class CommandClientImpl implements CommandClient, EventListener {
         }
     }
 
-    @Override
-    public void setListener(CommandListener listener) {
-        this.listener = listener;
+    private static String[] splitOnPrefixLength(String rawContent, int length) {
+        return Arrays.copyOf(rawContent.substring(length).trim().split("\\s+", 2), 2);
     }
 
     @Override
     public CommandListener getListener() {
         return listener;
+    }
+
+    @Override
+    public void setListener(CommandListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -418,7 +422,7 @@ public class CommandClientImpl implements CommandClient, EventListener {
         }
         textPrefix = prefix.equals(DEFAULT_PREFIX) ? "@" + event.getJDA().getSelfUser().getName() + " " : prefix;
         event.getJDA().getPresence().setPresence(status == null ? OnlineStatus.ONLINE : status,
-                game == null ? null : "default".equals(game.getName()) ? Game.playing("Type " + textPrefix + helpWord) : game);
+                game == null ? null : "default".equals(game.getName()) ? Game.playing(textPrefix + helpWord + "でヘルプを確認") : game);
 
         // Start SettingsManager if necessary
         GuildSettingsManager<?> manager = getSettingsManager();
@@ -597,10 +601,6 @@ public class CommandClientImpl implements CommandClient, EventListener {
             return (GuildSettingsProvider) settings;
         else
             return null;
-    }
-
-    private static String[] splitOnPrefixLength(String rawContent, int length) {
-        return Arrays.copyOf(rawContent.substring(length).trim().split("\\s+", 2), 2);
     }
 
     /**

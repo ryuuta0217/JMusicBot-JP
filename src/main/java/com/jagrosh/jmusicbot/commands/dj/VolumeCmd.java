@@ -27,8 +27,10 @@ import org.slf4j.LoggerFactory;
 /**
  * @author John Grosh <john.a.grosh@gmail.com>
  */
+@Deprecated
 public class VolumeCmd extends DJCommand {
     Logger log = LoggerFactory.getLogger("Volume");
+
     public VolumeCmd(Bot bot) {
         super(bot);
         this.name = "volume";
@@ -45,7 +47,6 @@ public class VolumeCmd extends DJCommand {
         int volume = handler.getPlayer().getVolume();
         if (event.getArgs().isEmpty()) {
             event.reply(FormatUtil.volumeIcon(volume) + " 現在の音量は `" + volume + "です  `");
-            log.info(event.getGuild().getName()+"でボリュームコマンドを実行しました。");
         } else {
             int nvolume;
             try {
@@ -54,12 +55,12 @@ public class VolumeCmd extends DJCommand {
                 nvolume = -1;
             }
             if (nvolume < 0 || nvolume > 150)
-                event.reply(event.getClient().getError() + " 音量は0から150までの有効な整数でないといけません。");
+                event.reply(event.getClient().getError() + " 音量は0から150までの整数でないといけません。");
             else {
                 handler.getPlayer().setVolume(nvolume);
                 settings.setVolume(nvolume);
                 event.reply(FormatUtil.volumeIcon(nvolume) + " 音量を`" + volume + "`から`" + nvolume + "`に変更しました。");
-                log.info(event.getGuild().getName() + "でのボリュームを" + volume + "から" + nvolume + "に変更しました。");
+                log.info(event.getGuild().getName() + "での音量が" + volume + "から" + nvolume + "に変更されました。");
             }
         }
     }

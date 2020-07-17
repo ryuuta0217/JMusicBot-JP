@@ -29,18 +29,28 @@ import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class BotConfig {
-    private final Prompt prompt;
     private final static String CONTEXT = "Config";
     private final static String START_TOKEN = "/// START OF JMUSICBOT-JP CONFIG ///";
     private final static String END_TOKEN = "/// END OF JMUSICBOT-JP CONFIG ///";
-
+    private final Prompt prompt;
     private Path path = null;
     // [JMusicBot-JP] added nicoEmail, nicoPass
-    private String token, prefix, altprefix, helpWord, playlistsFolder,
-            successEmoji, warningEmoji, errorEmoji, loadingEmoji, searchingEmoji, nicoEmail, nicoPass;
+    private String token;
+    private String prefix;
+    private String altprefix;
+    private String helpWord;
+    private String playlistsFolder;
+    private String mylistfolder;
+    private String publistFolder;
+    private String successEmoji;
+    private String warningEmoji;
+    private String errorEmoji;
+    private String loadingEmoji;
+    private String searchingEmoji;
+    private String nicoEmail;
+    private String nicoPass;
     // [JMusicBot-JP] added useNicoNico, changeNickName, pauseNoUsers, resumeJoined, stopNoUsers
     private boolean useNicoNico, changeNickName, stayInChannel, pauseNoUsers, resumeJoined, stopNoUsers, songInGame, npImages, updatealerts, useEval, dbots;
     private long owner, maxSeconds;
@@ -60,7 +70,7 @@ public class BotConfig {
         // read config from file
         try {
             // get the path to the config, default config.txt
-            path = Paths.get(System.getProperty("config.file", System.getProperty("config", "config.txt")));
+            path = OtherUtil.getPath(System.getProperty("config.file", System.getProperty("config", "config.txt")));
             if (path.toFile().exists()) {
                 if (System.getProperty("config.file") == null)
                     System.setProperty("config.file", System.getProperty("config", "config.txt"));
@@ -91,6 +101,8 @@ public class BotConfig {
             useEval = config.getBoolean("eval");
             maxSeconds = config.getLong("maxtime");
             playlistsFolder = config.getString("playlistsfolder");
+            mylistfolder = config.getString("mylistfolder");
+            publistFolder = config.getString("publistfolder");
             aliases = config.getConfig("aliases");
             dbots = owner == 113156185389092864L;
 
@@ -249,6 +261,10 @@ public class BotConfig {
         return playlistsFolder;
     }
 
+    public String getMylistfolder() { return mylistfolder; }
+
+    public String getPublistFolder() { return publistFolder; }
+
     public boolean getDBots() {
         return dbots;
     }
@@ -279,14 +295,10 @@ public class BotConfig {
         return Math.round(track.getDuration() / 1000.0) > maxSeconds;
     }
 
-    public String[] getAliases(String command)
-    {
-        try
-        {
+    public String[] getAliases(String command) {
+        try {
             return aliases.getStringList(command).toArray(new String[0]);
-        }
-        catch(NullPointerException | ConfigException.Missing e)
-        {
+        } catch (NullPointerException | ConfigException.Missing e) {
             return new String[0];
         }
     }

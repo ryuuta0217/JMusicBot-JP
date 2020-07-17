@@ -9,3 +9,4 @@ nb*.xml
 *.iml
 config.txt
 *.jar
+/logs/

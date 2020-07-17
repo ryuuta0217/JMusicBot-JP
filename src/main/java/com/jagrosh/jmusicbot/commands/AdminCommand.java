@@ -25,7 +25,7 @@ public abstract class AdminCommand extends Command {
     public AdminCommand() {
         this.category = new Category("Admin", event ->
         {
-            if (event.getAuthor().getId().equals(event.getClient().getOwnerId()))
+            if (event.isOwner() || event.getMember().isOwner())
                 return true;
             if (event.getGuild() == null)
                 return true;

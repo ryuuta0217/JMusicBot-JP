@@ -13,13 +13,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.general;
+package dev.cosgy.JMusicBot.commands.general;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
-import com.jagrosh.jmusicbot.Bot;
+import dev.cosgy.JMusicBot.settings.RepeatMode;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Role;
@@ -34,7 +35,7 @@ public class SettingsCmd extends Command {
 
     public SettingsCmd(Bot bot) {
         this.name = "settings";
-        this.help = "ボット設定を表示します";
+        this.help = "Botの設定を表示します";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = true;
     }
@@ -45,22 +46,24 @@ public class SettingsCmd extends Command {
         MessageBuilder builder = new MessageBuilder()
                 .append(EMOJI + " **")
                 .append(FormatUtil.filter(event.getSelfUser().getName()))
-                .append("** 設定:");
+                .append("** の設定:");
         TextChannel tchan = s.getTextChannel(event.getGuild());
         VoiceChannel vchan = s.getVoiceChannel(event.getGuild());
         Role role = s.getRole(event.getGuild());
         EmbedBuilder ebuilder = new EmbedBuilder()
                 .setColor(event.getSelfMember().getColor())
-                .setDescription("テキストチャンネル: " + (tchan == null ? "Any" : "**#" + tchan.getName() + "**")
-                        + "\nボイスチャンネル: " + (vchan == null ? "Any" : "**" + vchan.getName() + "**")
-                        + "\nDJ 権限: " + (role == null ? "None" : "**" + role.getName() + "**")
-                        + "\nリピートモード: **" + (s.getRepeatMode() ? "On" : "Off") + "**"
-                        + "\nデフォルトプレイリスト: " + (s.getDefaultPlaylist() == null ? "None" : "**" + s.getDefaultPlaylist() + "**")
+                .setDescription("コマンド実行用チャンネル: " + (tchan == null ? "なし" : "**#" + tchan.getName() + "**")
+                        + "\n専用ボイスチャンネル: " + (vchan == null ? "なし" : "**" + vchan.getName() + "**")
+                        + "\nDJ 権限: " + (role == null ? "未設定" : "**" + role.getName() + "**")
+                        + "\nリピート: **" + (s.getRepeatMode() == RepeatMode.ALL ? "有効(全曲リピート)" : (s.getRepeatMode() == RepeatMode.SINGLE ? "有効(1曲リピート)" : "無効")) + "**"
+                        + "\nデフォルトプレイリスト: " + (s.getDefaultPlaylist() == null ? "なし" : "**" + s.getDefaultPlaylist() + "**")
                 )
                 //TODO ここの日本語訳を変更する予定
-                .setFooter(event.getJDA().getGuilds().size() + " サーバー | "
-                        + event.getJDA().getGuilds().stream().filter(g -> g.getSelfMember().getVoiceState().inVoiceChannel()).count()
-                        + " オーディオ接続", null);
+                .setFooter(String.format(
+                        "%s 個のサーバーに参加 | %s 個のボイスチャンネルに接続",
+                        event.getJDA().getGuilds().size(),
+                        event.getJDA().getGuilds().stream().filter(g -> g.getSelfMember().getVoiceState().inVoiceChannel()).count()),
+                        null);
         event.getChannel().sendMessage(builder.setEmbed(ebuilder.build()).build()).queue();
     }
 

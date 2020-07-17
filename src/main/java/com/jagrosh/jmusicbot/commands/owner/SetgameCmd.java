@@ -87,7 +87,7 @@ public class SetgameCmd extends OwnerCommand {
         @Override
         protected void execute(CommandEvent event) {
             if (event.getArgs().isEmpty()) {
-                event.replyError("聴くためのタイトルを含めてください！");
+                event.replyError("聴いているタイトルを含めてください！");
                 return;
             }
             String title = event.getArgs().toLowerCase().startsWith("to") ? event.getArgs().substring(2).trim() : event.getArgs();
@@ -95,7 +95,7 @@ public class SetgameCmd extends OwnerCommand {
                 event.getJDA().getPresence().setGame(Game.listening(title));
                 event.replySuccess("**" + event.getSelfUser().getName() + "** は、現在`" + title + "`を聴いています。");
             } catch (Exception e) {
-                event.reply(event.getClient().getError() + " The game could not be set!");
+                event.reply(event.getClient().getError() + " ゲームを設定できませんでした。");
             }
         }
     }

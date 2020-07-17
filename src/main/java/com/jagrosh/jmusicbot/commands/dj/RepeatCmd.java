@@ -25,8 +25,10 @@ import org.slf4j.LoggerFactory;
 /**
  * @author John Grosh <john.a.grosh@gmail.com>
  */
+@Deprecated
 public class RepeatCmd extends DJCommand {
     Logger log = LoggerFactory.getLogger("Repeat");
+
     public RepeatCmd(Bot bot) {
         super(bot);
         this.name = "repeat";
@@ -42,7 +44,8 @@ public class RepeatCmd extends DJCommand {
         boolean value;
         Settings settings = event.getClient().getSettingsFor(event.getGuild());
         if (event.getArgs().isEmpty()) {
-            value = !settings.getRepeatMode();
+            //コンパイルエラー回避
+            //value = !settings.getRepeatMode();
         } else if (event.getArgs().equalsIgnoreCase("true") || event.getArgs().equalsIgnoreCase("on")) {
             value = true;
         } else if (event.getArgs().equalsIgnoreCase("false") || event.getArgs().equalsIgnoreCase("off")) {
@@ -51,9 +54,10 @@ public class RepeatCmd extends DJCommand {
             event.replyError("有効なオプションは `on`か`off` です(または空白で切り替えができます)");
             return;
         }
-        settings.setRepeatMode(value);
-        log.info(event.getGuild().getName() + "でリピートコマンドを実行し、設定を" + (value ? "ON" : "OFF") + "に設定しました。");
-        event.replySuccess("リピートを `" + (value ? "有効" : "無効") + "` にしました。");
+        //コンパイルエラー回避
+        //settings.setRepeatMode(value);
+        //log.info(event.getGuild().getName() + "でリピートコマンドを実行し、設定を" + (value ? "ON" : "OFF") + "に設定しました。");
+        //event.replySuccess("リピートを `" + (value ? "有効" : "無効") + "` にしました。");
     }
 
     @Override
