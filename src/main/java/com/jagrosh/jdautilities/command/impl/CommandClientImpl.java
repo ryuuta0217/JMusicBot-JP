@@ -1,17 +1,17 @@
 /*
- * Copyright 2016-2018 John Grosh (jagrosh) & Kaidan Gustave (TheMonitorLizard)
+ * Copyright 2018-2020 Cosgy Dev
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package com.jagrosh.jdautilities.command.impl;
 
@@ -63,8 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author John Grosh (jagrosh)
  */
-public class CommandClientImpl implements CommandClient, EventListener
-{
+public class CommandClientImpl implements CommandClient, EventListener {
     private static final Logger LOG = LoggerFactory.getLogger(CommandClient.class);
     private static final int INDEX_LIMIT = 20;
     private static final String DEFAULT_PREFIX = "@mention";
@@ -83,8 +82,8 @@ public class CommandClientImpl implements CommandClient, EventListener
     private final String warning;
     private final String error;
     private final String botsKey, carbonKey;
-    private final HashMap<String,OffsetDateTime> cooldowns;
-    private final HashMap<String,Integer> uses;
+    private final HashMap<String, OffsetDateTime> cooldowns;
+    private final HashMap<String, Integer> uses;
     private final FixedSizeCache<Long, Set<Message>> linkMap;
     private final boolean useHelp;
     private final boolean shutdownAutomatically;
@@ -101,18 +100,15 @@ public class CommandClientImpl implements CommandClient, EventListener
     public CommandClientImpl(String ownerId, String[] coOwnerIds, String prefix, String altprefix, Game game, OnlineStatus status, String serverInvite,
                              String success, String warning, String error, String carbonKey, String botsKey, ArrayList<Command> commands,
                              boolean useHelp, boolean shutdownAutomatically, Consumer<CommandEvent> helpConsumer, String helpWord, ScheduledExecutorService executor,
-                             int linkedCacheSize, AnnotatedModuleCompiler compiler, GuildSettingsManager manager)
-    {
+                             int linkedCacheSize, AnnotatedModuleCompiler compiler, GuildSettingsManager manager) {
         Checks.check(ownerId != null, "所有者IDがnull、または設定されていません！ 所有者として登録するには、ユーザーIDを入力してください！");
 
-        if(!SafeIdUtil.checkId(ownerId))
+        if (!SafeIdUtil.checkId(ownerId))
             LOG.warn(String.format("指定された所有者ID(%s)は安全ではないことが判明しました！ IDが非負の長さであることを確認してください！", ownerId));
 
-        if(coOwnerIds!=null)
-        {
-            for(String coOwnerId : coOwnerIds)
-            {
-                if(!SafeIdUtil.checkId(coOwnerId))
+        if (coOwnerIds != null) {
+            for (String coOwnerId : coOwnerIds) {
+                if (!SafeIdUtil.checkId(coOwnerId))
                     LOG.warn(String.format("提供された共同所有者ID(%s)は安全でないことが判明しました！ IDが非負の長さであることを確認してください！", coOwnerId));
             }
         }
@@ -121,104 +117,91 @@ public class CommandClientImpl implements CommandClient, EventListener
 
         this.ownerId = ownerId;
         this.coOwnerIds = coOwnerIds;
-        this.prefix = prefix==null || prefix.isEmpty() ? DEFAULT_PREFIX : prefix;
-        this.altprefix = altprefix==null || altprefix.isEmpty() ? null : altprefix;
+        this.prefix = prefix == null || prefix.isEmpty() ? DEFAULT_PREFIX : prefix;
+        this.altprefix = altprefix == null || altprefix.isEmpty() ? null : altprefix;
         this.textPrefix = prefix;
         this.game = game;
         this.status = status;
         this.serverInvite = serverInvite;
-        this.success = success==null ? "": success;
-        this.warning = warning==null ? "": warning;
-        this.error = error==null ? "": error;
+        this.success = success == null ? "" : success;
+        this.warning = warning == null ? "" : warning;
+        this.error = error == null ? "" : error;
         this.carbonKey = carbonKey;
         this.botsKey = botsKey;
         this.commandIndex = new HashMap<>();
         this.commands = new ArrayList<>();
         this.cooldowns = new HashMap<>();
         this.uses = new HashMap<>();
-        this.linkMap = linkedCacheSize>0 ? new FixedSizeCache<>(linkedCacheSize) : null;
+        this.linkMap = linkedCacheSize > 0 ? new FixedSizeCache<>(linkedCacheSize) : null;
         this.useHelp = useHelp;
         this.shutdownAutomatically = shutdownAutomatically;
-        this.helpWord = helpWord==null ? "help" : helpWord;
-        this.executor = executor==null ? Executors.newSingleThreadScheduledExecutor() : executor;
+        this.helpWord = helpWord == null ? "help" : helpWord;
+        this.executor = executor == null ? Executors.newSingleThreadScheduledExecutor() : executor;
         this.compiler = compiler;
         this.manager = manager;
-        this.helpConsumer = helpConsumer==null ? (event) -> {
-            StringBuilder builder = new StringBuilder("**"+event.getSelfUser().getName()+"** コマンド一覧:\n");
+        this.helpConsumer = helpConsumer == null ? (event) -> {
+            StringBuilder builder = new StringBuilder("**" + event.getSelfUser().getName() + "** コマンド一覧:\n");
             Category category = null;
-            for(Command command : commands)
-            {
-                if(!command.isHidden() && (!command.isOwnerCommand() || event.isOwner()))
-                {
-                    if(!Objects.equals(category, command.getCategory()))
-                    {
+            for (Command command : commands) {
+                if (!command.isHidden() && (!command.isOwnerCommand() || event.isOwner())) {
+                    if (!Objects.equals(category, command.getCategory())) {
                         category = command.getCategory();
-                        builder.append("\n\n  __").append(category==null ? "カテゴリーなし" : category.getName()).append("__:\n");
+                        builder.append("\n\n  __").append(category == null ? "カテゴリーなし" : category.getName()).append("__:\n");
                     }
-                    builder.append("\n`").append(textPrefix).append(prefix==null?" ":"").append(command.getName())
-                            .append(command.getArguments()==null ? "`" : " "+command.getArguments()+"`")
+                    builder.append("\n`").append(textPrefix).append(prefix == null ? " " : "").append(command.getName())
+                            .append(command.getArguments() == null ? "`" : " " + command.getArguments() + "`")
                             .append(" - ").append(command.getHelp());
                 }
             }
             User owner = event.getJDA().getUserById(ownerId);
-            if(owner!=null)
-            {
+            if (owner != null) {
                 builder.append("\n\n追加のヘルプについては、お問い合わせください **").append(owner.getName()).append("**#").append(owner.getDiscriminator());
-                if(serverInvite!=null)
+                if (serverInvite != null)
                     builder.append(" または参加する ").append(serverInvite);
             }
             event.replyInDm(builder.toString(), unused ->
             {
-                if(event.isFromType(ChannelType.TEXT))
+                if (event.isFromType(ChannelType.TEXT))
                     event.reactSuccess();
             }, t -> event.replyWarning("ヘルプを送信できませんでした: フレンド以外/サーバー内のメンバーからDMを受信しない設定になっていませんか？"));
         } : helpConsumer;
 
         // Load commands
-        for(Command command : commands)
-        {
+        for (Command command : commands) {
             addCommand(command);
         }
     }
 
     @Override
-    public void setListener(CommandListener listener)
-    {
+    public void setListener(CommandListener listener) {
         this.listener = listener;
     }
 
     @Override
-    public CommandListener getListener()
-    {
+    public CommandListener getListener() {
         return listener;
     }
 
     @Override
-    public List<Command> getCommands()
-    {
+    public List<Command> getCommands() {
         return commands;
     }
 
     @Override
-    public OffsetDateTime getStartTime()
-    {
+    public OffsetDateTime getStartTime() {
         return start;
     }
 
     @Override
-    public OffsetDateTime getCooldown(String name)
-    {
+    public OffsetDateTime getCooldown(String name) {
         return cooldowns.get(name);
     }
 
     @Override
-    public int getRemainingCooldown(String name)
-    {
-        if(cooldowns.containsKey(name))
-        {
-            int time = (int)OffsetDateTime.now().until(cooldowns.get(name), ChronoUnit.SECONDS);
-            if(time<=0)
-            {
+    public int getRemainingCooldown(String name) {
+        if (cooldowns.containsKey(name)) {
+            int time = (int) OffsetDateTime.now().until(cooldowns.get(name), ChronoUnit.SECONDS);
+            if (time <= 0) {
                 cooldowns.remove(name);
                 return 0;
             }
@@ -228,180 +211,153 @@ public class CommandClientImpl implements CommandClient, EventListener
     }
 
     @Override
-    public void applyCooldown(String name, int seconds)
-    {
+    public void applyCooldown(String name, int seconds) {
         cooldowns.put(name, OffsetDateTime.now().plusSeconds(seconds));
     }
 
     @Override
-    public void cleanCooldowns()
-    {
+    public void cleanCooldowns() {
         OffsetDateTime now = OffsetDateTime.now();
         cooldowns.keySet().stream().filter((str) -> (cooldowns.get(str).isBefore(now)))
                 .collect(Collectors.toList()).forEach(cooldowns::remove);
     }
 
     @Override
-    public int getCommandUses(Command command)
-    {
+    public int getCommandUses(Command command) {
         return getCommandUses(command.getName());
     }
 
     @Override
-    public int getCommandUses(String name)
-    {
+    public int getCommandUses(String name) {
         return uses.getOrDefault(name, 0);
     }
 
     @Override
-    public void addCommand(Command command)
-    {
+    public void addCommand(Command command) {
         addCommand(command, commands.size());
     }
 
     @Override
-    public void addCommand(Command command, int index)
-    {
-        if(index>commands.size() || index<0)
-            throw new ArrayIndexOutOfBoundsException("指定されたインデックスが無効です: ["+index+"/"+commands.size()+"]");
+    public void addCommand(Command command, int index) {
+        if (index > commands.size() || index < 0)
+            throw new ArrayIndexOutOfBoundsException("指定されたインデックスが無効です: [" + index + "/" + commands.size() + "]");
         String name = command.getName();
-        synchronized(commandIndex)
-        {
-            if(commandIndex.containsKey(name))
-                throw new IllegalArgumentException("追加されたコマンドには、すでにインデックスが作成された名前またはエイリアスがあります。: \""+name+"\"!");
-            for(String alias : command.getAliases())
-            {
-                if(commandIndex.containsKey(alias))
-                    throw new IllegalArgumentException("追加されたコマンドには、すでにインデックスが作成された名前またはエイリアスがあります。: \""+alias+"\"!");
+        synchronized (commandIndex) {
+            if (commandIndex.containsKey(name))
+                throw new IllegalArgumentException("追加されたコマンドには、すでにインデックスが作成された名前またはエイリアスがあります。: \"" + name + "\"!");
+            for (String alias : command.getAliases()) {
+                if (commandIndex.containsKey(alias))
+                    throw new IllegalArgumentException("追加されたコマンドには、すでにインデックスが作成された名前またはエイリアスがあります。: \"" + alias + "\"!");
                 commandIndex.put(alias, index);
             }
             commandIndex.put(name, index);
-            if(index<commands.size())
-            {
-                commandIndex.keySet().stream().filter(key -> commandIndex.get(key)>index).collect(Collectors.toList())
-                        .forEach(key -> commandIndex.put(key, commandIndex.get(key)+1));
+            if (index < commands.size()) {
+                commandIndex.keySet().stream().filter(key -> commandIndex.get(key) > index).collect(Collectors.toList())
+                        .forEach(key -> commandIndex.put(key, commandIndex.get(key) + 1));
             }
         }
-        commands.add(index,command);
+        commands.add(index, command);
     }
 
     @Override
-    public void removeCommand(String name)
-    {
-        if(!commandIndex.containsKey(name))
+    public void removeCommand(String name) {
+        if (!commandIndex.containsKey(name))
             throw new IllegalArgumentException("指定された名前にはインデックスが付けられていません: \"" + name + "\"!");
         int targetIndex = commandIndex.remove(name);
-        if(commandIndex.containsValue(targetIndex))
-        {
+        if (commandIndex.containsValue(targetIndex)) {
             commandIndex.keySet().stream().filter(key -> commandIndex.get(key) == targetIndex)
                     .collect(Collectors.toList()).forEach(commandIndex::remove);
         }
-        commandIndex.keySet().stream().filter(key -> commandIndex.get(key)>targetIndex).collect(Collectors.toList())
-                .forEach(key -> commandIndex.put(key, commandIndex.get(key)-1));
+        commandIndex.keySet().stream().filter(key -> commandIndex.get(key) > targetIndex).collect(Collectors.toList())
+                .forEach(key -> commandIndex.put(key, commandIndex.get(key) - 1));
         commands.remove(targetIndex);
     }
 
     @Override
-    public void addAnnotatedModule(Object module)
-    {
+    public void addAnnotatedModule(Object module) {
         compiler.compile(module).forEach(this::addCommand);
     }
 
     @Override
-    public void addAnnotatedModule(Object module, Function<Command, Integer> mapFunction)
-    {
+    public void addAnnotatedModule(Object module, Function<Command, Integer> mapFunction) {
         compiler.compile(module).forEach(command -> addCommand(command, mapFunction.apply(command)));
     }
 
     @Override
-    public String getOwnerId()
-    {
+    public String getOwnerId() {
         return ownerId;
     }
 
     @Override
-    public long getOwnerIdLong()
-    {
+    public long getOwnerIdLong() {
         return Long.parseLong(ownerId);
     }
 
     @Override
-    public String[] getCoOwnerIds()
-    {
+    public String[] getCoOwnerIds() {
         return coOwnerIds;
     }
 
     @Override
-    public long[] getCoOwnerIdsLong()
-    {
+    public long[] getCoOwnerIdsLong() {
         // Thought about using java.util.Arrays#setAll(T[], IntFunction<T>)
         // here, but as it turns out it's actually the same thing as this but
         // it throws an error if null. Go figure.
-        if(coOwnerIds==null)
+        if (coOwnerIds == null)
             return null;
         long[] ids = new long[coOwnerIds.length];
-        for(int i = 0; i<ids.length; i++)
+        for (int i = 0; i < ids.length; i++)
             ids[i] = Long.parseLong(coOwnerIds[i]);
         return ids;
     }
 
     @Override
-    public String getSuccess()
-    {
+    public String getSuccess() {
         return success;
     }
 
     @Override
-    public String getWarning()
-    {
+    public String getWarning() {
         return warning;
     }
 
     @Override
-    public String getError()
-    {
+    public String getError() {
         return error;
     }
 
     @Override
-    public ScheduledExecutorService getScheduleExecutor()
-    {
+    public ScheduledExecutorService getScheduleExecutor() {
         return executor;
     }
 
     @Override
-    public String getServerInvite()
-    {
+    public String getServerInvite() {
         return serverInvite;
     }
 
     @Override
-    public String getPrefix()
-    {
+    public String getPrefix() {
         return prefix;
     }
 
     @Override
-    public String getAltPrefix()
-    {
+    public String getAltPrefix() {
         return altprefix;
     }
 
     @Override
-    public String getTextualPrefix()
-    {
+    public String getTextualPrefix() {
         return textPrefix;
     }
 
     @Override
-    public int getTotalGuilds()
-    {
+    public int getTotalGuilds() {
         return totalGuilds;
     }
 
     @Override
-    public String getHelpWord()
-    {
+    public String getHelpWord() {
         return helpWord;
     }
 
@@ -412,148 +368,127 @@ public class CommandClientImpl implements CommandClient, EventListener
 
     @SuppressWarnings("unchecked")
     @Override
-    public <S> S getSettingsFor(Guild guild)
-    {
-        if (manager==null)
+    public <S> S getSettingsFor(Guild guild) {
+        if (manager == null)
             return null;
         return (S) manager.getSettings(guild);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <M extends GuildSettingsManager> M getSettingsManager()
-    {
+    public <M extends GuildSettingsManager> M getSettingsManager() {
         return (M) manager;
     }
 
     @Override
-    public void shutdown()
-    {
+    public void shutdown() {
         GuildSettingsManager<?> manager = getSettingsManager();
-        if(manager != null)
+        if (manager != null)
             manager.shutdown();
         executor.shutdown();
     }
 
     @Override
-    public void onEvent(Event event)
-    {
-        if(event instanceof MessageReceivedEvent)
-            onMessageReceived((MessageReceivedEvent)event);
+    public void onEvent(Event event) {
+        if (event instanceof MessageReceivedEvent)
+            onMessageReceived((MessageReceivedEvent) event);
 
-        else if(event instanceof GuildMessageDeleteEvent && usesLinkedDeletion())
+        else if (event instanceof GuildMessageDeleteEvent && usesLinkedDeletion())
             onMessageDelete((GuildMessageDeleteEvent) event);
 
-        else if(event instanceof GuildJoinEvent)
-        {
-            if(((GuildJoinEvent)event).getGuild().getSelfMember().getJoinDate()
+        else if (event instanceof GuildJoinEvent) {
+            if (((GuildJoinEvent) event).getGuild().getSelfMember().getJoinDate()
                     .plusMinutes(10).isAfter(OffsetDateTime.now()))
                 sendStats(event.getJDA());
-        }
-        else if(event instanceof GuildLeaveEvent)
+        } else if (event instanceof GuildLeaveEvent)
             sendStats(event.getJDA());
-        else if(event instanceof ReadyEvent)
-            onReady((ReadyEvent)event);
-        else if(event instanceof ShutdownEvent)
-        {
-            if(shutdownAutomatically)
+        else if (event instanceof ReadyEvent)
+            onReady((ReadyEvent) event);
+        else if (event instanceof ShutdownEvent) {
+            if (shutdownAutomatically)
                 shutdown();
         }
     }
 
-    private void onReady(ReadyEvent event)
-    {
-        if(!event.getJDA().getSelfUser().isBot())
-        {
+    private void onReady(ReadyEvent event) {
+        if (!event.getJDA().getSelfUser().isBot()) {
             LOG.error("JDA-Utilitiesはクライアントアカウントをサポートしていません。");
             event.getJDA().shutdown();
             return;
         }
-        textPrefix = prefix.equals(DEFAULT_PREFIX) ? "@"+event.getJDA().getSelfUser().getName()+" " : prefix;
-        event.getJDA().getPresence().setPresence(status==null ? OnlineStatus.ONLINE : status,
-                game==null ? null : "default".equals(game.getName()) ? Game.playing("Type "+textPrefix+helpWord) : game);
+        textPrefix = prefix.equals(DEFAULT_PREFIX) ? "@" + event.getJDA().getSelfUser().getName() + " " : prefix;
+        event.getJDA().getPresence().setPresence(status == null ? OnlineStatus.ONLINE : status,
+                game == null ? null : "default".equals(game.getName()) ? Game.playing("Type " + textPrefix + helpWord) : game);
 
         // Start SettingsManager if necessary
         GuildSettingsManager<?> manager = getSettingsManager();
-        if(manager != null)
+        if (manager != null)
             manager.init();
 
         sendStats(event.getJDA());
     }
 
-    private void onMessageReceived(MessageReceivedEvent event)
-    {
+    private void onMessageReceived(MessageReceivedEvent event) {
         // Return if it's a bot
-        if(event.getAuthor().isBot())
+        if (event.getAuthor().isBot())
             return;
 
         String[] parts = null;
         String rawContent = event.getMessage().getContentRaw();
 
-        GuildSettingsProvider settings = event.isFromType(ChannelType.TEXT)? provideSettings(event.getGuild()) : null;
+        GuildSettingsProvider settings = event.isFromType(ChannelType.TEXT) ? provideSettings(event.getGuild()) : null;
 
         // Check for prefix or alternate prefix (@mention cases)
-        if(prefix.equals(DEFAULT_PREFIX) || (altprefix != null && altprefix.equals(DEFAULT_PREFIX)))
-        {
-            if(rawContent.startsWith("<@"+event.getJDA().getSelfUser().getId()+">") ||
-                    rawContent.startsWith("<@!"+event.getJDA().getSelfUser().getId()+">"))
-            {
+        if (prefix.equals(DEFAULT_PREFIX) || (altprefix != null && altprefix.equals(DEFAULT_PREFIX))) {
+            if (rawContent.startsWith("<@" + event.getJDA().getSelfUser().getId() + ">") ||
+                    rawContent.startsWith("<@!" + event.getJDA().getSelfUser().getId() + ">")) {
                 parts = splitOnPrefixLength(rawContent, rawContent.indexOf(">") + 1);
             }
         }
         // Check for prefix
-        if(parts == null && rawContent.toLowerCase().startsWith(prefix.toLowerCase()))
+        if (parts == null && rawContent.toLowerCase().startsWith(prefix.toLowerCase()))
             parts = splitOnPrefixLength(rawContent, prefix.length());
         // Check for alternate prefix
-        if(parts == null && altprefix != null && rawContent.toLowerCase().startsWith(altprefix.toLowerCase()))
+        if (parts == null && altprefix != null && rawContent.toLowerCase().startsWith(altprefix.toLowerCase()))
             parts = splitOnPrefixLength(rawContent, altprefix.length());
         // Check for guild specific prefixes
-        if(parts == null && settings != null)
-        {
+        if (parts == null && settings != null) {
             Collection<String> prefixes = settings.getPrefixes();
-            if(prefixes != null)
-            {
-                for(String prefix : prefixes)
-                {
-                    if(parts == null && rawContent.toLowerCase().startsWith(prefix.toLowerCase()))
+            if (prefixes != null) {
+                for (String prefix : prefixes) {
+                    if (parts == null && rawContent.toLowerCase().startsWith(prefix.toLowerCase()))
                         parts = splitOnPrefixLength(rawContent, prefix.length());
                 }
             }
         }
 
-        if(parts!=null) //starts with valid prefix
+        if (parts != null) //starts with valid prefix
         {
-            if(useHelp && parts[0].equalsIgnoreCase(helpWord))
-            {
-                CommandEvent cevent = new CommandEvent(event, parts[1]==null ? "" : parts[1], this);
-                if(listener!=null)
+            if (useHelp && parts[0].equalsIgnoreCase(helpWord)) {
+                CommandEvent cevent = new CommandEvent(event, parts[1] == null ? "" : parts[1], this);
+                if (listener != null)
                     listener.onCommand(cevent, null);
                 helpConsumer.accept(cevent); // Fire help consumer
-                if(listener!=null)
+                if (listener != null)
                     listener.onCompletedCommand(cevent, null);
                 return; // Help Consumer is done
-            }
-            else if(event.isFromType(ChannelType.PRIVATE) || event.getTextChannel().canTalk())
-            {
+            } else if (event.isFromType(ChannelType.PRIVATE) || event.getTextChannel().canTalk()) {
                 String name = parts[0];
-                String args = parts[1]==null ? "" : parts[1];
+                String args = parts[1] == null ? "" : parts[1];
                 final Command command; // this will be null if it's not a command
-                if(commands.size() < INDEX_LIMIT + 1)
+                if (commands.size() < INDEX_LIMIT + 1)
                     command = commands.stream().filter(cmd -> cmd.isCommandFor(name)).findAny().orElse(null);
-                else
-                {
-                    synchronized(commandIndex)
-                    {
+                else {
+                    synchronized (commandIndex) {
                         int i = commandIndex.getOrDefault(name.toLowerCase(), -1);
-                        command = i != -1? commands.get(i) : null;
+                        command = i != -1 ? commands.get(i) : null;
                     }
                 }
 
-                if(command != null)
-                {
+                if (command != null) {
                     CommandEvent cevent = new CommandEvent(event, args, this);
 
-                    if(listener != null)
+                    if (listener != null)
                         listener.onCommand(cevent, command);
                     uses.put(command.getName(), uses.getOrDefault(command.getName(), 0) + 1);
                     command.run(cevent);
@@ -562,22 +497,19 @@ public class CommandClientImpl implements CommandClient, EventListener
             }
         }
 
-        if(listener != null)
+        if (listener != null)
             listener.onNonCommandMessage(event);
     }
 
-    private void sendStats(JDA jda)
-    {
+    private void sendStats(JDA jda) {
         OkHttpClient client = ((JDAImpl) jda).getHttpClient();
 
-        if(carbonKey != null)
-        {
+        if (carbonKey != null) {
             FormBody.Builder bodyBuilder = new FormBody.Builder()
                     .add("key", carbonKey)
                     .add("servercount", Integer.toString(jda.getGuilds().size()));
 
-            if(jda.getShardInfo() != null)
-            {
+            if (jda.getShardInfo() != null) {
                 bodyBuilder.add("shard_id", Integer.toString(jda.getShardInfo().getShardId()))
                         .add("shard_count", Integer.toString(jda.getShardInfo().getShardTotal()));
             }
@@ -586,28 +518,23 @@ public class CommandClientImpl implements CommandClient, EventListener
                     .post(bodyBuilder.build())
                     .url("https://www.carbonitex.net/discord/data/botdata.php");
 
-            client.newCall(builder.build()).enqueue(new Callback()
-            {
+            client.newCall(builder.build()).enqueue(new Callback() {
                 @Override
-                public void onResponse(Call call, Response response)
-                {
+                public void onResponse(Call call, Response response) {
                     LOG.info("carbonitex.netに情報を送信しました");
                     response.close();
                 }
 
                 @Override
-                public void onFailure(Call call, IOException e)
-                {
+                public void onFailure(Call call, IOException e) {
                     LOG.error("carbonitex.netへの情報の送信に失敗しました ", e);
                 }
             });
         }
 
-        if(botsKey != null)
-        {
+        if (botsKey != null) {
             JSONObject body = new JSONObject().put("guildCount", jda.getGuilds().size());
-            if(jda.getShardInfo() != null)
-            {
+            if (jda.getShardInfo() != null) {
                 body.put("shardId", jda.getShardInfo().getShardId())
                         .put("shardCount", jda.getShardInfo().getShardTotal());
             }
@@ -618,74 +545,61 @@ public class CommandClientImpl implements CommandClient, EventListener
                     .header("Authorization", botsKey)
                     .header("Content-Type", "application/json");
 
-            client.newCall(builder.build()).enqueue(new Callback()
-            {
+            client.newCall(builder.build()).enqueue(new Callback() {
                 @Override
-                public void onResponse(Call call, Response response) throws IOException
-                {
-                    if(response.isSuccessful())
-                    {
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
                         LOG.info("discord.bots.ggに情報を送信しました");
-                        try(Reader reader = response.body().charStream())
-                        {
+                        try (Reader reader = response.body().charStream()) {
                             totalGuilds = new JSONObject(new JSONTokener(reader)).getInt("guildCount");
-                        }
-                        catch(Exception ex)
-                        {
+                        } catch (Exception ex) {
                             LOG.error("discord.bots.ggからボットシャード情報を取得できませんでした ", ex);
                         }
-                    }
-                    else
-                        LOG.error("discord.bots.ggに情報を送信できませんでした: "+response.body().string());
+                    } else
+                        LOG.error("discord.bots.ggに情報を送信できませんでした: " + response.body().string());
                     response.close();
                 }
 
                 @Override
-                public void onFailure(Call call, IOException e)
-                {
+                public void onFailure(Call call, IOException e) {
                     LOG.error("discord.bots.ggに情報を送信できませんでした ", e);
                 }
             });
-        }
-        else if (jda.asBot().getShardManager() != null)
-        {
+        } else if (jda.asBot().getShardManager() != null) {
             totalGuilds = (int) jda.asBot().getShardManager().getGuildCache().size();
-        }
-        else
-        {
+        } else {
             totalGuilds = (int) jda.getGuildCache().size();
         }
     }
 
-    private void onMessageDelete(GuildMessageDeleteEvent event)
-    {
+    private void onMessageDelete(GuildMessageDeleteEvent event) {
         // We don't need to cover whether or not this client usesLinkedDeletion() because
         // that is checked in onEvent(Event) before this is even called.
-        synchronized(linkMap)
-        {
-            if(linkMap.contains(event.getMessageIdLong()))
-            {
+        synchronized (linkMap) {
+            if (linkMap.contains(event.getMessageIdLong())) {
                 Set<Message> messages = linkMap.get(event.getMessageIdLong());
-                if(messages.size()>1 && event.getGuild().getSelfMember()
+                if (messages.size() > 1 && event.getGuild().getSelfMember()
                         .hasPermission(event.getChannel(), Permission.MESSAGE_MANAGE))
-                    event.getChannel().deleteMessages(messages).queue(unused -> {}, ignored -> {});
-                else if(messages.size()>0)
-                    messages.forEach(m -> m.delete().queue(unused -> {}, ignored -> {}));
+                    event.getChannel().deleteMessages(messages).queue(unused -> {
+                    }, ignored -> {
+                    });
+                else if (messages.size() > 0)
+                    messages.forEach(m -> m.delete().queue(unused -> {
+                    }, ignored -> {
+                    }));
             }
         }
     }
 
-    private GuildSettingsProvider provideSettings(Guild guild)
-    {
+    private GuildSettingsProvider provideSettings(Guild guild) {
         Object settings = getSettingsFor(guild);
-        if(settings != null && settings instanceof GuildSettingsProvider)
-            return (GuildSettingsProvider)settings;
+        if (settings != null && settings instanceof GuildSettingsProvider)
+            return (GuildSettingsProvider) settings;
         else
             return null;
     }
 
-    private static String[] splitOnPrefixLength(String rawContent, int length)
-    {
+    private static String[] splitOnPrefixLength(String rawContent, int length) {
         return Arrays.copyOf(rawContent.substring(length).trim().split("\\s+", 2), 2);
     }
 
@@ -696,24 +610,19 @@ public class CommandClientImpl implements CommandClient, EventListener
      * to their corresponding call message ID.
      * <br><b>Using this anywhere in your code can and will break your bot.</b>
      *
-     * @param  callId
-     *         The ID of the call Message
-     * @param  message
-     *         The Message to link to the ID
+     * @param callId  The ID of the call Message
+     * @param message The Message to link to the ID
      */
-    public void linkIds(long callId, Message message)
-    {
+    public void linkIds(long callId, Message message) {
         // We don't use linked deletion, so we don't do anything.
-        if(!usesLinkedDeletion())
+        if (!usesLinkedDeletion())
             return;
 
-        synchronized(linkMap)
-        {
+        synchronized (linkMap) {
             Set<Message> stored = linkMap.get(callId);
-            if(stored != null)
+            if (stored != null)
                 stored.add(message);
-            else
-            {
+            else {
                 stored = new HashSet<>();
                 stored.add(message);
                 linkMap.add(callId, stored);

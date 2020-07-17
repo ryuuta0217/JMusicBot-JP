@@ -1,19 +1,41 @@
-node {
-   def mvnHome
-   stage('Prepare') {
-      git 'https://github.com/ryuuta0217/JMusicBot-JP.git'         
-      mvnHome = tool 'Maven 3.6.0'
-   }
-   stage('Build') {
-      withEnv(["MVN_HOME=$mvnHome"]) {
-         if (isUnix()) {
-            sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore -Dfile.encoding=UTF-8 clean package'
-         } else {
-            bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore -Dfile.encoding=UTF-8 clean package/)
-         }
-      }
-   }
-   stage('Result') {
-      archiveArtifacts 'target/*.jar'
-   }
+pipeline {
+    agent any
+    tools {
+        maven 'Maven 3'
+        jdk 'Java 8'
+    }
+    options {
+        buildDiscarder(logRotator(artifactNumToKeepStr: '5'))
+    }
+    stages {
+        stage ('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml'
+                    archiveArtifacts artifacts: 'target/JMusicBot-*.jar', fingerprint: true
+                }
+            }
+        }
+
+        stage ('Deploy') {
+            when {
+                branch "master"
+            }
+            steps {
+                sh 'mvn javadoc:javadoc javadoc:jar source:jar deploy -DskipTests'
+                step([$class: 'JavadocArchiver',
+                        javadocDir: 'target/site/apidocs',
+                        keepAll: false])
+            }
+        }
+    }
+
+    post {
+        always {
+            deleteDir()
+        }
+    }
 }

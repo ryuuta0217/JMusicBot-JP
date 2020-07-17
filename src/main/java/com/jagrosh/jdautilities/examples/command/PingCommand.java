@@ -1,17 +1,17 @@
 /*
- * Copyright 2016-2018 John Grosh (jagrosh) & Kaidan Gustave (TheMonitorLizard)
+ * Copyright 2018-2020 Cosgy Dev
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package com.jagrosh.jdautilities.examples.command;
 
@@ -23,7 +23,6 @@ import com.jagrosh.jdautilities.examples.doc.Author;
 import java.time.temporal.ChronoUnit;
 
 /**
- *
  * @author John Grosh (jagrosh)
  */
 @CommandInfo(
@@ -33,8 +32,7 @@ import java.time.temporal.ChronoUnit;
 @Author("John Grosh (jagrosh)")
 public class PingCommand extends Command {
 
-    public PingCommand()
-    {
+    public PingCommand() {
         this.name = "ping";
         this.help = "ボットのレイテンシをチェックします";
         this.guildOnly = false;
@@ -45,7 +43,7 @@ public class PingCommand extends Command {
     protected void execute(CommandEvent event) {
         event.reply("Ping: ...", m -> {
             long ping = event.getMessage().getCreationTime().until(m.getCreationTime(), ChronoUnit.MILLIS);
-            m.editMessage("Ping: " + ping  + "ms | Websocket: " + event.getJDA().getPing() + "ms").queue();
+            m.editMessage("Ping: " + ping + "ms | Websocket: " + event.getJDA().getPing() + "ms").queue();
         });
     }
 

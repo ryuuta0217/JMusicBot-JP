@@ -1,17 +1,17 @@
 /*
- * Copyright 2016-2018 John Grosh (jagrosh) & Kaidan Gustave (TheMonitorLizard)
+ * Copyright 2018-2020 Cosgy Dev
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package com.jagrosh.jdautilities.examples.command;
 
@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 
 /**
- *
  * @author John Grosh (jagrosh)
  */
 @CommandInfo(
@@ -47,8 +46,7 @@ public class AboutCommand extends Command {
     private String oauthLink;
     private final String[] features;
 
-    public AboutCommand(Color color, String description, String[] features, Permission... perms)
-    {
+    public AboutCommand(Color color, String description, String[] features, Permission... perms) {
         this.color = color;
         this.description = description;
         this.features = features;
@@ -59,13 +57,11 @@ public class AboutCommand extends Command {
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
     }
 
-    public void setIsAuthor(boolean value)
-    {
+    public void setIsAuthor(boolean value) {
         this.IS_AUTHOR = value;
     }
 
-    public void setReplacementCharacter(String value)
-    {
+    public void setReplacementCharacter(String value) {
         this.REPLACEMENT_ICON = value;
     }
 
@@ -86,28 +82,26 @@ public class AboutCommand extends Command {
         builder.setAuthor("" + event.getSelfUser().getName() + "について!", null, event.getSelfUser().getAvatarUrl());
         boolean join = !(event.getClient().getServerInvite() == null || event.getClient().getServerInvite().isEmpty());
         boolean inv = !oauthLink.isEmpty();
-        String invline = "\n" + (join ? "公式Discordチャンネルは [`こちら`](" + event.getClient().getServerInvite() + ")" : (inv ? "からお願いします " : ""))
-                + (inv ? (join ? ", または " : "") + "あなたのサーバーに[`招待リンク`](" + oauthLink + ") " : "で招待することができます。") + "!";
-        String author = event.getJDA().getUserById(event.getClient().getOwnerId())==null ? "<@" + event.getClient().getOwnerId()+">"
+       /* String invline = "\n" + (join ? "Cosgy Dev公式チャンネルは [`こちら`](" + event.getClient().getServerInvite() + ")" : (inv ? "からお願いします " : ""))
+                + (inv ? (join ? ", または " : "") + "あなたのサーバーに[`招待リンク`](" + oauthLink + ") " : "で招待することができます。") + "!"*/
+        String author = event.getJDA().getUserById(event.getClient().getOwnerId()) == null ? "<@" + event.getClient().getOwnerId() + ">"
                 : event.getJDA().getUserById(event.getClient().getOwnerId()).getName();
-        StringBuilder descr = new StringBuilder().append("こんにちは！ 私は **").append(event.getSelfUser().getName()).append("**です。 ")
-                .append(description).append("\n私は").append(JDAUtilitiesInfo.AUTHOR + "の[コマンド拡張](" + JDAUtilitiesInfo.GITHUB + ") (")
+        StringBuilder descr = new StringBuilder().append("こんにちは！ **").append(event.getSelfUser().getName()).append("**です。 ")
+                .append(description).append("は、").append(JDAUtilitiesInfo.AUTHOR + "の[コマンド拡張](" + JDAUtilitiesInfo.GITHUB + ") (")
                 .append(JDAUtilitiesInfo.VERSION).append(")と[JDAライブラリ](https://github.com/DV8FromTheWorld/JDA) (")
-                .append(JDAInfo.VERSION).append(")を使用しており、私は、").append(author).append(IS_AUTHOR ? "にJava言語で作られました。" : "が所有しています。")
+                .append(JDAInfo.VERSION).append(")を使用しており、").append(author).append(IS_AUTHOR ? "にJava言語で作られました。" : "が所有しています。")
+                .append("\n").append(event.getSelfUser().getName()).append("はCosgy Devが、開発しています。")
                 .append("\n`").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
-                .append("`でコマンドを確認することができます。").append(join || inv ? invline : "").append("\n\n機能の特徴： ```css");
+                .append("`でコマンドを確認することができます。")/*.append(join || inv ? invline : "")*/.append("\n\n機能の特徴： ```css");
         for (String feature : features)
             descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append(feature);
         descr.append(" ```");
         builder.setDescription(descr);
-        if (event.getJDA().getShardInfo() == null)
-        {
+        if (event.getJDA().getShardInfo() == null) {
             builder.addField("統計", event.getJDA().getGuilds().size() + " サーバー\n1 シャード", true);
             builder.addField("ユーザー", event.getJDA().getUsers().size() + " ユニーク\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers().size()).sum() + " トータル", true);
             builder.addField("チャンネル", event.getJDA().getTextChannels().size() + " テキスト\n" + event.getJDA().getVoiceChannels().size() + " ボイス", true);
-        }
-        else
-        {
+        } else {
             builder.addField("ステータス", (event.getClient()).getTotalGuilds() + " サーバー\nシャード " + (event.getJDA().getShardInfo().getShardId() + 1)
                     + "/" + event.getJDA().getShardInfo().getShardTotal(), true);
             builder.addField("", event.getJDA().getUsers().size() + " ユーザーのシャード\n" + event.getJDA().getGuilds().size() + " サーバー", true);
